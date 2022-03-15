@@ -2,7 +2,7 @@
 export ROOT_DIR=/home/n869p538/patched_async_mode_nginx
 
 cd $ROOT_DIR/QAT_Engine
-source libsrcs.source
+source qatengine_libsrcs.source
 [ ! -d "$QAT_BUILD" ] && mkdir $QAT_BUILD
 
 ./autogen.sh
