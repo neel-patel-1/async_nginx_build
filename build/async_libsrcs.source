@@ -1,0 +1,4 @@
+export ROOT_DIR=/home/n869p538/patched_async_mode_nginx
+export NGINX_INSTALL_DIR=$ROOT_DIR/async_mode_nginx_build
+export OPENSSL_LIB=$ROOT_DIR/openssl
+export ICP_ROOT=$ROOT_DIR/../QAT

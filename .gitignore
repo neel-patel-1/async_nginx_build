@@ -1,0 +1,11 @@
+*.h
+*.c
+nginx-1.20.1/
+async_mode_nginx_build/
+nginx-release-1.20.1/
+asynch_mode_nginx/
+openssl/
+QAT_Engine/
+*.gz
+*.swp
+a
