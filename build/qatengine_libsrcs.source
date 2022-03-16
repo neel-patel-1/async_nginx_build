@@ -4,3 +4,4 @@ export LDFLAGS="-L/home/n869p538/intel-ipsec-mb/lib -L/home/n869p538/crypto_mb/2
 export CPPFLAGS="-I/home/n869p538/intel-ipsec-mb/lib/include -I/home/n869p538/crypto_mb/2020u3/include"
 export QAT_BUILD=$ROOT_DIR/QAT_BUILD
 export PERL5LIB=$ROOT_DIR/openssl
+export ICP_ROOT=$ROOT_DIR/QAT
