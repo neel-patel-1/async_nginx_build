@@ -8,8 +8,8 @@ cd $ROOT_DIR/QAT_Engine
 
 ./autogen.sh
 ./configure \
---enable-qat_hw \
 --with-qat_hw_dir=$ICP_ROOT \
+--enable-qat_gcm \
 --with-openssl_install_dir=$ROOT_DIR/openssl \
 --with-openssl_dir=$ROOT_DIR/openssl
 

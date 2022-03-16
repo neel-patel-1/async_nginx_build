@@ -17,3 +17,4 @@ source $ROOT_DIR/build/async_libsrcs.source
 make -j 35
 sudo make install -j 35
 
+sudo cp -r conf/* $NGINX_INSTALL_DIR/conf
