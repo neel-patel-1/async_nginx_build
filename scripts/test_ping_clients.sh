@@ -5,5 +5,5 @@ num_ips=10
 client=n869p538@castor.ittc.ku.edu
 
 for i in `seq 2 $((num_ips + 2))`; do
-	ping -c 1 -I ens4f0:$i 192.168.${i}.1/24
+	ping -c 1 -I 192.168.${i}.2 192.168.${i}.1
 done
