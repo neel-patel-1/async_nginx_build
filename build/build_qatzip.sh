@@ -18,8 +18,5 @@ sudo ./setenv.sh
 make clean -j 35
 sudo make all install -j 35
 
-#copy config code
-sudo cp -r $QZ_ROOT/config_file/c6xx/multiple_thread_opt/c6xx_dev* /etc
-
 #assume drivers installed
 sudo service qat_service restart
