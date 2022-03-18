@@ -4,7 +4,10 @@ export ROOT_DIR=/home/n869p538/patched_async_mode_nginx
 source $ROOT_DIR/scripts/async_libsrcs.source
 cd $BUILD_DIR/asynch_mode_nginx
 
-htmlcontents=$BUILD_DIR/asynch_mode_nginx
+if [ ! -d "$BUILD_DIR/asynch_mode_nginx" ]; then
+	cd $BUILD_DIR
+	git clone --depth 1 --branch v0.4.5 https://github.com/intel/asynch_mode_nginx.git
+fi
 
 ./configure \
 --prefix=$NGINX_INSTALL_DIR \
@@ -20,3 +23,4 @@ sudo make install -j 35
 cd $NGINX_INSTALL_DIR
 sudo cp -r $ROOT_DIR/async_files/* ./html
 sudo cp -r $ROOT_DIR/async_certs/* ./conf
+sudo cp -r $ROOT_DIR/async_nginx_conf/* ./conf
