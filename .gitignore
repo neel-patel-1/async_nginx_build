@@ -8,4 +8,5 @@ openssl/
 QAT_Engine/
 *.gz
 *.swp
+*.swn
 a
