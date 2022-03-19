@@ -1,14 +1,14 @@
 #!/bin/bash
-export ROOT_DIR=/home/n869p538/patched_async_mode_nginx
+export ROOT_DIR=/home/n869p538/test/async_nginx_build
 
 
 source $ROOT_DIR/scripts/async_libsrcs.source
-cd $BUILD_DIR/QAT_Engine
 
 if [ ! -d "$BUILD_DIR/QAT_Engine" ]; then
 	cd $BUILD_DIR
 	git clone --depth 1 --branch v0.6.10 https://github.com/intel/QAT_Engine.git
 fi
+cd $BUILD_DIR/QAT_Engine
 
 
 ./autogen.sh
