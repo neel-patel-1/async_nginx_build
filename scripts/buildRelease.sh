@@ -14,10 +14,11 @@ $ROOT_DIR/scripts/openssl_build.sh
 
 #build QAT Engine
 $ROOT_DIR/scripts/qatengine_build.sh
-#copy qat benchmarking confs to etc
-$ROOT_DIR/scripts/qatengine_confs.sh
+
+#use benchmarking qat device confs
+$ROOT_DIR/scripts/benchmark_qat_conf.sh
+#use benchmarking nginx conf
+$ROOT_DIR/scripts/
 
 #restart qat devices
 sudo service qat_service restart
-#test crypto operations
-$ROOT_DIR/scripts/testcrypto.sh
