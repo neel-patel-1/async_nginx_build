@@ -2,11 +2,17 @@
 
 echo "starting qatzip build"
 
-export ROOT_DIR=/home/n869p538/patched_async_mode_nginx
+export ROOT_DIR=/home/n869p538/test/async_nginx_build
 source $ROOT_DIR/scripts/async_libsrcs.source
 
 #build code 
+if [ ! -d "$QZ_ROOT" ]; then
+	cd $BUILD_DIR
+	git clone --depth 1 --branch v1.0.6 https://github.com/intel/QATzip.git
+fi
+
 cd $QZ_ROOT
+
 sudo ./setenv.sh
 sudo bash -c "echo 1024 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages"
 sudo rmmod usdm_drv
