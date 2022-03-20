@@ -19,8 +19,14 @@ export ICP_ROOT=$BUILD_DIR/QAT
 #NGINX build loc
 export NGINX_INSTALL_DIR=$BUILD_DIR/async_mode_nginx_build
 
+#default NGINX locs
+export DEFAULT_NGINX=$ROOT_DIR/default_nginx
+export DEFAULT_NGINX_SOURCE=$ROOT_DIR/default_nginx/nginx-1.20.1
+export DEFAULT_NGINX_BUILD=$ROOT_DIR/default_nginx/nginx_build
+
 #Openssl vars
 export OPENSSL_LIB=$BUILD_DIR/openssl
+export OPENSSL_LIBS=$BUILD_DIR/openssl/lib
 export OPENSSL_INSTALL=$BUILD_DIR/openssl
 
 #QatZIP
