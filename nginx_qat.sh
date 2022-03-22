@@ -58,13 +58,18 @@ elif [ "$1" = "tls" ]; then
 elif [ "$1" = "tlso" ]; then
 	>&2 echo "offload tls"
 	sudo ${nginx_loc}/nginx -t
-	sudo sed -i '/pid/a ssl_engine qatengine;' ${nginx_loc}/../conf/nginx.conf
-	sudo sed -i '/\s*sendfile\s*on;/d' ${nginx_loc}/../conf/nginx.conf
-	sudo env \
-	OPENSSL_ENGINES=/home/n869p538/ktls_client_server/openssl/openssl/lib/engines-1.1 \
-	LD_FLAGS="-L/home/n869p538/ktls_client_server/openssl/openssl"  \
-	LD_LIBRARY_PATH=/home/n869p538/ktls_client_server/openssl/openssl/lib:/home/n869p538/crypto_mb/2020u3/lib:/home/n869p538/intel-ipsec-mb/lib \
-	${nginx_loc}/nginx
+	sudo sed -i '/pid/a ssl_engine qatengine;' $DEFAULT_NGINX_BUILD/conf/nginx.conf
+	sudo sed -i '/\s*sendfile\s*on;/d' $DEFAULT_NGINX_BUILD/conf/nginx.conf
+
+	export OPENSSL_ENGINES=/home/n869p538/ktls_client_server/openssl/openssl/lib/engines-1.1 
+	export LD_FLAGS="-L/home/n869p538/ktls_client_server/openssl/openssl"  
+	export LD_LIBRARY_PATH=/home/n869p538/ktls_client_server/openssl/openssl/lib:/home/n869p538/crypto_mb/2020u3/lib:/home/n869p538/intel-ipsec-mb/lib 
+	sudo /home/n869p538/nginx_build/sbin/nginx
+	#sudo env \
+	#OPENSSL_ENGINES=$OPENSSL_OFFLOAD_LIB/engines-1.1 \
+	#LD_FLAGS="-L$OPENSSL_OFFLOAD/openssl"  \
+	#LD_LIBRARY_PATH=$OPENSSL_OFFLOAD:/home/n869p538/crypto_mb/2020u3/lib:/home/n869p538/intel-ipsec-mb/lib \
+	#$DEFAULT_NGINX_BUILD/sbin/nginx
 elif [ "$1" = "qtls" ]; then
 	>&2 echo "qtls offload tls"
 	sudo ${qtls_nginx_loc}/nginx -t #test qtls config
