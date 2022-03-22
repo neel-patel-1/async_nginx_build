@@ -50,26 +50,27 @@ if [ "$1" = "stop" ]; then
 	sudo ${nginx_loc}/nginx -s stop
 	sudo ${qtls_nginx_loc}/nginx -s stop
 elif [ "$1" = "tls" ]; then
-	>&2 echo "default tls config"
+	>&2 echo "[info] https server... "
 	sudo sed -i '/ssl_engine qatengine;/d' ${nginx_loc}/../conf/nginx.conf
 	sudo sed -i '/#optimizations/a sendfile\ton;' ${nginx_loc}/../conf/nginx.conf
 	sudo ${nginx_loc}/nginx -t
 	sudo ${nginx_loc}/nginx
 elif [ "$1" = "tlso" ]; then
-	>&2 echo "offload tls"
+	>&2 echo "[info] offload AXDIMM emulation https server..."
 	sudo ${nginx_loc}/nginx -t
 	sudo sed -i '/pid/a ssl_engine qatengine;' $DEFAULT_NGINX_BUILD/conf/nginx.conf
 	sudo sed -i '/\s*sendfile\s*on;/d' $DEFAULT_NGINX_BUILD/conf/nginx.conf
 
-	export OPENSSL_ENGINES=/home/n869p538/ktls_client_server/openssl/openssl/lib/engines-1.1 
-	export LD_FLAGS="-L/home/n869p538/ktls_client_server/openssl/openssl"  
-	export LD_LIBRARY_PATH=/home/n869p538/ktls_client_server/openssl/openssl/lib:/home/n869p538/crypto_mb/2020u3/lib:/home/n869p538/intel-ipsec-mb/lib 
-	sudo /home/n869p538/nginx_build/sbin/nginx
-	#sudo env \
-	#OPENSSL_ENGINES=$OPENSSL_OFFLOAD_LIB/engines-1.1 \
-	#LD_FLAGS="-L$OPENSSL_OFFLOAD/openssl"  \
-	#LD_LIBRARY_PATH=$OPENSSL_OFFLOAD:/home/n869p538/crypto_mb/2020u3/lib:/home/n869p538/intel-ipsec-mb/lib \
-	#$DEFAULT_NGINX_BUILD/sbin/nginx
+	#export OPENSSL_ENGINES=/home/n869p538/ktls_client_server/openssl/openssl/lib/engines-1.1 
+	#export LD_FLAGS="-L/home/n869p538/ktls_client_server/openssl/openssl"  
+	#export LD_LIBRARY_PATH=/home/n869p538/ktls_client_server/openssl/openssl/lib:/home/n869p538/crypto_mb/2020u3/lib:/home/n869p538/intel-ipsec-mb/lib 
+	#sudo /home/n869p538/nginx_build/sbin/nginx
+	#sudo env
+	export OPENSSL_ENGINES=$OPENSSL_OFFLOAD_LIB/engines-1.1
+	export LD_FLAGS="-L$OPENSSL_OFFLOAD"
+	export LD_LIBRARY_PATH=$OPENSSL_OFFLOAD:/home/n869p538/crypto_mb/2020u3/lib:/home/n869p538/intel-ipsec-mb/lib
+	echo "$OPENSSL_ENGINES:$LD_FLAGS:$LD_LIBRARY_PATH"
+	$DEFAULT_NGINX_BUILD/sbin/nginx
 elif [ "$1" = "qtls" ]; then
 	>&2 echo "qtls offload tls"
 	sudo ${qtls_nginx_loc}/nginx -t #test qtls config

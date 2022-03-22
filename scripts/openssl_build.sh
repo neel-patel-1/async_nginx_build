@@ -4,7 +4,7 @@ source $ROOT_DIR/scripts/async_libsrcs.source
 
 if [ ! -d "$BUILD_DIR/openssl" ]; then
 	cd $BUILD_DIR
-	git clone --depth 1 --branch OpenSSL_1_1_1j https://github.com/openssl/openssl.git
+	git clone --depth 1 --branch OpenSSL_1_1_0-stable https://github.com/openssl/openssl.git
 fi
 
 cd $BUILD_DIR/openssl
