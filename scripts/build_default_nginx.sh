@@ -11,7 +11,7 @@ wget http://nginx.org/download/nginx-1.20.1.tar.gz
 tar -xvzf nginx-1.20.1.tar.gz
 
 cd nginx-1.20.1
-./configure --with-stream_ssl_module --with-ld-opt="-L $OPENSSL_LIB" --with-http_ssl_module --with-openssl=/home/n869p538/ktls_client_server/openssl/openssl --prefix=${ROOT_DIR}/default_nginx/nginx_build
+./configure --with-stream_ssl_module --with-ld-opt="-L $OPENSSL_LIB" --with-http_ssl_module --with-openssl=$OPENSSL_OFFLOAD/ --prefix=${ROOT_DIR}/default_nginx/nginx_build
 make -j 35
 sudo make install -j 35
 
