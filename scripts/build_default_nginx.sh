@@ -16,4 +16,6 @@ make -j 35
 sudo make install -j 35
 
 #copy config file from root
-sudo cp ${ROOT_DIR}/default_nginx_conf/nginx.conf $DEFAULT_NGINX_BUILD/conf/nginx.conf
+sudo cp -r ${ROOT_DIR}/default_nginx_conf/* $DEFAULT_NGINX_BUILD/conf
+sudo chmod o+r $DEFAULT_NGINX_BUILD/conf/localhost.key
+sudo chmod o+w $DEFAULT_NGINX_BUILD/logs/error.log
