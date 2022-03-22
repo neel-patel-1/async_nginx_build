@@ -31,3 +31,8 @@ export OPENSSL_INSTALL=$BUILD_DIR/openssl
 
 #QatZIP
 export QZ_ROOT=$BUILD_DIR/QATzip
+
+
+#offload openssl
+export OPENSSL_OFFLOAD=$DEFAULT_NGINX/openssl
+export OPENSSL_OFFLOAD_LIB=$DEFAULT_NGINX/openssl/lib
