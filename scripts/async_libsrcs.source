@@ -5,24 +5,27 @@ export ROOT_DIR=/home/n869p538/patched_async_mode_nginx
 export BUILD_DIR=$ROOT_DIR/Builds
 
 #library path including openssl libs and multibuffer support
-export IPSEC_INSTALL_DIR=/home/n869p538/intel-ipsec-mb
-export LD_LIBRARY_PATH=$BUILD_DIR/openssl/lib:/home/n869p538/crypto_mb/2020u3/lib:/home/n869p538/intel-ipsec-mb/lib
-export LDFLAGS="-L/home/n869p538/intel-ipsec-mb/lib -L/home/n869p538/crypto_mb/2020u3/lib"
-export CPPFLAGS="-I/home/n869p538/intel-ipsec-mb/lib/include -I/home/n869p538/crypto_mb/2020u3/include"
-
-#needed for qatengine build
-export PERL5LIB=$BUILD_DIR/openssl
+#export IPSEC_INSTALL_DIR=/home/n869p538/intel-ipsec-mb
+export IPSEC_INSTALL_LIB=$BUILD_DIR/ipsec-mb/0.55/lib
+export CRYPTOMB_INSTALL_DIR=$BUILD_DIR/crypto_mb/2020u3
+export LD_LIBRARY_PATH=$BUILD_DIR/openssl/lib:$CRYPTO_MB_INSTALL_DIR/lib:$IPSEC_INSTALL_LIB:$LD_LIBRARY_PATH
+export LDFLAGS="-L$IPSEC_INSTALL_LIB -L$CRYPTOMB_INSTALL_DIR/lib"
+export CPPFLAGS="-I$IPSEC_INSTALL_LIB/include -I$CRYPTOMB_INSTALL_DIR/include"
+#export CPPFLAGS=" -I/home/n869p538/crypto_mb/2020u3/include"
 
 #needed for driver build
 export ICP_ROOT=$BUILD_DIR/QAT
 
-#NGINX build loc
+#qtls NGINX locs
 export NGINX_INSTALL_DIR=$BUILD_DIR/async_mode_nginx_build
+export qtls_nginx_loc=$NGINX_INSTALL_DIR/sbin
 
 #default NGINX locs
 export DEFAULT_NGINX=$ROOT_DIR/default_nginx
 export DEFAULT_NGINX_SOURCE=$ROOT_DIR/default_nginx/nginx-1.20.1
 export DEFAULT_NGINX_BUILD=$ROOT_DIR/default_nginx/nginx_build
+export default_nginx_loc=$DEFAULT_NGINX_BUILD/sbin
+export nginx_conf_loc=${ROOT_DIR}/default_nginx_conf/nginx.conf
 
 #Openssl vars
 export OPENSSL_LIB=$BUILD_DIR/openssl
@@ -32,6 +35,7 @@ export OPENSSL_INSTALL=$BUILD_DIR/openssl
 #QatZIP
 export QZ_ROOT=$BUILD_DIR/QATzip
 
+#openssl tls offload
 export OPENSSL_OFFLOAD=$DEFAULT_NGINX/openssl
 export OPENSSL_OFFLOAD_LIB=$DEFAULT_NGINX/openssl/lib
 export OPENSSL_OFFLOAD_ENGINE=$OPENSSL_OFFLOAD_LIB/engines-1.1
