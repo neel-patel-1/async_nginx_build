@@ -47,8 +47,7 @@ fi
 	
 
 if [ "$1" = "stop" ]; then
-	sudo ${default_nginx_loc}/nginx -s stop
-	sudo ${qtls_nginx_loc}/nginx -s stop
+	ps aux | grep -e 'nginx:' | awk '{print $2}' | xargs sudo kill -s 2
 elif [ "$1" = "tls" ]; then
 	${ROOT_DIR}/nginxs/tls_conf.sh
 	#>&2 echo "[info] https server... "
@@ -70,9 +69,11 @@ elif [ "$1" = "tlso" ]; then
 	sudo env \
 	OPENSSL_ENGINES=$OPENSSL_OFFLOAD_LIB/engines-1.1 \
 	LD_FLAGS="-L$OPENSSL_OFFLOAD" \
-	LD_LIBRARY_PATH=$OPENSSL_OFFLOAD:/home/n869p538/crypto_mb/2020u3/lib:/home/n869p538/intel-ipsec-mb/lib \
-	openssl engine -t -c -v qatengine
-	#$DEFAULT_NGINX_BUILD/sbin/nginx
+	LD_LIBRARY_PATH=$OPENSSL_OFFLOAD_LIB/engines-1.1:$OPENSSL_OFFLOAD_LIB:$CRYPTOMB_INSTALL_DIR/lib:$IPSEC_INSTALL_LIB:$LD_LIBRARY_PATH \
+	$DEFAULT_NGINX_BUILD/sbin/nginx
+	#$OPENSSL_OFFLOAD/apps/openssl version
+	#$OPENSSL_OFFLOAD/apps/openssl engine -t -c -v qatengine
+	#openssl engine -t -c -v qatengine
 elif [ "$1" = "qtls" ]; then
 	>&2 echo "qtls offload tls"
 	sudo ${qtls_nginx_loc}/nginx -t #test qtls config

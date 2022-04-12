@@ -4,7 +4,7 @@ source $ROOT_DIR/scripts/async_libsrcs.source
 
 if [ ! -d "$DEFAULT_NGINX/openssl" ]; then
 	cd $DEFAULT_NGINX
-	git clone --depth 1 --branch OpenSSL_1_1_1f https://github.com/openssl/openssl.git
+	git clone --depth 1 --branch OpenSSL_1_1_1e https://github.com/openssl/openssl.git
 fi
 
 cd $DEFAULT_NGINX/openssl
