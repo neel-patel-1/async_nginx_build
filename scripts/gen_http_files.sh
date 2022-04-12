@@ -13,7 +13,7 @@ declare -a sizes=("256K" "4K" "16K" "64K" "128K")
 
 for size in "${sizes[@]}";
 do
-	echo $size
+	#echo $size
 	head -c $size < /dev/urandom > file_$size.txt
 done
 

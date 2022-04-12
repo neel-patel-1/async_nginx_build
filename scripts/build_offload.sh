@@ -12,3 +12,6 @@ source $ROOT_DIR/scripts/async_libsrcs.source
 
 
 [ ! -f "$default_nginx_loc/nginx" ] && $ROOT_DIR/scripts/build_default_nginx.sh
+
+#copy html files
+${ROOT_DIR}/gen_http_files.sh

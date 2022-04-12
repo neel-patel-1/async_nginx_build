@@ -36,7 +36,7 @@ newMaskp2+="0"
 	
 #assume no engine, sendfile and change workers/coremask
 if [ "$1" != "qtls" ]; then
-	>&2 echo "[info] default nginx will be used ..."
+	#>&2 echo "[info] default nginx will be used ..."
 	sudo sed -i '/\s*ssl_engine\s*qatengine;/d' ${default_nginx_loc}/../conf/nginx.conf
 	sudo sed -i '/\s*sendfile\s*on;/d' ${default_nginx_loc}/../conf/nginx.conf
 	sudo sed -i -E "s/(worker_processes) (.*)(;)/\1 $cores\3/g" ${default_nginx_loc}/../conf/nginx.conf
@@ -71,7 +71,8 @@ elif [ "$1" = "tlso" ]; then
 	OPENSSL_ENGINES=$OPENSSL_OFFLOAD_LIB/engines-1.1 \
 	LD_FLAGS="-L$OPENSSL_OFFLOAD" \
 	LD_LIBRARY_PATH=$OPENSSL_OFFLOAD:/home/n869p538/crypto_mb/2020u3/lib:/home/n869p538/intel-ipsec-mb/lib \
-	$DEFAULT_NGINX_BUILD/sbin/nginx
+	openssl engine -t -c -v qatengine
+	#$DEFAULT_NGINX_BUILD/sbin/nginx
 elif [ "$1" = "qtls" ]; then
 	>&2 echo "qtls offload tls"
 	sudo ${qtls_nginx_loc}/nginx -t #test qtls config
