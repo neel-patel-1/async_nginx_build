@@ -1,5 +1,6 @@
 #!/bin/bash
-export ROOT_DIR=/home/n869p538/patched_async_mode_nginx
+export ROOT_DIR=/home/n869p538/wrk_offloadenginesupport/async_nginx_build
+source $ROOT_DIR/scripts/async_libsrcs.source
 
 #build driver
 [ ! -f "${BUILD_DIR}/QAT/quickassist/qat/drivers/crypto/qat/qat_c62x/qat_c62x.ko" ] && $ROOT_DIR/scripts/driver_build.sh
@@ -14,6 +15,10 @@ $ROOT_DIR/scripts/qat_groups.sh
 
 #build QAT Engine
 [ ! -f "$OPENSSL_LIBS/engines-1.1/qatengine.so" ] && $ROOT_DIR/scripts/qatengine_build.sh
+
+#build aync mode nginx
+[ ! -f "$BUILD_DIR/async_mode_nginx_build/sbin/nginx" ] && $ROOT_DIR/scripts/async_nginx_build.sh
+Builds/async_mode_nginx_build/sbin/nginx
 
 #use benchmarking qat device confs
 $ROOT_DIR/scripts/benchmark_qat_conf.sh
