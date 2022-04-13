@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export ROOT_DIR=/home/n869p538/patched_async_mode_nginx
+export ROOT_DIR=/home/n869p538/async_nginx_build
 source $ROOT_DIR/scripts/async_libsrcs.source
 
 
@@ -17,5 +17,4 @@ do
 	head -c $size < /dev/urandom > file_$size.txt
 done
 
-[[ -d "$DEFAULT_NGINX_BUILD" ]] && sudo cp -r $ROOT_DIR/html_files/* $DEFAULT_NGINX_BUILD/html
-[[ -d "$NGINX_INSTALL_DIR" ]] && sudo cp -r $ROOT_DIR/html_files/* $NGINX_INSTALL_DIR/html
+[[ -d "$QTLS_NGINX" ]] && sudo cp -r $ROOT_DIR/html_files/* $QTLS_NGINX/html

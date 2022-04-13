@@ -7,10 +7,6 @@ export ROOT_DIR=/home/n869p538/patched_async_mode_nginx
 source ${ROOT_DIR}/scripts/async_libsrcs.source
 
 
-export OPENSSL_ENGINES=$OPENSSL_LIBS/engines-1.1
-export LD_FLAGS="-L$OPENSSL_INSTALL" 
-export LD_LIBRARY_PATH=$OPENSSL_LIBS:/home/n869p538/crypto_mb/2020u3/lib:/home/n869p538/intel-ipsec-mb/lib:$LD_LIBRARY_PATH
-
 #cores
 if [ "$1" = "-s" ]; then
 	cores=$3
@@ -43,6 +39,8 @@ if [ "$1" != "qtls" ]; then
 	sudo sed -i -E "s/(worker_cpu_affinity) (.*)(;)/\1 $newMaskp1$newMaskp2\3/g" ${default_nginx_loc}/../conf/nginx.conf
 else
 	>&2 echo "qtls detected"
+	cat $QTLS_NGINX/conf/nginx.conf
+	exit
 fi
 	
 
@@ -76,13 +74,13 @@ elif [ "$1" = "tlso" ]; then
 	#openssl engine -t -c -v qatengine
 elif [ "$1" = "qtls" ]; then
 	>&2 echo "qtls offload tls"
-	sudo ${qtls_nginx_loc}/nginx -t #test qtls config
+	sudo ${QTLS_NGINX_BIN}/nginx -t #test qtls config
 
 	sudo env \
 	OPENSSL_ENGINES=$OPENSSL_LIBS/engines-1.1 \
 	LD_FLAGS="-L$OPENSSL_LIB" \
 	LD_LIBRARY_PATH=$OPENSSL_LIB:/home/n869p538/crypto_mb/2020u3/lib:/home/n869p538/intel-ipsec-mb/lib \
-	${qtls_nginx_loc}/nginx #start qtls config
+	${QTLS_NGINX_BIN}/nginx #start qtls config
 	#$OPENSSL_LIB/bin/openssl engine -t -c -v qatengine # for debugging the engine
 elif [ "$1" = "status" ]; then
 	netstat -lan --numeric-ports | grep -e ':443\|:80'

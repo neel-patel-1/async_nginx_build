@@ -1,7 +1,7 @@
 #!/bin/bash
 echo "Building default nginx"
 
-export ROOT_DIR=/home/n869p538/patched_async_mode_nginx
+export ROOT_DIR=/home/n869p538/async_nginx_build
 
 source ${ROOT_DIR}/scripts/async_libsrcs.source
 [ ! -d "${ROOT_DIR}/default_nginx" ] && mkdir $ROOT_DIR/default_nginx

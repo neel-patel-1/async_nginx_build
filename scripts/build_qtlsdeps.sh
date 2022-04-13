@@ -1,5 +1,5 @@
 #!/bin/bash
-export ROOT_DIR=/home/n869p538/patched_async_mode_nginx
+export ROOT_DIR=/home/n869p538/async_nginx_build
 
 #build driver
 $ROOT_DIR/scripts/driver_build.sh

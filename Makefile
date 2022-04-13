@@ -1,10 +1,24 @@
-.PHONY: qtls axdimm 
+.PHONY: qtls axdimm all qtls_server axdimm_server
 
 all: qtls axdimm
 
 qtls:
-	./configure && ./buildRelease
+	./configure && ./scripts/qtls/build_qtls.sh
 
 axdimm:
-	./configure && ./build_offload.sh
-	./nginx.sh tlso 10 
+	./configure && ./scripts/axdimm/build_offload.sh
+
+qtls_server:
+	./nginx.sh qtls
+
+axdimm_server:
+	./nginx.sh axdimm
+
+sendfile_server:
+	./nginx.sh sendfile
+
+http_server:
+	./nginx.sh http
+
+https_server:
+	./nginx.sh https

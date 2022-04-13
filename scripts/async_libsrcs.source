@@ -1,18 +1,18 @@
 #ROOT DIR
-export ROOT_DIR=/home/n869p538/patched_async_mode_nginx
+export ROOT_DIR=/home/n869p538/async_nginx_build
 
 #QTLS DIR LOCATION
 export QTLS_SCRIPTS=$ROOT_DIR/scripts/qtls
-export QTLS_DIR=$ROOT_DIR/Builds
+export QTLS_DIR=$ROOT_DIR/qtls
 export ICP_ROOT=$QTLS_DIR/QAT
+export QTLS_NGINX=$QTLS_DIR/async_mode_nginx_build
+export QTLS_NGINX_BIN=$NGINX_INSTALL_DIR/sbin
 
 #AXDIMM TLS 
-export OFFLOAD_DIR=$ROOT_DIR/tls_off
+export OFFLOAD_DIR=$ROOT_DIR/axdimm
 export OFFLOAD_NGINX_CONFS=$OFFLOAD_DIR/default_nginx_conf
 
 #qtls NGINX locs
-export NGINX_INSTALL_DIR=$QTLS_DIR/async_mode_nginx_build
-export qtls_nginx_loc=$NGINX_INSTALL_DIR/sbin
 
 #default NGINX locs
 
