@@ -5,7 +5,7 @@ echo "Establishing QAT group permissions"
 USERNAME=n869p538
 export ROOT_DIR=/home/n869p538/patched_async_mode_nginx
 source $ROOT_DIR/scripts/async_libsrcs.source
-export ICP_ROOT=$BUILD_DIR/QAT
+export ICP_ROOT=$QTLS_DIR/QAT
 sudo groupadd qat
 sudo usermod -G qat $USERNAME
 

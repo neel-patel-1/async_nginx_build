@@ -2,7 +2,7 @@
 export ROOT_DIR=/home/n869p538/patched_async_mode_nginx
 source $ROOT_DIR/scripts/async_libsrcs.source
 
-[ ! -d "${BUILD_DIR}" ] && mkdir -p $BUILD_DIR
+[ ! -d "${QTLS_DIR}" ] && mkdir -p $QTLS_DIR
 [ ! -d "${ROOT_DIR}/default_nginx" ] && mkdir $ROOT_DIR/default_nginx
 
 [ ! -d "${IPSEC_INSTALL_LIB}" ] && ${ROOT_DIR}/scripts/build_ipsec.sh

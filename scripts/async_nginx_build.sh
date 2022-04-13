@@ -2,10 +2,10 @@
 export ROOT_DIR=/home/n869p538/patched_async_mode_nginx
 
 source $ROOT_DIR/scripts/async_libsrcs.source
-cd $BUILD_DIR/asynch_mode_nginx
+cd $QTLS_DIR/asynch_mode_nginx
 
-if [ ! -d "$BUILD_DIR/asynch_mode_nginx" ]; then
-	cd $BUILD_DIR
+if [ ! -d "$QTLS_DIR/asynch_mode_nginx" ]; then
+	cd $QTLS_DIR
 	git clone --depth 1 --branch v0.4.5 https://github.com/intel/asynch_mode_nginx.git
 	wget http://nginx.org/download/nginx-1.20.1.tar.gz
 	tar -xvzf nginx-1.20.1.tar.gz

@@ -7,7 +7,7 @@ source $ROOT_DIR/scripts/async_libsrcs.source
 
 #build code 
 if [ ! -d "$QZ_ROOT" ]; then
-	cd $BUILD_DIR
+	cd $QTLS_DIR
 	git clone --depth 1 --branch v1.0.6 https://github.com/intel/QATzip.git
 fi
 
