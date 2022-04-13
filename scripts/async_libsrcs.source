@@ -2,6 +2,7 @@
 export ROOT_DIR=/home/n869p538/patched_async_mode_nginx
 
 #QTLS DIR LOCATION
+export QTLS_SCRIPTS=$ROOT_DIR/scripts/qtls
 export QTLS_DIR=$ROOT_DIR/Builds
 export ICP_ROOT=$QTLS_DIR/QAT
 

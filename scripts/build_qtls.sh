@@ -3,29 +3,25 @@ export ROOT_DIR=/home/n869p538/wrk_offloadenginesupport/async_nginx_build
 source $ROOT_DIR/scripts/async_libsrcs.source
 
 #build driver
-[ ! -f "${QTLS_DIR}/QAT/quickassist/qat/drivers/crypto/qat/qat_c62x/qat_c62x.ko" ] && $ROOT_DIR/scripts/driver_build.sh
+[ ! -f "${QTLS_DIR}/QAT/quickassist/qat/drivers/crypto/qat/qat_c62x/qat_c62x.ko" ] && ${QTLS_SCRIPTS}/driver_build.sh
 #establish groups for access if not done already
-$ROOT_DIR/scripts/qat_groups.sh
-
-#build QATZip 
-#$ROOT_DIR/scripts/build_qatzip.sh
+${QTLS_SCRIPTS}/qat_groups.sh
 
 #build openssl
-[ ! -f "$OPENSSL_LIBS/libcrypto.so.1.1" ] && $ROOT_DIR/scripts/openssl_build.sh
+[ ! -f "$OPENSSL_LIBS/libcrypto.so.1.1" ] && ${QTLS_SCRIPTS}/openssl_build.sh
 
 #build QAT Engine
-[ ! -f "$OPENSSL_LIBS/engines-1.1/qatengine.so" ] && $ROOT_DIR/scripts/qatengine_build.sh
+[ ! -f "$OPENSSL_LIBS/engines-1.1/qatengine.so" ] && ${QTLS_SCRIPTS}/qatengine_build.sh
 
 #build aync mode nginx
-[ ! -f "$QTLS_DIR/async_mode_nginx_build/sbin/nginx" ] && $ROOT_DIR/scripts/async_nginx_build.sh
-Builds/async_mode_nginx_build/sbin/nginx
+[ ! -f "$QTLS_DIR/async_mode_nginx_build/sbin/nginx" ] && ${QTLS_SCRIPTS}/async_nginx_build.sh
 
 #use benchmarking qat device confs
-$ROOT_DIR/scripts/benchmark_qat_conf.sh
+${QTLS_SCRIPTS}/benchmark_qat_conf.sh
 #use benchmarking nginx conf
-$ROOT_DIR/scripts/cp_nginx_conf.sh
+${QTLS_SCRIPTS}/cp_nginx_conf.sh
 #copy html files
-${ROOT_DIR}/gen_http_files.sh
+${QTLS_SCRIPTS}/gen_http_files.sh
 
 #restart qat devices
 sudo service qat_service restart
