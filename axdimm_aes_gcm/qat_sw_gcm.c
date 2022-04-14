@@ -3,7 +3,7 @@
  *
  *   BSD LICENSE
  *
- *   Copyright(c) 2020-2022 Intel Corporation.
+ *   Copyright(c) 2020-2021 Intel Corporation.
  *   All rights reserved.
  *
  *   Redistribution and use in source and binary forms, with or without
@@ -59,6 +59,7 @@
 
 /* Local Includes */
 #include "e_qat.h"
+#include "e_qat_err.h"
 #include "qat_evp.h"
 #include "qat_utils.h"
 #include "qat_sw_gcm.h"
@@ -96,8 +97,26 @@
     } while (0)
 
 
-#ifdef ENABLE_QAT_SW_GCM
+#ifndef DISABLE_QAT_SW_GCM
 IMB_MGR *ipsec_mgr = NULL;
+
+static int vaesgcm_ciphers_init(EVP_CIPHER_CTX*      ctx,
+                                const unsigned char* inkey,
+                                const unsigned char* iv,
+                                int                  enc);
+static int vaesgcm_ciphers_cleanup(EVP_CIPHER_CTX* ctx);
+static int vaesgcm_ciphers_do_cipher(EVP_CIPHER_CTX*      ctx,
+                                     unsigned char*       out,
+                                     const unsigned char* in,
+                                     size_t               len);
+static int vaesgcm_ciphers_ctrl(EVP_CIPHER_CTX* ctx, int type, int arg, void* ptr);
+
+int aes_gcm_tls_cipher(EVP_CIPHER_CTX*      evp_ctx,
+                       unsigned char*       out,
+                       const unsigned char* in,
+                       size_t               len,
+                       vaesgcm_ctx*         qctx,
+                       int                  enc);
 
 int vaesgcm_init_key(EVP_CIPHER_CTX* ctx, const unsigned char* inkey);
 int vaesgcm_init_gcm(EVP_CIPHER_CTX* ctx);
@@ -114,7 +133,68 @@ static int qat_check_gcm_nid(int nid)
 
 #endif
 
-#ifdef ENABLE_QAT_SW_GCM
+static inline const EVP_CIPHER *qat_gcm_cipher_sw_impl(int nid)
+{
+    switch (nid) {
+        case NID_aes_128_gcm:
+            return EVP_aes_128_gcm();
+        case NID_aes_192_gcm:
+            return EVP_aes_192_gcm();
+        case NID_aes_256_gcm:
+            return EVP_aes_256_gcm();
+        default:
+            WARN("Invalid nid %d\n", nid);
+            return NULL;
+    }
+}
+
+/******************************************************************************
+ * function:
+ *         vaesgcm_create_cipher_meth(int nid, int keylen)
+ *
+ * @param nid    [IN] - Cipher NID to be created
+ * @param keylen [IN] - Key length of cipher [128|192|256]
+ * @retval            - EVP_CIPHER * to created cipher
+ * @retval            - NULL if failure
+ *
+ * description:
+ *   create a new EVP_CIPHER based on requested nid
+ ******************************************************************************/
+const EVP_CIPHER *vaesgcm_create_cipher_meth(int nid, int keylen)
+{
+#ifndef DISABLE_QAT_SW_GCM
+    EVP_CIPHER* c   = NULL;
+    int         res = 1;
+
+    if ((c = EVP_CIPHER_meth_new(nid, AES_GCM_BLOCK_SIZE, keylen)) == NULL) {
+        WARN("Failed to allocate cipher methods for specified nid %d\n", nid);
+        QATerr(QAT_F_VAESGCM_CREATE_CIPHER_METH, ERR_R_INTERNAL_ERROR);
+        return NULL;
+    }
+
+    res &= EVP_CIPHER_meth_set_iv_length(c, GCM_IV_DATA_LEN);
+    res &= EVP_CIPHER_meth_set_flags(c, VAESGCM_FLAG);
+    res &= EVP_CIPHER_meth_set_init(c, vaesgcm_ciphers_init);
+    res &= EVP_CIPHER_meth_set_do_cipher(c, vaesgcm_ciphers_do_cipher);
+    res &= EVP_CIPHER_meth_set_cleanup(c, vaesgcm_ciphers_cleanup);
+    res &= EVP_CIPHER_meth_set_impl_ctx_size(c, sizeof(vaesgcm_ctx));
+    res &= EVP_CIPHER_meth_set_set_asn1_params(c, NULL);
+    res &= EVP_CIPHER_meth_set_get_asn1_params(c, NULL);
+    res &= EVP_CIPHER_meth_set_ctrl(c, vaesgcm_ciphers_ctrl);
+
+    if (res == 0) {
+        WARN("Failed to set cipher methods for nid %d\n", nid);
+        QATerr(QAT_F_VAESGCM_CREATE_CIPHER_METH, ERR_R_INTERNAL_ERROR);
+        EVP_CIPHER_meth_free(c);
+        c = NULL;
+    }
+    return c;
+#else
+    return qat_gcm_cipher_sw_impl(nid);
+#endif
+}
+
+#ifndef DISABLE_QAT_SW_GCM
 /******************************************************************************
  * function:
  *         vaesgcm_ciphers_init(EVP_CIPHER_CTX *ctx,
@@ -145,16 +225,13 @@ int vaesgcm_ciphers_init(EVP_CIPHER_CTX*      ctx,
     int          retval = 1;
 
     /* Make sure we have an initalized ipsec mb manager before we start calling APIs */
-	/*removing need for ipsec_mgr*/
-	/*
     if (!ipsec_mgr) {
         WARN("Intel IPsec MB Manager not Initialized.\n");
         QATerr(QAT_F_VAESGCM_CIPHERS_INIT, QAT_R_INIT_FAILURE);
         return 0;
     }
-	*/
 
-    DEBUG("QAT SW GCM Started CTX = %p, key = %p, iv = %p, enc = %d\n",
+    DEBUG("CTX = %p, key = %p, iv = %p, enc = %d\n",
          (void*)ctx, (void*)inkey, (void*)iv, enc);
 
     if (ctx == NULL) {
@@ -173,14 +250,14 @@ int vaesgcm_ciphers_init(EVP_CIPHER_CTX*      ctx,
     /* If a key is set and a tag has already been calculated
      * this cipher ctx is being reused, so zero the gcm ctx and tag state variables */
     if (qctx->ckey_set && qctx->tag_calculated) {
-        memset(&(qctx->gcm_ctx), 0, sizeof(qctx->gcm_ctx));DEBUG("KEY SET AND TAG CALCULATED\n");
+        memset(&(qctx->gcm_ctx), 0, sizeof(qctx->gcm_ctx));
         qctx->tag_set = 0;
         qctx->tag_calculated = 0;
         }
 
     /* Allocate gcm auth tag */
     if (!qctx->tag) {
-        qctx->tag = OPENSSL_zalloc(EVP_GCM_TLS_TAG_LEN); DEBUG("ALLOCATING GCM AUTH TAG\n");
+        qctx->tag = OPENSSL_zalloc(EVP_GCM_TLS_TAG_LEN);
 
         if (qctx->tag) {
             qctx->tag_len = EVP_GCM_TLS_TAG_LEN;
@@ -195,7 +272,7 @@ int vaesgcm_ciphers_init(EVP_CIPHER_CTX*      ctx,
 
     /* Allocate gcm calculated_tag */
     if (!qctx->calculated_tag) {
-        qctx->calculated_tag = OPENSSL_zalloc(EVP_GCM_TLS_TAG_LEN);DEBUG("ALLOCATING CALCULATED GCM TAG\b");
+        qctx->calculated_tag = OPENSSL_zalloc(EVP_GCM_TLS_TAG_LEN);
 
         if (qctx->calculated_tag) {
             qctx->tag_calculated = 0;
@@ -418,7 +495,6 @@ int vaesgcm_ciphers_ctrl(EVP_CIPHER_CTX* ctx, int type, int arg, void* ptr)
         }
 
         case EVP_CTRL_GCM_SET_IV_FIXED: {
-		/* what does set IV_FIXED DO? removal broke it*/
             DEBUG("CTRL Type = EVP_CTRL_GCM_SET_IV_FIXED, ctx = %p, type = %d,"
                   " arg = %d, ptr = %p\n", (void*)ctx, type, arg, ptr);
 
@@ -575,7 +651,6 @@ int vaesgcm_ciphers_ctrl(EVP_CIPHER_CTX* ctx, int type, int arg, void* ptr)
         }
 
         case EVP_CTRL_AEAD_TLS1_AAD: {
-		/*why do we have additional authentication data?*/
             DEBUG("CTRL Type = EVP_CTRL_AEAD_TLS1_AAD, ctx = %p, type = %d,"
                   " arg = %d, ptr = %p\n", (void*)ctx, type, arg, ptr);
 
@@ -948,7 +1023,7 @@ int aes_gcm_tls_cipher(EVP_CIPHER_CTX*      ctx,
 				   */
 		/*FLUSH HERE*/
 		DEBUG("ENCRYPT FLUSH\n");
-		_mm_clflush( (char *)out );
+		_mm_clflush( (char *)in );
 
         /* Finalize to get the GCM Tag */
 	    /*Don't get GCM Tag*/
@@ -965,7 +1040,7 @@ int aes_gcm_tls_cipher(EVP_CIPHER_CTX*      ctx,
 				   */
 		/*FLUSH HERE*/
 		DEBUG("DECRYPT FLUSH\n");
-		_mm_clflush( (char *)out );
+		_mm_clflush( (char *)in );
 		
 
         DUMPL("Payload Dump After - Decrypt Update",

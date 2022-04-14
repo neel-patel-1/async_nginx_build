@@ -61,7 +61,7 @@ cd nginx-1.20.1
 ./configure --with-stream_ssl_module --with-ld-opt="-L ${AXDIMM_DIR}/openssl-1.1.1k" --with-http_ssl_module --with-openssl=${AXDIMM_DIR}/openssl-1.1.1k --prefix=${AXDIMM_DIR}/offload_nginx
 make -j
 sudo make install -j 35
-sudo cp -r ${ROOT_DIR}/default_nginx_conf/* ${AXDIMM_DIR}/offload_nginx/conf
+sudo cp -r ${ROOT_DIR}/axdimm_nginx_confs/* ${AXDIMM_DIR}/offload_nginx/conf
 ${AXDIMM_SCRIPTS}/gen_http_files.sh
 [ ! -f "${AXDIMM_NGINX}/html/file_256K.txt" ] && ${AXDIMM_SCRIPTS}/gen_http_files.sh
 [ ! -f "${AXDIMM_DIR}/offload_nginx/sbin/nginx" ] && echo "NGINX BUILD FAILED" && exit
