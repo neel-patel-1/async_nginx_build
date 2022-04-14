@@ -43,6 +43,7 @@ cd ${AXDIMM_DIR}
 git clone https://github.com/intel/QAT_Engine.git
 cd QAT_Engine
 git checkout v0.6.5
+cp ${ROOT_DIR}/axdimm_aes_gcm/qat_sw_gcm.c .
 ./autogen.sh
 LDFLAGS="-L${AXDIMM_DIR}/ipsec-mb/0.55/lib -L${AXDIMM_DIR}/crypto_mb/2020u3/lib" CPPFLAGS="-I${AXDIMM_DIR}/ipsec-mb/0.55/include -I${AXDIMM_DIR}/crypto_mb/2020u3/include" ./configure --prefix=${AXDIMM_DIR}/openssl/1.1.1k --with-openssl_install_dir=${AXDIMM_DIR}/openssl/1.1.1k --with-openssl_dir=${AXDIMM_DIR}/openssl-1.1.1k --enable-qat_sw
 PERL5LIB=${AXDIMM_DIR}/openssl-1.1.1k make -j
@@ -60,7 +61,7 @@ cd nginx-1.20.1
 ./configure --with-stream_ssl_module --with-ld-opt="-L ${AXDIMM_DIR}/openssl-1.1.1k" --with-http_ssl_module --with-openssl=${AXDIMM_DIR}/openssl-1.1.1k --prefix=${AXDIMM_DIR}/offload_nginx
 make -j
 sudo make install -j 35
-cp -r ${ROOT_DIR}/default_nginx_conf/* ${AXDIMM_DIR}/offload_nginx/conf
+sudo cp -r ${ROOT_DIR}/default_nginx_conf/* ${AXDIMM_DIR}/offload_nginx/conf
 ${AXDIMM_SCRIPTS}/gen_http_files.sh
 [ ! -f "${AXDIMM_NGINX}/html/file_256K.txt" ] && ${AXDIMM_SCRIPTS}/gen_http_files.sh
 [ ! -f "${AXDIMM_DIR}/offload_nginx/sbin/nginx" ] && echo "NGINX BUILD FAILED" && exit
