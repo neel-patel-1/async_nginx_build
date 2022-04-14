@@ -45,7 +45,7 @@ cd QAT_Engine
 git checkout v0.6.5
 cp ${ROOT_DIR}/axdimm_aes_gcm/qat_sw_gcm.c .
 ./autogen.sh
-LDFLAGS="-L${AXDIMM_DIR}/ipsec-mb/0.55/lib -L${AXDIMM_DIR}/crypto_mb/2020u3/lib" CPPFLAGS="-I${AXDIMM_DIR}/ipsec-mb/0.55/include -I${AXDIMM_DIR}/crypto_mb/2020u3/include" ./configure --prefix=${AXDIMM_DIR}/openssl/1.1.1k --with-openssl_install_dir=${AXDIMM_DIR}/openssl/1.1.1k --with-openssl_dir=${AXDIMM_DIR}/openssl-1.1.1k --enable-qat_sw
+LDFLAGS="-L${AXDIMM_DIR}/ipsec-mb/0.55/lib -L${AXDIMM_DIR}/crypto_mb/2020u3/lib" CPPFLAGS="-I${AXDIMM_DIR}/ipsec-mb/0.55/include -I${AXDIMM_DIR}/crypto_mb/2020u3/include" ./configure --prefix=${AXDIMM_DIR}/openssl/1.1.1k --with-openssl_install_dir=${AXDIMM_DIR}/openssl/1.1.1k --with-openssl_dir=${AXDIMM_DIR}/openssl-1.1.1k --enable-qat_sw --disable-qat_hw
 PERL5LIB=${AXDIMM_DIR}/openssl-1.1.1k make -j
 sudo PERL5LIB=${AXDIMM_DIR}/openssl-1.1.1k make install
 cd ${AXDIMM_DIR}
@@ -58,7 +58,7 @@ sudo chmod -R o+rw ${AXDIMM_DIR}/QAT_Engine ${AXDIMM_DIR}/ipsec-mb ${AXDIMM_DIR}
 wget http://nginx.org/download/nginx-1.20.1.tar.gz
 tar -xvzf nginx-1.20.1.tar.gz
 cd nginx-1.20.1
-./configure --with-stream_ssl_module --with-ld-opt="-L ${AXDIMM_DIR}/openssl-1.1.1k" --with-http_ssl_module --with-openssl=${AXDIMM_DIR}/openssl-1.1.1k --prefix=${AXDIMM_DIR}/offload_nginx
+./configure --with-ld-opt="-L ${AXDIMM_DIR}/openssl-1.1.1k" --with-http_ssl_module --with-openssl=${AXDIMM_DIR}/openssl-1.1.1k --prefix=${AXDIMM_DIR}/offload_nginx
 make -j
 sudo make install -j 35
 sudo cp -r ${ROOT_DIR}/axdimm_nginx_confs/* ${AXDIMM_DIR}/offload_nginx/conf
