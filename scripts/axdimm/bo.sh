@@ -61,5 +61,8 @@ cd nginx-1.20.1
 make -j
 sudo make install -j 35
 cp -r ${ROOT_DIR}/default_nginx_conf/* ${AXDIMM_DIR}/offload_nginx/conf
+${AXDIMM_SCRIPTS}/gen_http_files.sh
+[ ! -f "${AXDIMM_NGINX}/html/file_256K.txt" ] && ${AXDIMM_SCRIPTS}/gen_http_files.sh
 [ ! -f "${AXDIMM_DIR}/offload_nginx/sbin/nginx" ] && echo "NGINX BUILD FAILED" && exit
+
 exit

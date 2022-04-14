@@ -8,7 +8,7 @@ export QTLS_SCRIPTS=$ROOT_DIR/scripts/qtls
 export QTLS_DIR=$ROOT_DIR/qtls
 export ICP_ROOT=$QTLS_DIR/QAT
 export QTLS_NGINX=$QTLS_DIR/async_mode_nginx_build
-export QTLS_NGINX_BIN=$NGINX_INSTALL_DIR/sbin
+export QTLS_NGINX_BIN=$QTLS_NGINX/sbin
 export OPENSSL_LIB=$QTLS_DIR/openssl
 export OPENSSL_LIBS=$QTLS_DIR/openssl/lib
 export OPENSSL_INSTALL=$QTLS_DIR/openssl
@@ -20,11 +20,13 @@ export AXDIMM_DIR=$ROOT_DIR/axdimm
 export AXDIMM_NGINX=$AXDIMM_DIR/offload_nginx
 export AXDIMM_OSSL_LIBS=$AXDIMM_DIR/openssl/1.1.1k/lib
 export AXDIMM_ENGINES=$AXDIMM_DIR/openssl/1.1.1k/lib/engines-1.1
+export AXDIMM_SCRIPTS=$ROOT_DIR/scripts/axdimm
 
 
 #default NGINX locs
+export DEFAULT_DIR=$ROOT_DIR/default
+export DEFAULT_NGINX=$ROOT_DIR/default/default_nginx
+export DEFAULT_NGINX_BIN=$DEFAULT_NGINX/sbin
+export DEFAULT_OSSL=$DEFAULT_DIR/openssl/1.1.1k
+export DEFAULT_SCRIPTS=$ROOT_DIR/scripts/default
 
-#Openssl vars
-
-
-#openssl tls offload
