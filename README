@@ -1,5 +1,23 @@
-Using Releases
+
+
+
+Build Test Servers:
+Qtls : make qtls
+axdimm : make axdimm
+http : make http
+.
+.
+.
+
+
+AxDIMM Offload Using
+
+
+
+QTLS Offload Using releases:
 OpenSSL-1.1.1l
 QAT engine v0.6.10
 QATzip v1.0.6
 QAT driver 4.15.0
+Testing Configuration and Methodology from:
+
