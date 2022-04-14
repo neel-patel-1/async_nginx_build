@@ -1,25 +1,30 @@
 #ROOT DIR
 export ROOT_DIR=/home/n869p538/async_nginx_build
+#netdev
+export NETDEV=ens4f0
 
-#QTLS DIR LOCATION
+#QTLS 
 export QTLS_SCRIPTS=$ROOT_DIR/scripts/qtls
 export QTLS_DIR=$ROOT_DIR/qtls
 export ICP_ROOT=$QTLS_DIR/QAT
 export QTLS_NGINX=$QTLS_DIR/async_mode_nginx_build
 export QTLS_NGINX_BIN=$NGINX_INSTALL_DIR/sbin
+export OPENSSL_LIB=$QTLS_DIR/openssl
+export OPENSSL_LIBS=$QTLS_DIR/openssl/lib
+export OPENSSL_INSTALL=$QTLS_DIR/openssl
 
-#AXDIMM TLS 
+#AXDIMM 
 export OFFLOAD_DIR=$ROOT_DIR/axdimm
 export OFFLOAD_NGINX_CONFS=$OFFLOAD_DIR/default_nginx_conf
+export AXDIMM_DIR=$ROOT_DIR/axdimm
+export AXDIMM_NGINX=$AXDIMM_DIR/offload_nginx
+export AXDIMM_OSSL_LIBS=$AXDIMM_DIR/openssl/1.1.1k/lib
+export AXDIMM_ENGINES=$AXDIMM_DIR/openssl/1.1.1k/lib/engines-1.1
 
-#qtls NGINX locs
 
 #default NGINX locs
 
 #Openssl vars
-export OPENSSL_LIB=$QTLS_DIR/openssl
-export OPENSSL_LIBS=$QTLS_DIR/openssl/lib
-export OPENSSL_INSTALL=$QTLS_DIR/openssl
 
 
 #openssl tls offload

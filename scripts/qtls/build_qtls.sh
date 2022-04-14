@@ -2,6 +2,8 @@
 export ROOT_DIR=/home/n869p538/async_nginx_build
 source $ROOT_DIR/scripts/async_libsrcs.source
 
+[ ! -d "${QTLS_DIR}" ] && mkdir -p $QTLS_DIR
+
 #build driver
 [ ! -f "${QTLS_DIR}/QAT/quickassist/qat/drivers/crypto/qat/qat_c62x/qat_c62x.ko" ] && ${QTLS_SCRIPTS}/driver_build.sh
 #establish groups for access if not done already

@@ -10,11 +10,11 @@ if [ ! -d "$QTLS_DIR/asynch_mode_nginx" ]; then
 	wget http://nginx.org/download/nginx-1.20.1.tar.gz
 	tar -xvzf nginx-1.20.1.tar.gz
 	diff -Naru -x .git nginx-1.20.1 asynch_mode_nginx > async_mode_nginx_1.20.1.patch
-	patch -p0 < async_mode_nginx_1.20.1.patch
+	patch -R -p0 < async_mode_nginx_1.20.1.patch
 fi
 
 ./configure \
---prefix=$NGINX_INSTALL_DIR \
+--prefix=$QTLS_NGINX \
 --without-http_rewrite_module \
 --with-http_ssl_module \
 --add-dynamic-module=modules/nginx_qat_module/ \
@@ -24,7 +24,7 @@ fi
 make -j 35
 sudo make install -j 35
 
-cd $NGINX_INSTALL_DIR
+cd $QTLS_NGINX
 sudo cp -r $ROOT_DIR/async_files/* ./html
 sudo cp -r $ROOT_DIR/async_certs/* ./conf
 sudo cp -r $ROOT_DIR/async_nginx_conf/* ./conf
