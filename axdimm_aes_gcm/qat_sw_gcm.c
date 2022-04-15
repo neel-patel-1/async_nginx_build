@@ -897,6 +897,9 @@ int aes_gcm_tls_cipher(EVP_CIPHER_CTX*      ctx,
     struct gcm_key_data* key_data_ptr = NULL;
     struct gcm_context_data* gcm_ctx_ptr = NULL;
 
+	/* axdimm buffer */
+	char * ax_buff = (char *)malloc(sizeof(char) * len);
+
     DEBUG("enc = %d - ctx = %p, out = %p, in = %p, len = %zu\n", enc, (void*)ctx, (void*)out,
           (void*)in, len);
 
@@ -947,8 +950,12 @@ int aes_gcm_tls_cipher(EVP_CIPHER_CTX*      ctx,
 
 				   */
 		/*FLUSH HERE*/
-		DEBUG("ENCRYPT FLUSH\n");
-		_mm_clflush( (char *)out );
+		//DEBUG("ENCRYPT FLUSH\n");
+		//_mm_clflush( (char *)out );
+
+		/*memcpy here */
+		DEBUG("DECRYPT MEMCPY\n");
+		memcpy(ax_buff, in, len);
 
         /* Finalize to get the GCM Tag */
 	    /*Don't get GCM Tag*/
@@ -964,9 +971,12 @@ int aes_gcm_tls_cipher(EVP_CIPHER_CTX*      ctx,
                                    gcm_ctx_ptr, out, in, message_len);
 				   */
 		/*FLUSH HERE*/
-		DEBUG("DECRYPT FLUSH\n");
-		_mm_clflush( (char *)out );
+		//DEBUG("DECRYPT FLUSH\n");
+		//_mm_clflush( (char *)out );
 		
+		/*memcpy here */
+		DEBUG("DECRYPT MEMCPY\n");
+		memcpy(in, ax_buff, len);
 
         DUMPL("Payload Dump After - Decrypt Update",
              (const unsigned char*)orig_payload_loc, len);

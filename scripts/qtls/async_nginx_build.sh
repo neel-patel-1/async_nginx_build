@@ -1,7 +1,9 @@
 #!/bin/bash
 export ROOT_DIR=/home/n869p538/async_nginx_build
-
 source $ROOT_DIR/scripts/async_libsrcs.source
+
+cd $QTLS_DIR
+git clone https://github.com/intel/asynch_mode_nginx.git
 cd $QTLS_DIR/asynch_mode_nginx
 
 ./configure \
