@@ -50,6 +50,7 @@ if [ ! -f "${AXDIMM_ENGINES}/qatengine.so" ]; then
 	--with-openssl_dir=${AXDIMM_DIR}/openssl \
 	--disable-qat_hw \
 	--enable-qat_debug #keep debug for now to verify our sw changes
+	cp -f ${ROOT_DIR}/axdimm_aes_gcm/qat_sw_gcm.c .
 	PERL5LIB=$AXDIMM_DIR/openssl make -j
 	sudo PERL5LIB=$AXDIMM_DIR/openssl make install
 fi
