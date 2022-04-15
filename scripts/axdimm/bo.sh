@@ -2,68 +2,67 @@
 export ROOT_DIR=/home/n869p538/async_nginx_build
 source $ROOT_DIR/scripts/async_libsrcs.source
 
-[ ! -d "$AXDIMM_DIR" ] && mkdir -p $AXDIMM_DIR
+#sudo rm -rf ${AXDIMM_DIR}
+#mkdir -p ${AXDIMM_DIR}
+[ ! -d "${AXDIMM_DIR}" ] && mkdir -p ${AXDIMM_DIR}
 
-#openssl
-cd ${AXDIMM_DIR}
-wget https://www.openssl.org/source/openssl-1.1.1k.tar.gz
-tar xf openssl-1.1.1k.tar.gz
-cd openssl-1.1.1k
-./config --prefix=${AXDIMM_DIR}/openssl/1.1.1k --openssldir=${AXDIMM_DIR}/openssl/1.1.1k
-make -j
-sudo make install -j
-export PATH=${AXDIMM_DIR}/openssl/1.1.1k/bin:$PATH
-export LD_LIBRARY_PATH=${AXDIMM_DIR}/openssl/1.1.1k/lib
-cd ${AXDIMM_DIR}
-openssl version -v -e > build_log.txt
+if [ ! -f "${AXDIMM_DIR}/openssl/lib/libcrypto.so.1.1" ]; then
+	cd ${AXDIMM_DIR}
+	git clone --depth 1 --branch OpenSSL_1_1_1d https://github.com/openssl/openssl.git
+	cd openssl
+	./Configure --prefix=$AXDIMM_DIR/openssl --openssldir=$AXDIMM_DIR/openssl/config_certs_keys linux-x86_64 
+	make -j 40
+	sudo make install -j40
+fi
 
-#ipp-crypto
-git clone https://github.com/intel/ipp-crypto.git
-cd ipp-crypto
-git checkout ippcp_2020u3
-export OPENSSL_ROOT_DIR=${AXDIMM_DIR}/openssl/1.1.1k
-cd sources/ippcp/crypto_mb
-cmake . -Bbuild -DCMAKE_INSTALL_PREFIX=${AXDIMM_DIR}/crypto_mb/2020u3
-cd build
-make -j
-sudo make install
-export LD_LIBRARY_PATH=${AXDIMM_DIR}/openssl/1.1.1k/lib:${AXDIMM_DIR}/crypto_mb/2020u3/lib
-cd ${AXDIMM_DIR}
+if [ ! -f "${AXDIMM_DIR}/crypto_mb/2020u3/lib/intel64/libcrypto_mb.so" ]; then
+	cd ${AXDIMM_DIR}
+	git clone https://github.com/intel/ipp-crypto.git
+	cd ipp-crypto
+	git checkout ipp-crypto_2021_5
+	cmake . -Bbuild -DCMAKE_INSTALL_PREFIX=$AXDIMM_DIR/crypto_mb/2020u3 -DARCH=intel64
+	cd build
+	make -j
+	sudo make install -j
+fi
 
-#ipsec mb
-git clone https://github.com/intel/intel-ipsec-mb.git
-cd intel-ipsec-mb
-git checkout v0.55
-make -j SAFE_DATA=y SAFE_PARAM=y SAFE_LOOKUP=y
-sudo make install NOLDCONFIG=y PREFIX=${AXDIMM_DIR}/ipsec-mb/0.55
-export LD_LIBRARY_PATH=${AXDIMM_DIR}/openssl/1.1.1k/lib:${AXDIMM_DIR}/crypto_mb/2020u3/lib:${AXDIMM_DIR}/ipsec-mb/0.55/lib
-cd ${AXDIMM_DIR}
+if [ ! -f "${AXDIMM_DIR}/lib/libIPSec_MB.so" ]; then
+	cd ${AXDIMM_DIR}
+	git clone https://github.com/intel/intel-ipsec-mb.git
+	cd intel-ipsec-mb
+	git checkout v0.55
+	make -j SAFE_DATA=y SAFE_PARAM=y SAFE_LOOKUP=y # unknown types
+	sudo make install NOLDCONFIG=y PREFIX=$AXDIMM_DIR
+fi
 
-# qatengine
-git clone https://github.com/intel/QAT_Engine.git
-cd QAT_Engine
-git checkout v0.6.5
-cp ${ROOT_DIR}/axdimm_aes_gcm/qat_sw_gcm.c .
-./autogen.sh
-LDFLAGS="-L${AXDIMM_DIR}/ipsec-mb/0.55/lib -L${AXDIMM_DIR}/crypto_mb/2020u3/lib" CPPFLAGS="-I${AXDIMM_DIR}/ipsec-mb/0.55/include -I${AXDIMM_DIR}/crypto_mb/2020u3/include" ./configure --prefix=${AXDIMM_DIR}/openssl/1.1.1k --with-openssl_install_dir=${AXDIMM_DIR}/openssl/1.1.1k --with-openssl_dir=${AXDIMM_DIR}/openssl-1.1.1k --enable-qat_sw --disable-qat_hw
-PERL5LIB=${AXDIMM_DIR}/openssl-1.1.1k make -j
-sudo PERL5LIB=${AXDIMM_DIR}/openssl-1.1.1k make install
-cd ${AXDIMM_DIR}
+if [ ! -f "${AXDIMM_ENGINES}/qatengine.so" ]; then
+	cd ${AXDIMM_DIR}
+	git clone https://github.com/intel/QAT_Engine.git
+	cd QAT_Engine
+	./autogen.sh
+	#only link against Multi-Buffer
+	LDFLAGS="-L$AXDIMM_DIR/intel-ipsec-mb/lib " \
+	CPPFLAGS="-I$AXDIMM_DIR/intel-ipsec-mb/lib/include \
+	-I$AXDIMM_DIR/crypto_mb/2020u3/include/crypto_mb \
+	-I$AXDIMM_DIR/crypto_mb/2020u3/include" ./configure \
+	--enable-qat_sw \
+	--with-openssl_install_dir=${AXDIMM_DIR}/openssl \
+	--with-openssl_dir=${AXDIMM_DIR}/openssl \
+	--disable-qat_hw \
+	--enable-qat_debug #keep debug for now to verify our sw changes
+	PERL5LIB=$AXDIMM_DIR/openssl make -j
+	sudo PERL5LIB=$AXDIMM_DIR/openssl make install
+fi
 
-sudo chmod -R o+rw ${AXDIMM_DIR}/QAT_Engine ${AXDIMM_DIR}/ipsec-mb ${AXDIMM_DIR}/crypto_mb
+if [ ! -f "${AXDIMM_ENGINES}/qatengine.so" ]; then
+	cd ${AXDIMM_DIR}
+	wget http://nginx.org/download/nginx-1.20.1.tar.gz
+	tar -xvzf nginx-1.20.1.tar.gz
+	cd nginx-1.20.1/
+	./configure --with-ld-opt="-L ${AXDIMM_DIR}/openssl" --with-http_ssl_module --with-openssl=${AXDIMM_DIR}/openssl --prefix=${AXDIMM_DIR}/nginx_build
+	make -j 
+	sudo make install -j
+fi
 
-[ ! -f "${AXDIMM_DIR}/openssl/1.1.1k/lib/engines-1.1/qatengine.so" ] && echo "QATENGINE BUILD FAILED" && exit
-
-#nginx server
-wget http://nginx.org/download/nginx-1.20.1.tar.gz
-tar -xvzf nginx-1.20.1.tar.gz
-cd nginx-1.20.1
-./configure --with-ld-opt="-L ${AXDIMM_DIR}/openssl-1.1.1k" --with-http_ssl_module --with-openssl=${AXDIMM_DIR}/openssl-1.1.1k --prefix=${AXDIMM_DIR}/offload_nginx
-make -j
-sudo make install -j 35
-sudo cp -r ${ROOT_DIR}/axdimm_nginx_confs/* ${AXDIMM_DIR}/offload_nginx/conf
+sudo cp -r ${ROOT_DIR}/axdimm_nginx_confs/* ${AXDIMM_DIR}/nginx_build/conf
 ${AXDIMM_SCRIPTS}/gen_http_files.sh
-[ ! -f "${AXDIMM_NGINX}/html/file_256K.txt" ] && ${AXDIMM_SCRIPTS}/gen_http_files.sh
-[ ! -f "${AXDIMM_DIR}/offload_nginx/sbin/nginx" ] && echo "NGINX BUILD FAILED" && exit
-
-exit

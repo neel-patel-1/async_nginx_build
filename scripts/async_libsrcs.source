@@ -17,9 +17,9 @@ export OPENSSL_INSTALL=$QTLS_DIR/openssl
 export OFFLOAD_DIR=$ROOT_DIR/axdimm
 export OFFLOAD_NGINX_CONFS=$OFFLOAD_DIR/default_nginx_conf
 export AXDIMM_DIR=$ROOT_DIR/axdimm
-export AXDIMM_NGINX=$AXDIMM_DIR/offload_nginx
-export AXDIMM_OSSL_LIBS=$AXDIMM_DIR/openssl/1.1.1k/lib
-export AXDIMM_ENGINES=$AXDIMM_DIR/openssl/1.1.1k/lib/engines-1.1
+export AXDIMM_NGINX=$AXDIMM_DIR/nginx_build
+export AXDIMM_OSSL_LIBS=$AXDIMM_DIR/openssl/lib
+export AXDIMM_ENGINES=$AXDIMM_DIR/openssl/lib/engines-1.1
 export AXDIMM_SCRIPTS=$ROOT_DIR/scripts/axdimm
 
 
