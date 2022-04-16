@@ -11,6 +11,13 @@ if [ ! -f "${AXDIMM_DIR}/openssl/lib/libcrypto.so.1.1" ]; then
 	./Configure --prefix=$AXDIMM_DIR/openssl --openssldir=$AXDIMM_DIR/openssl/config_certs_keys linux-x86_64 
 	make -j 40
 	sudo make install -j40
+else
+	cd ${AXDIMM_DIR}/openssl
+	sudo make clean -j
+	./Configure --prefix=$AXDIMM_DIR/openssl --openssldir=$AXDIMM_DIR/openssl/config_certs_keys linux-x86_64 
+	make -j 40
+	sudo make install -j40
+	
 fi
 
 if [ ! -f "${AXDIMM_DIR}/crypto_mb/2020u3/lib/intel64/libcrypto_mb.so" ]; then
@@ -24,8 +31,8 @@ if [ ! -f "${AXDIMM_DIR}/crypto_mb/2020u3/lib/intel64/libcrypto_mb.so" ]; then
 	sudo make install -j
 fi
 
+cd ${AXDIMM_DIR}
 if [ ! -f "${AXDIMM_DIR}/lib/libIPSec_MB.so" ]; then
-	cd ${AXDIMM_DIR}
 	git clone https://github.com/intel/intel-ipsec-mb.git
 	cd intel-ipsec-mb
 	git checkout v0.55
@@ -33,30 +40,28 @@ if [ ! -f "${AXDIMM_DIR}/lib/libIPSec_MB.so" ]; then
 	sudo make install NOLDCONFIG=y PREFIX=$AXDIMM_DIR
 fi
 
-if [ ! -f "${AXDIMM_ENGINES}/qatengine.so" ]; then
-	cd ${AXDIMM_DIR}
-	git clone git@gitlab.ittc.ku.edu:n869p538/qat_cache_flush.git
-	cd qat_cache_flush
-	./autogen.sh
-	#only link against Multi-Buffer
-	LDFLAGS="-L$AXDIMM_DIR/intel-ipsec-mb/lib " \
-	CPPFLAGS="-I$AXDIMM_DIR/intel-ipsec-mb/lib/include \
-	-I$AXDIMM_DIR/crypto_mb/2020u3/include/crypto_mb \
-	-I$AXDIMM_DIR/crypto_mb/2020u3/include" ./configure \
-	--enable-qat_sw \
-	--with-openssl_install_dir=${AXDIMM_DIR}/openssl \
-	--with-openssl_dir=${AXDIMM_DIR}/openssl \
-	--disable-qat_hw \
-	--enable-qat_debug #keep debug for now to verify our sw changes
-	cp -f ${ROOT_DIR}/axdimm_aes_gcm/qat_sw_gcm.c .
-	PERL5LIB=$AXDIMM_DIR/openssl make -j
-	sudo PERL5LIB=$AXDIMM_DIR/openssl make install
-fi
+#build qatengine regardless
+cd ${AXDIMM_DIR}
+[ ! -d "qat_cache_flush" ] && git clone git@gitlab.ittc.ku.edu:n869p538/qat_cache_flush.git
+cd qat_cache_flush
+make clean -j
+./autogen.sh
+#only link against Multi-Buffer
+LDFLAGS="-L$AXDIMM_DIR/intel-ipsec-mb/lib " \
+CPPFLAGS="-I$AXDIMM_DIR/intel-ipsec-mb/lib/include \
+-I$AXDIMM_DIR/crypto_mb/2020u3/include/crypto_mb \
+-I$AXDIMM_DIR/crypto_mb/2020u3/include" ./configure \
+--enable-qat_sw \
+--with-openssl_install_dir=${AXDIMM_DIR}/openssl \
+--with-openssl_dir=${AXDIMM_DIR}/openssl \
+--disable-qat_hw
+PERL5LIB=$AXDIMM_DIR/openssl make -j
+sudo PERL5LIB=$AXDIMM_DIR/openssl make install
 
-if [ -f "${AXDIMM_ENGINES}/qatengine.so" ] && [ ! -f "${AXDIMM_DIR}/nginx_build/conf/nginx.conf" ]; then
+if [ ! -d "${AXDIMM_DIR}/nginx_build" ]; then
 	cd ${AXDIMM_DIR}
-	wget http://nginx.org/download/nginx-1.20.1.tar.gz
-	tar -xvzf nginx-1.20.1.tar.gz
+	[ ! -f "nginx-1.20.1.tar.gz" ] && wget http://nginx.org/download/nginx-1.20.1.tar.gz
+	[ ! -d "nginx-1.20.1" ] && tar -xvzf nginx-1.20.1.tar.gz
 	cd nginx-1.20.1/
 	./configure --with-ld-opt="-L ${AXDIMM_DIR}/openssl" --with-http_ssl_module --with-openssl=${AXDIMM_DIR}/openssl --prefix=${AXDIMM_DIR}/nginx_build
 	make -j 
