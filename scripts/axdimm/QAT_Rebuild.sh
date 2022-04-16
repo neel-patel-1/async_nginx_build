@@ -2,13 +2,13 @@
 export ROOT_DIR=/home/n869p538/async_nginx_build
 source $ROOT_DIR/scripts/async_libsrcs.source
 
-if [ ! -D "${AXDIMM_DIR}/QAT_Engine" ]; then
+if [ -d "${AXDIMM_DIR}/QAT_Engine" ]; then
 	cd ${AXDIMM_DIR}
 	cd QAT_Engine
 	./autogen.sh
 	#only link against Multi-Buffer
-	LDFLAGS="-L$AXDIMM_DIR/intel-ipsec-mb/lib " \
-	CPPFLAGS="-I$AXDIMM_DIR/intel-ipsec-mb/lib/include \
+	LDFLAGS="-L/opt/intel-ipsec-mb/lib " \
+	CPPFLAGS="-I/opt/intel-ipsec-mb/lib/include \
 	-I$AXDIMM_DIR/crypto_mb/2020u3/include/crypto_mb \
 	-I$AXDIMM_DIR/crypto_mb/2020u3/include" ./configure \
 	--enable-qat_sw \

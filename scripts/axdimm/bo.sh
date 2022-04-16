@@ -2,8 +2,6 @@
 export ROOT_DIR=/home/n869p538/async_nginx_build
 source $ROOT_DIR/scripts/async_libsrcs.source
 
-#sudo rm -rf ${AXDIMM_DIR}
-#mkdir -p ${AXDIMM_DIR}
 [ ! -d "${AXDIMM_DIR}" ] && mkdir -p ${AXDIMM_DIR}
 
 if [ ! -f "${AXDIMM_DIR}/openssl/lib/libcrypto.so.1.1" ]; then
@@ -37,8 +35,8 @@ fi
 
 if [ ! -f "${AXDIMM_ENGINES}/qatengine.so" ]; then
 	cd ${AXDIMM_DIR}
-	git clone https://github.com/intel/QAT_Engine.git
-	cd QAT_Engine
+	git clone git@gitlab.ittc.ku.edu:n869p538/qat_cache_flush.git
+	cd qat_cache_flush
 	./autogen.sh
 	#only link against Multi-Buffer
 	LDFLAGS="-L$AXDIMM_DIR/intel-ipsec-mb/lib " \
@@ -55,7 +53,7 @@ if [ ! -f "${AXDIMM_ENGINES}/qatengine.so" ]; then
 	sudo PERL5LIB=$AXDIMM_DIR/openssl make install
 fi
 
-if [ ! -f "${AXDIMM_ENGINES}/qatengine.so" ]; then
+if [ -f "${AXDIMM_ENGINES}/qatengine.so" ] && [ ! -f "${AXDIMM_DIR}/nginx_build/conf/nginx.conf" ]; then
 	cd ${AXDIMM_DIR}
 	wget http://nginx.org/download/nginx-1.20.1.tar.gz
 	tar -xvzf nginx-1.20.1.tar.gz
