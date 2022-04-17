@@ -30,3 +30,5 @@ export DEFAULT_NGINX_BIN=$DEFAULT_NGINX/sbin
 export DEFAULT_OSSL=$DEFAULT_DIR/openssl/1.1.1k
 export DEFAULT_SCRIPTS=$ROOT_DIR/scripts/default
 
+#spec
+export SPEC_DIR=${ROOT_DIR}/cpu_2017

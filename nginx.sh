@@ -37,7 +37,7 @@ if [ "$1" = "stop" ]; then
 	ps aux | grep -e 'nginx:' | awk '{print $2}' | xargs sudo kill -s 2
 elif [ "$1" = "http" ]; then
 	${ROOT_DIR}/nginxs/http_conf.sh
-elif [ "$1" = "http_sendfile" ]; then
+elif [ "$1" = "httpsendfile" ]; then
 	${ROOT_DIR}/nginxs/http_sendfileconf.sh
 elif [ "$1" = "https" ]; then
 	${ROOT_DIR}/nginxs/tls_conf.sh
