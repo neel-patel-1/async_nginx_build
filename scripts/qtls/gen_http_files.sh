@@ -9,7 +9,7 @@ source $ROOT_DIR/scripts/async_libsrcs.source
 
 cd $ROOT_DIR/html_files
 
-declare -a sizes=("256K" "4K" "16K" "64K" "128K")
+declare -a sizes=("256K" "4K" "16K" "64K" "128K" "1M" "2M" )
 
 for size in "${sizes[@]}";
 do

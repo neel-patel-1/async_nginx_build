@@ -12,24 +12,12 @@ if [ "$1" = "-s" ]; then
 else
 	cores=$2
 fi
-
-total_cores=19
-newMaskp1=""
-newMaskp2=""
-for i in `seq 1 $(($total_cores - $cores))`; do
-    newMaskp1+="0"
-    newMaskp2+="0"
-done
-for i in `seq 1 $((cores))`; do
-    newMaskp1+="1"
-    newMaskp2+="1"
-done
-newMaskp1+="0"
-newMaskp2+="0"
 export cores
-export newMaskp1
-export newMaskp2
 
+#get core mask
+masks=$(${ROOT_DIR}/nginxs/genMasks.sh)
+echo "$masks"
+export masks
 	
 
 ps aux | grep -e 'nginx:' | awk '{print $2}' | xargs sudo kill -s 2

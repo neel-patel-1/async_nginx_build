@@ -1,7 +1,10 @@
 #ROOT DIR
-export ROOT_DIR=/home/n869p538/async_nginx_build
+#globals
 #netdev
-export NETDEV=ens4f0
+export ROOT_DIR=/home/n869p538/async_nginx_build
+export NETDEV=ens4f1
+export logical=y
+export num_phys=20
 
 #QTLS 
 export QTLS_SCRIPTS=$ROOT_DIR/scripts/qtls
@@ -32,3 +35,6 @@ export DEFAULT_SCRIPTS=$ROOT_DIR/scripts/default
 
 #spec
 export SPEC_DIR=${ROOT_DIR}/cpu_2017
+
+#ocperf
+export OCPERF=${ROOT_DIR}/pmu-tools/ocperf
