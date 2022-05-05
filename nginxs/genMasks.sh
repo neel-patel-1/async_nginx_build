@@ -41,4 +41,4 @@ done
 
 mskStmt="worker_cpu_affinity ${masks[*]} ;"
 
-echo 
+echo $mskStmt

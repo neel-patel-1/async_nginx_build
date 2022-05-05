@@ -12,11 +12,13 @@ if [ "$1" = "-s" ]; then
 else
 	cores=$2
 fi
+
+[ -z "$cores" ] && cores=10
+
 export cores
 
 #get core mask
 masks=$(${ROOT_DIR}/nginxs/genMasks.sh)
-echo "$masks"
 export masks
 	
 
