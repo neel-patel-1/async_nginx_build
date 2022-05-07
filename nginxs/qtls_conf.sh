@@ -2,7 +2,7 @@
 >&2 echo "[info] qtls server ..."
 sudo ${QTLS_NGINX_BIN}/nginx -t #test qtls config
 
-sudo cp -f ${ROOT_DIR}/async_nginx_conf/nginx.conf ${QTLS_NGINX}/conf/nginx.conf
+sudo cp -f ${ROOT_DIR}/async_nginx_conf/nginx.conf_benchmark_all_ciphers_w_keepalive ${QTLS_NGINX}/conf/nginx.conf
 
 if [ -z "$( grep worker_processes ${QTLS_NGINX}/conf/nginx.conf )" ]; then
 	sudo sed -i "/number of cores/a worker_processes ${cores};" ${QTLS_NGINX}/conf/nginx.conf

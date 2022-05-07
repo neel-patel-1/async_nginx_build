@@ -3,19 +3,19 @@
 all: qtls axdimm default spec ocperf
 
 qtls:
-	./configure && ./scripts/qtls/build_qtls.sh
+	./scripts/configure.sh && ./scripts/qtls/build_qtls.sh
 
 axdimm:
-	./configure && ./scripts/axdimm/bo.sh
+	./scripts/configure.sh && ./scripts/axdimm/bo.sh
 
 default:
-	./configure && ./scripts/default/build_default.sh
+	./scripts/configure.sh && ./scripts/default/build_default.sh
 
 spec:
-	./configure && ./scripts/spec/build_spec.sh
+	./scripts/configure.sh && ./scripts/spec/build_spec.sh
 
 ocperf:
-	./configure && ./scripts/ocperf/build_ocperf.sh
+	./scripts/configure.sh && ./scripts/ocperf/build_ocperf.sh
 
 qtls_server:
 	./nginx.sh qtls
