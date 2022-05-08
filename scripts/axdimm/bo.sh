@@ -68,5 +68,12 @@ if [ ! -d "${AXDIMM_DIR}/nginx_build" ]; then
 	sudo make install -j
 fi
 
+#load mmappable scull char dev for offload emulation
+[ ! -f "${CHAR_MOD}"  ] && make -C ${CHAR_DIR}
+if [ -z "$(lsmod | grep scullc)" ]; then
+	cd ${CHAR_DIR}
+	sudo ${CHAR_DIR}/scullc_load
+fi
+
 sudo cp -r ${ROOT_DIR}/axdimm_nginx_confs/* ${AXDIMM_DIR}/nginx_build/conf
 ${AXDIMM_SCRIPTS}/gen_http_files.sh
