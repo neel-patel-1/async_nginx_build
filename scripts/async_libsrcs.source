@@ -4,7 +4,9 @@
 export ROOT_DIR=/home/n869p538/async_nginx_build
 export NETDEV=ens4f1
 export logical=y
+export default_cores=10
 export num_phys=20
+export  mellanox_thresh=55 #mellanox link temp thresh
 
 #QTLS 
 export QTLS_SCRIPTS=$ROOT_DIR/scripts/qtls
@@ -15,6 +17,9 @@ export QTLS_NGINX_BIN=$QTLS_NGINX/sbin
 export OPENSSL_LIB=$QTLS_DIR/openssl
 export OPENSSL_LIBS=$QTLS_DIR/openssl/lib
 export OPENSSL_INSTALL=$QTLS_DIR/openssl
+export qat_thresh=55
+export qat_name="pch_lewisburg-virtual-0" #qat device name in sensors command
+export mel_devs=( "/dev/mst/mt41682_pciconf0" "/dev/mst/mt41682_pciconf0.1" ) #mellanox dev files
 
 #AXDIMM 
 export OFFLOAD_DIR=$ROOT_DIR/axdimm
