@@ -3,8 +3,8 @@
 export ROOT_DIR=/home/n869p538/async_nginx_build
 source $ROOT_DIR/scripts/async_libsrcs.source
 
-[ -z "$qat_thresh" ] && qat_thresh=50
-[ -z "$mellanox_thresh" ] && mellanox_thresh=50
+[ -z "$qat_thresh" ] && qat_thresh=55
+[ -z "$mellanox_thresh" ] && mellanox_thresh=55
 [ -z "$qat_name" ] && qat_name="pch_lewisburg-virtual-0"
 [ -z "$mel_dev" ] && mel_devs=( "/dev/mst/mt41682_pciconf0" "/dev/mst/mt41682_pciconf0.1" )
 
@@ -17,6 +17,7 @@ while true; do
 		echo "mellanox dev: $mtemp"
 		if [ "$mtemp" -gt "$mellanox_thresh" ]; then
 			echo "maxmimum mellanox temp exceeded"
+			sudo shutdown now
 		fi
 	done
 
@@ -25,6 +26,7 @@ while true; do
 
 	if [ "$qat_temp" -gt "$qat_thresh" ]  ; then
 			echo "maxmimum qat device temp exceeded"
+			sudo shutdown now
 	fi
 	sleep 2
 

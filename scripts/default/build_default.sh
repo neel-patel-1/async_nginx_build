@@ -23,7 +23,7 @@ if [ ! -d "$DEFAULT_NGINX_BIN" ]; then
 	wget http://nginx.org/download/nginx-1.20.1.tar.gz
 	tar -xvzf nginx-1.20.1.tar.gz
 	cd nginx-1.20.1
-	./configure --with-stream_ssl_module --with-ld-opt="-L ${DEFAULT_DIR}/openssl-1.1.1k" --with-http_ssl_module --with-openssl=${DEFAULT_DIR}/openssl-1.1.1k --prefix=${DEFAULT_DIR}/default_nginx
+	./configure --with-stream_ssl_module --with-http_random_index_module --with-ld-opt="-L ${DEFAULT_DIR}/openssl-1.1.1k" --with-http_ssl_module --with-openssl=${DEFAULT_DIR}/openssl-1.1.1k --prefix=${DEFAULT_DIR}/default_nginx
 	make -j
 	sudo make install -j 35
 fi	
