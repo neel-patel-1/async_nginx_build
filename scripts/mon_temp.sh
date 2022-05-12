@@ -21,6 +21,17 @@ while true; do
 		fi
 	done
 
+
+	for i in /dev/mst/*; do
+		mtemp=$(sudo mget_temp -d $i)
+		echo "mellanox dev: $mtemp"
+		if [ "$mtemp" -gt "$mellanox_thresh" ]; then
+			echo "maxmimum mellanox temp exceeded"
+			sudo shutdown now
+		fi
+	done
+	
+
 	qat_temp=$( sensors | sed -n "/$qat_name/{N;N;p}" | tail -n 1 | grep -Eo '[+|-][0-9]*' | grep -Eo '[0-9]*' )
 	echo "qat temp: $qat_temp"
 
