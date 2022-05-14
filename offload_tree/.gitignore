@@ -9,7 +9,7 @@ Session.vim
 *~
 *.o
 core
-*.ko
+#*.ko
 *.mod.c
 Module.symvers
 modules.order
