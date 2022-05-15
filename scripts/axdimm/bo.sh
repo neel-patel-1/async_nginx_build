@@ -63,7 +63,7 @@ if [ ! -d "${AXDIMM_DIR}/nginx_build" ]; then
 	[ ! -f "nginx-1.20.1.tar.gz" ] && wget http://nginx.org/download/nginx-1.20.1.tar.gz
 	[ ! -d "nginx-1.20.1" ] && tar -xvzf nginx-1.20.1.tar.gz
 	cd nginx-1.20.1/
-	./configure --with-ld-opt="-L ${AXDIMM_DIR}/openssl" --with-http_ssl_module --with-openssl=${AXDIMM_DIR}/openssl --prefix=${AXDIMM_DIR}/nginx_build
+	./configure --with-ld-opt="-L ${AXDIMM_DIR}/openssl" --with-http_ssl_module --with-http_random_index_module --with-openssl=${AXDIMM_DIR}/openssl --prefix=${AXDIMM_DIR}/nginx_build
 	make -j 
 	sudo make install -j
 fi

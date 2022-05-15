@@ -8,6 +8,7 @@ cd $QTLS_DIR/asynch_mode_nginx
 
 ./configure \
 --prefix=$QTLS_NGINX \
+--with-http_random_index_module \
 --without-http_rewrite_module \
 --with-http_ssl_module \
 --add-dynamic-module=modules/nginx_qat_module/ \
