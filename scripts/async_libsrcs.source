@@ -29,7 +29,7 @@ export AXDIMM_NGINX=$AXDIMM_DIR/nginx_build
 export AXDIMM_OSSL_LIBS=$AXDIMM_DIR/openssl/lib
 export AXDIMM_ENGINES=$AXDIMM_DIR/openssl/lib/engines-1.1
 export AXDIMM_SCRIPTS=$ROOT_DIR/scripts/axdimm
-export CHAR_DIR=${ROOT_DIR}/offload_tree/offload_module
+export CHAR_DIR=${ROOT_DIR}/ldd3/scullc
 export CHAR_MOD=${CHAR_DIR}/scullc.ko
 
 
