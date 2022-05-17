@@ -6,7 +6,7 @@ export NETDEV=ens4f1
 export logical=y
 export default_cores=10
 export num_phys=20
-export  mellanox_thresh=50 #mellanox link temp thresh
+#export  mellanox_thresh=50 #mellanox link temp thresh
 
 #QTLS 
 export QTLS_SCRIPTS=$ROOT_DIR/scripts/qtls
@@ -17,7 +17,7 @@ export QTLS_NGINX_BIN=$QTLS_NGINX/sbin
 export OPENSSL_LIB=$QTLS_DIR/openssl
 export OPENSSL_LIBS=$QTLS_DIR/openssl/lib
 export OPENSSL_INSTALL=$QTLS_DIR/openssl
-export qat_thresh=50
+#export qat_thresh=50
 export qat_name="pch_lewisburg-virtual-0" #qat device name in sensors command
 export mel_devs=( "/dev/mst/mt41682_pciconf0" "/dev/mst/mt41682_pciconf0.1" ) #mellanox dev files
 
@@ -42,6 +42,7 @@ export DEFAULT_SCRIPTS=$ROOT_DIR/scripts/default
 
 #spec
 export SPEC_DIR=${ROOT_DIR}/cpu_2017
+export remotespec=n869p538@pollux.ittc.ku.edu:/home/n869p538/cpu2017-1_0_5.iso
 
 #ocperf
 export OCPERF=${ROOT_DIR}/pmu-tools/ocperf

@@ -1,1 +1,0 @@
-cmd_/home/n869p538/async_nginx_build/ldd3/scullc/scullc.o := ld  -m elf_x86_64    -r -o /home/n869p538/async_nginx_build/ldd3/scullc/scullc.o /home/n869p538/async_nginx_build/ldd3/scullc/main.o /home/n869p538/async_nginx_build/ldd3/scullc/scull-shared/scull-async.o

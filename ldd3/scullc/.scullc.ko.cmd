@@ -1,1 +1,0 @@
-cmd_/home/n869p538/async_nginx_build/ldd3/scullc/scullc.ko := ld -r  -m elf_x86_64  --build-id=sha1  -T scripts/module.lds -o /home/n869p538/async_nginx_build/ldd3/scullc/scullc.ko /home/n869p538/async_nginx_build/ldd3/scullc/scullc.o /home/n869p538/async_nginx_build/ldd3/scullc/scullc.mod.o;  true
