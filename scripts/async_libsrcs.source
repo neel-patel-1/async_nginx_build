@@ -31,7 +31,7 @@ export AXDIMM_ENGINES=$AXDIMM_DIR/openssl/lib/engines-1.1
 export AXDIMM_SCRIPTS=$ROOT_DIR/scripts/axdimm
 export CHAR_DIR=${ROOT_DIR}/ldd3/scullc
 export CHAR_MOD=${CHAR_DIR}/scullc.ko
-export qat_mod=n #rebuild qat_engine for testing
+export qat_mod=y #rebuild qat_engine for testing
 
 
 #default NGINX locs
