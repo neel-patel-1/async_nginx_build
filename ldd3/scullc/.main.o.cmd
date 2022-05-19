@@ -944,6 +944,7 @@ deps_/home/n869p538/async_nginx_build/ldd3/scullc/main.o := \
   include/linux/vm_event_item.h \
     $(wildcard include/config/memory/balloon.h) \
     $(wildcard include/config/balloon/compaction.h) \
+  include/linux/io.h \
   /home/n869p538/async_nginx_build/ldd3/scullc/scull-shared/scull-async.h \
   /home/n869p538/async_nginx_build/ldd3/scullc/scullc.h \
   include/linux/cdev.h \
