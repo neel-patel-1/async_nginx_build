@@ -5,7 +5,7 @@ source $ROOT_DIR/scripts/async_libsrcs.source
 [ ! -d "${AXDIMM_DIR}" ] && mkdir -p ${AXDIMM_DIR}
 
 
-export AXDIMM_DEPS="cmake nasm"
+export AXDIMM_DEPS="cmake nasm zlib1g-dev autoconf libtool-bin"
 for i in $AXDIMM_DEPS; do
 	[ -z "$( dpkg -l | grep $i )" ] \
 	&& echo "missing package $i ... installing" \
@@ -32,7 +32,7 @@ if [ ! -f "${AXDIMM_DIR}/crypto_mb/2020u3/lib/intel64/libcrypto_mb.so" ]; then
 	git clone https://github.com/intel/ipp-crypto.git
 	cd ipp-crypto
 	git checkout ipp-crypto_2021_5
-	cmake . -Bbuild -DCMAKE_INSTALL_PREFIX=$AXDIMM_DIR/crypto_mb/2020u3 -DARCH=intel64
+	cmake . -Bbuild -DCMAKE_INSTALL_PREFIX=$AXDIMM_DIR/crypto_mb/2020u3 -DARCH=intel64 -DOPENSSL_ROOT_DIR=${AXDIMM_DIR}/openssl
 	cd build
 	make -j $(( `nproc` / 2 ))
 	sudo make install -j $(( `nproc` / 2 ))
@@ -53,7 +53,7 @@ if [ ! -d "qat_cache_flush" ];  then
 	git clone git@gitlab.ittc.ku.edu:n869p538/qat_cache_flush.git
 fi
 cd qat_cache_flush
-git pull origin main
+git reset --hard ac534533ff661ddde9e766c07d2b67468409ac13
 if [ ! -f "$AXDIMM_ENGINES/qatengine.so" ] || [ "$qat_mod" = "y" ]; then
 	sudo make clean -j $(( `nproc` / 2 ))
 	./autogen.sh
@@ -84,7 +84,7 @@ fi
 
 
 #load mmappable scull char dev for offload emulation
-[ ! -f "${CHAR_MOD}"  ] && make -C ${CHAR_DIR}
+make -C ${CHAR_DIR}
 if [ -z "$(lsmod | grep scullc)" ]; then
 	cd ${CHAR_DIR}
 	sudo ${CHAR_DIR}/scullc_load
