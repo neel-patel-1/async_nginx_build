@@ -12,6 +12,9 @@ default:
 	./scripts/configure.sh && ./scripts/default/build_default.sh
 
 spec:
+	./scripts/configure.sh && ./scripts/ktls/ktls_build.sh
+
+spec:
 	./scripts/configure.sh && ./scripts/spec/build_spec.sh
 
 ocperf:
@@ -31,3 +34,7 @@ http_server:
 
 https_server:
 	./nginx.sh https
+
+ktls_server:
+	./nginx.sh ktls
+

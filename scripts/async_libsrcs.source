@@ -45,5 +45,9 @@ export DEFAULT_SCRIPTS=$ROOT_DIR/scripts/default
 export SPEC_DIR=${ROOT_DIR}/cpu_2017
 export remotespec=n869p538@pollux.ittc.ku.edu:/home/n869p538/cpu2017-1_0_5.iso
 
+#ktls directory
+export KTLS_DIR=${ROOT_DIR}/ktls
+export KTLS_NGINX=${KTLS_DIR}/nginx_build
+
 #ocperf
 export OCPERF=${ROOT_DIR}/pmu-tools/ocperf

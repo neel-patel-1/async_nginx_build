@@ -35,6 +35,8 @@ elif [ "$1" = "axdimm" ]; then
 	${ROOT_DIR}/nginxs/tlso_conf.sh
 elif [ "$1" = "qtls" ]; then
 	${ROOT_DIR}/nginxs/qtls_conf.sh
+elif [ "$1" = "ktls" ]; then
+	${ROOT_DIR}/nginxs/ktls_conf.sh
 else
 	>&2 echo "UNKOWN OPERATION"
 fi

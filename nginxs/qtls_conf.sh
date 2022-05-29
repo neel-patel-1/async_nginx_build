@@ -4,6 +4,13 @@ sudo ${QTLS_NGINX_BIN}/nginx -t #test qtls config
 
 sudo cp -f ${ROOT_DIR}/async_nginx_conf/nginx.conf_benchmark_all_ciphers_w_keepalive ${QTLS_NGINX}/conf/nginx.conf
 
+#make sure qat_service is running
+if [ ! -z "$(sudo service qat_service status | grep Active | grep -Eo '\(dead\)')" ]; then
+	echo "qat service not started -- starting"
+	sudo service qat_service start
+	wait
+fi
+
 if [ -z "$( grep worker_processes ${QTLS_NGINX}/conf/nginx.conf )" ]; then
 	sudo sed -i "/number of cores/a worker_processes ${cores};" ${QTLS_NGINX}/conf/nginx.conf
 else
@@ -16,7 +23,23 @@ else
 	sudo sed -i -E "s/(worker_cpu_affinity) (.*)(;)/$masks/g" ${QTLS_NGINX}/conf/nginx.conf
 fi
 
+if [ ! -z "$(\
 sudo env \
 OPENSSL_ENGINES=$OPENSSL_LIBS/engines-1.1 \
 LD_LIBRARY_PATH=$OPENSSL_LIB \
-${QTLS_NGINX_BIN}/nginx #start qtls config
+${QTLS_NGINX_BIN}/nginx 2>&1 | grep -Eo '\[emerg\]')" ]; then  #start qtls config
+	echo "QTLS NGINX FAILED..."
+	echo "Checking for usdm_drv..."
+	[ -z "$(lsmod | grep usdm_drv)" ] && [ -f "${ICP_ROOT}/build/usdm_drv.ko" ] && sudo insmod ${ICP_ROOT}/build/usdm_drv.ko
+	if [ ! -z "$(\
+	sudo env \
+	OPENSSL_ENGINES=$OPENSSL_LIBS/engines-1.1 \
+	LD_LIBRARY_PATH=$OPENSSL_LIB \
+	${QTLS_NGINX_BIN}/nginx 2>&1 | grep -Eo '\[emerg\]')" ]; then
+		echo "Modprobe Failed..."
+		echo "Attempting fresh qtls install..."
+	fi
+fi
+
+
+

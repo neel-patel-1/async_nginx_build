@@ -29,5 +29,8 @@ ${QTLS_SCRIPTS}/cp_nginx_conf.sh
 #copy html files
 ${QTLS_SCRIPTS}/gen_http_files.sh
 
+#copy usdm_drv to /lib/modules/$(uname -r)
+sudo cp ${ICP_ROOT}/build/usdm_drv.ko /lib/modules/$(uname -r)
+
 #restart qat devices
 sudo service qat_service restart

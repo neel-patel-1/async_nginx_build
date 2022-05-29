@@ -53,7 +53,6 @@ if [ ! -d "qat_cache_flush" ];  then
 	git clone git@gitlab.ittc.ku.edu:n869p538/qat_cache_flush.git
 fi
 cd qat_cache_flush
-git reset --hard ac534533ff661ddde9e766c07d2b67468409ac13
 if [ ! -f "$AXDIMM_ENGINES/qatengine.so" ] || [ "$qat_mod" = "y" ]; then
 	sudo make clean -j $(( `nproc` / 2 ))
 	./autogen.sh
