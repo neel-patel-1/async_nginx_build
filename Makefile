@@ -1,24 +1,27 @@
-.PHONY: qtls axdimm all qtls_server axdimm_server ocperf default
+.PHONY: qtls axdimm all qtls_server axdimm_server ocperf default ktls configure
 
-all: qtls axdimm default spec ocperf
+all: configure qtls axdimm ktls default spec ocperf 
+
+configure: 
+	./scripts/configure.sh
 
 qtls:
-	./scripts/configure.sh && ./scripts/qtls/build_qtls.sh
+	./scripts/qtls/build_qtls.sh
 
 axdimm:
-	./scripts/configure.sh && ./scripts/axdimm/bo.sh
+	./scripts/axdimm/bo.sh
 
 default:
-	./scripts/configure.sh && ./scripts/default/build_default.sh
+	./scripts/default/build_default.sh
+
+ktls:
+	./scripts/ktls/ktls_build.sh
 
 spec:
-	./scripts/configure.sh && ./scripts/ktls/ktls_build.sh
-
-spec:
-	./scripts/configure.sh && ./scripts/spec/build_spec.sh
+	./scripts/spec/build_spec.sh
 
 ocperf:
-	./scripts/configure.sh && ./scripts/ocperf/build_ocperf.sh
+	./scripts/ocperf/build_ocperf.sh
 
 qtls_server:
 	./nginx.sh qtls
