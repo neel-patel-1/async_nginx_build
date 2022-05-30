@@ -5,8 +5,8 @@ source $ROOT_DIR/scripts/async_libsrcs.source
 [ -z "$(cat /boot/config-$(uname -r) | grep -e 'CONFIG_TLS=m' -e 'CONFIG_TLS=y' )" ] && echo "TLS not enabled in kernel..." && exit
 [ -z "$(lsmod | grep -e '\btls\b' )" ] && sudo modprobe tls
 
-#download openssl
 [ ! -d "${KTLS_DIR}" ] && mkdir -p ${KTLS_DIR}
+cd ${KTLS_DIR}
 
 #download openssl 3.0.0
 [ ! -f "${KTLS_DIR}/openssl-3.0.0.tar.gz" ] && cd ${KTLS_DIR} && wget https://www.openssl.org/source/openssl-3.0.0.tar.gz

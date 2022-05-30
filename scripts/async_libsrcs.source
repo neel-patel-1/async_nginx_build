@@ -36,9 +36,9 @@ export qat_mod=y #rebuild qat_engine for testing
 
 #default NGINX locs
 export DEFAULT_DIR=$ROOT_DIR/default
-export DEFAULT_NGINX=$ROOT_DIR/default/default_nginx
+export DEFAULT_NGINX=$ROOT_DIR/default/nginx_build
 export DEFAULT_NGINX_BIN=$DEFAULT_NGINX/sbin
-export DEFAULT_OSSL=$DEFAULT_DIR/openssl/1.1.1k
+export DEFAULT_OSSL=$DEFAULT_DIR/openssl-3.0.0
 export DEFAULT_SCRIPTS=$ROOT_DIR/scripts/default
 
 #spec
