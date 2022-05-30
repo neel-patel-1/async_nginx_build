@@ -29,6 +29,6 @@ if [ ! -f "${KTLS_DIR}/nginx_build/sbin/nginx" ]; then
 	$* # additional args
 	make -j $(( `nproc` / 2 ))
 	sudo make install -j $(( `nproc` / 2 ))
-	${ROOT_DIR}/scripts/gen_http_files.sh ${KTLS_DIR}/nginx_build
 fi
+[ -z "$( ls ${KTLS_NGINX}/html/file_* )" ] && ${ROOT_DIR}/scripts/ktls/gen_http_files.sh
 sudo cp -f ${ROOT_DIR}/ktls_nginx_conf/* ${KTLS_DIR}/nginx_build/conf	
