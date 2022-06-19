@@ -1,12 +1,13 @@
 #ROOT DIR
 #globals
+declare -a all_nginxs=( "AXDIMM_NGINX" "QTLS_NGINX" "DEFAULT_NGINX" "KTLS_NGINX" )
 #netdev
 export ROOT_DIR=/home/n869p538/async_nginx_build
 export NETDEV=ens4f1
 export logical=y
 export default_cores=10
 export num_phys=20
-export  mellanox_thresh=55 #mellanox link temp thresh
+export mellanox_thresh=55 #mellanox link temp thresh
 
 #QTLS 
 export QTLS_SCRIPTS=$ROOT_DIR/scripts/qtls

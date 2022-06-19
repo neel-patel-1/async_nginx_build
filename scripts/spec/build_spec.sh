@@ -11,5 +11,6 @@ fi
 sudo mount -t iso9660 -o ro,exec,loop ${ROOT_DIR}/cpu2017-1_0_5.iso ${ROOT_DIR}/spec_mnt
 cd ${ROOT_DIR}/spec_mnt && ./install.sh -d ${SPEC_DIR}
 cp ${ROOT_DIR}/spec_conf/testConfig.cfg ${SPEC_DIR}/config
+cp ${ROOT_DIR}/spec_conf/default.cfg ${SPEC_DIR}/config
 sudo rm -rf spec_mnt
 

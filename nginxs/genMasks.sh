@@ -64,12 +64,33 @@ core_lt(){ #we are given fewer nginx workers than physical cores
 	echo $mskStmt
 }
 
+core_ht_dis(){
+	masks=()
+	# cores 1-19 allowed,  core 0 not allowed
+
+	ctr=1
+	for i in `seq 1 $cores`; do #make a mask for each core
+		mask2=""
+		mask2+=0 #core zero not allowed
+		for j in `seq 1 $(($num_phys - 1))`; do
+			if [ "$j" = "$ctr" ]; then #this core is allowed for this nginx worker
+				mask2+=1
+			else 
+				mask2+=0 
+			fi
+		done
+		mask2=$(echo "$mask2" | rev)
+		ctr=$(($ctr + 1))
+		masks+=("$mask2")
+	done
+
+	mskStmt="worker_cpu_affinity ${masks[*]} ;"
+
+	echo $mskStmt
+
+}
+
 [ "$logical" != "y" ] && echo "coremask configured for pinning logical siblings" && exit
 
 # if number of cores is greater than number of physical we are not corunning 
-if [ ! "$cores" -lt "$(( num_phys ))" ]; then
-	core_gt
-else
-	core_lt
-fi
-
+core_ht_dis

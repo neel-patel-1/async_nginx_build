@@ -3,20 +3,13 @@
 export ROOT_DIR=/home/n869p538/async_nginx_build
 source $ROOT_DIR/scripts/async_libsrcs.source
 
-[[ -z "$ARG_NGINX" ]] && ARG_NGINX=${1}
+size=${1}
 
-[[ ! -d "$ROOT_DIR/html_files" ]] && mkdir $ROOT_DIR/html_files
-
-
-cd $ROOT_DIR/html_files
-
-declare -a sizes=("256K" "4K" "16K" "64K" "128K" "1M" "2M" )
-
-for size in "${sizes[@]}";
-do
-	#echo $size
-	head -c $size < /dev/urandom > file_$size.txt
+for i in "${all_nginxs[@]}"; do
+	if [ ! -f "${!i}/html/file_${size}" ]; then
+		>&2 echo "adding file_${size} to ${i}"
+		head -c $size < /dev/urandom > file_$size.txt
+	else
+		>&2 echo "file_${size} already present in ${i}"
+	fi	
 done
-
-[[ -d "$ARG_NGINX" ]] && sudo cp -r $ROOT_DIR/html_files/* $ARG_NGINX/html
-
