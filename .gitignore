@@ -1,3 +1,8 @@
 *.swn
 *.swp
 *.swo
+/cpu*
+/axdimm
+/default
+/pmu-tools
+/html_files

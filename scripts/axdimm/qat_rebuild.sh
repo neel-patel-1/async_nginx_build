@@ -13,7 +13,6 @@ CPPFLAGS=\"-I${AXDIMM_DIR}/intel-ipsec-mb/lib/include \
 --enable-qat_sw \
 --with-openssl_install_dir=${AXDIMM_DIR}/openssl \
 --with-openssl_dir=${AXDIMM_DIR}/openssl \
---disable-qat_hw \
---enable-qat_debug
+--disable-qat_hw
 PERL5LIB=$AXDIMM_DIR/openssl make -j $(( `nproc` / 2 ))
 sudo PERL5LIB=$AXDIMM_DIR/openssl make install -j $(( `nproc` / 2 ))

@@ -1,6 +1,6 @@
 #ROOT DIR
 #globals
-declare -a all_nginxs=( "AXDIMM_NGINX" "QTLS_NGINX" "DEFAULT_NGINX" "KTLS_NGINX" )
+declare -a all_nginxs=( "AXDIMM_TEST_NGINX" "AXDIMM_NGINX" "QTLS_NGINX" "DEFAULT_NGINX" "KTLS_NGINX" )
 #netdev
 export ROOT_DIR=/home/n869p538/async_nginx_build
 export NETDEV=ens4f1
@@ -32,8 +32,13 @@ export AXDIMM_ENGINES=$AXDIMM_DIR/openssl/lib/engines-1.1
 export AXDIMM_SCRIPTS=$ROOT_DIR/scripts/axdimm
 export CHAR_DIR=${ROOT_DIR}/ldd3/scullc
 export CHAR_MOD=${CHAR_DIR}/scullc.ko
-export qat_mod=n #rebuild qat_engine for testing
+export qat_mod=y #rebuild qat_engine for testing
 
+export AXDIMM_TEST_DIR=$ROOT_DIR/axdimm_test
+export AXDIMM_TEST_NGINX=$AXDIMM_TEST_DIR/nginx_build
+export AXDIMM_TEST_OSSL_LIBS=$AXDIMM_TEST_DIR/openssl/lib
+export AXDIMM_TEST_ENGINES=$AXDIMM_TEST_DIR/openssl/lib/engines-1.1
+export AXDIMM_TEST_SCRIPTS=$ROOT_DIR/scripts/axdimm_test
 
 #default NGINX locs
 export DEFAULT_DIR=$ROOT_DIR/default

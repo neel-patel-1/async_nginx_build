@@ -1,6 +1,6 @@
-.PHONY: qtls axdimm all qtls_server axdimm_server ocperf default ktls configure
+.PHONY: qtls axdimm all qtls_server axdimm_server ocperf default ktls configure axdimm_test axdimm_test_server
 
-all: configure qtls axdimm ktls default spec ocperf 
+all: configure qtls axdimm ktls default spec ocperf axdimm_test
 
 configure: 
 	./scripts/configure.sh
@@ -10,6 +10,9 @@ qtls:
 
 axdimm:
 	./scripts/axdimm/bo.sh
+
+axdimm_test:
+	./scripts/axdimm_test/build_test.sh
 
 default:
 	./scripts/default/build_default.sh
