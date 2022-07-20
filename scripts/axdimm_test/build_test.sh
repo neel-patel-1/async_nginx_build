@@ -13,6 +13,7 @@ for i in $AXDIMM_DEPS; do
 done
 
 if [ ! -f "${AXDIMM_TEST_DIR}/openssl/lib/libcrypto.so.1.1" ]; then
+	exit
 	cd ${AXDIMM_TEST_DIR}
 	git clone --depth 1 --branch OpenSSL_1_1_1d https://github.com/openssl/openssl.git
 	cd openssl
@@ -28,6 +29,7 @@ else
 fi
 
 if [ ! -f "${AXDIMM_TEST_DIR}/crypto_mb/2020u3/lib/intel64/libcrypto_mb.so" ]; then
+	exit
 	cd ${AXDIMM_TEST_DIR}
 	git clone https://github.com/intel/ipp-crypto.git
 	cd ipp-crypto
@@ -41,6 +43,7 @@ fi
 cd ${AXDIMM_TEST_DIR}
 [ ! -d "intel-ipsec-mb" ] && git clone https://github.com/intel/intel-ipsec-mb.git
 if [ ! -f "${AXDIMM_TEST_DIR}/lib/libIPSec_MB.so" ]; then
+	exit
 	cd intel-ipsec-mb
 	git checkout v0.55
 	make SAFE_DATA=y SAFE_PARAM=y SAFE_LOOKUP=y # unknown types
@@ -49,10 +52,10 @@ fi
 
 #build qatengine regardless
 cd ${AXDIMM_TEST_DIR}
-if [ ! -d "qat_cache_flush" ];  then
-	git clone git@gitlab.ittc.ku.edu:n869p538/qat_cache_flush.git
+if [ ! -d "qat_tls_con_test" ];  then
+	git clone git@github.com:neelpatelbiz/qat_tls_con_test.git
 fi
-cd qat_cache_flush
+cd qat_tls_con_test
 if [ ! -f "$AXDIMM_ENGINES/qatengine.so" ] || [ "$qat_mod" = "y" ]; then
 	sudo make clean -j 4
 	./autogen.sh

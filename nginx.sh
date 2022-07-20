@@ -33,6 +33,8 @@ elif [ "$1" = "https" ]; then
 	${ROOT_DIR}/nginxs/tls_conf.sh
 elif [ "$1" = "axdimm" ]; then
 	${ROOT_DIR}/nginxs/tlso_conf.sh
+elif [ "$1" = "axdimm_test" ]; then
+	${ROOT_DIR}/nginxs/tlso_conf_test.sh
 elif [ "$1" = "qtls" ]; then
 	${ROOT_DIR}/nginxs/qtls_conf.sh
 elif [ "$1" = "ktls" ]; then
