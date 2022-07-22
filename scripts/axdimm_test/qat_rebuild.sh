@@ -14,6 +14,7 @@ CPPFLAGS=\"-I${AXDIMM_TEST_DIR}/intel-ipsec-mb/lib/include \
 --with-openssl_install_dir=${AXDIMM_TEST_DIR}/openssl \
 --with-openssl_dir=${AXDIMM_TEST_DIR}/openssl \
 --disable-qat_hw \
---enable-qat_debug
+--enable-qat_debug \
+--with-qat_debug_file=${AXDIMM_TEST_DIR}/axdimm_debug.txt
 PERL5LIB=$AXDIMM_TEST_DIR/openssl make -j $(( `nproc` / 2 ))
 sudo PERL5LIB=$AXDIMM_TEST_DIR/openssl make install -j $(( `nproc` / 2 ))

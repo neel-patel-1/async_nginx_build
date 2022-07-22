@@ -14,6 +14,8 @@ CPPFLAGS="-I${AXDIMM_DIR}/intel-ipsec-mb/lib/include \
 -I$AXDIMM_DIR/crypto_mb/2020u3/include" ./configure \
 --enable-qat_sw \
 --disable-qat_hw \
+--enable-qat_debug \
+--with-qat_debug_file=${AXDIMM_DIR}/qat_debug_log \
 --with-openssl_install_dir=${AXDIMM_DIR}/openssl \
 --with-openssl_dir=${AXDIMM_DIR}/openssl
 PERL5LIB=$AXDIMM_DIR/openssl make -j 4
