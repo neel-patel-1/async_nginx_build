@@ -17,14 +17,19 @@ if [ ! -f "${AXDIMM_DIR}/openssl/lib/libcrypto.so.1.1" ]; then
 	git clone --depth 1 --branch OpenSSL_1_1_1d https://github.com/openssl/openssl.git
 	cd openssl
 	./Configure --prefix=$AXDIMM_DIR/openssl --openssldir=$AXDIMM_DIR/openssl/config_certs_keys linux-x86_64 
-	make -j 4
-	sudo make install -j 4
+	echo "compiling openssl ..."
+	2>1 >/dev/null make -j 4
+	echo "installing openssl ..."
+	2>1 >/dev/null sudo make install -j 4
 else
-    cd ${AXDIMM_DIR}/openssl
-	sudo make clean -j
-	./Configure --prefix=$AXDIMM_DIR/openssl --openssldir=$AXDIMM_DIR/openssl/config_certs_keys linux-x86_64
-	make -j 4
-	sudo make install -j4
+	cd ${AXDIMM_DIR}
+	cd openssl
+	sudo make clean -j 4
+	./Configure --prefix=$AXDIMM_DIR/openssl --openssldir=$AXDIMM_DIR/openssl/config_certs_keys linux-x86_64 
+	echo "compiling openssl ..."
+	2>1 >/dev/null make -j 4
+	echo "installing openssl ..."
+	2>1 >/dev/null sudo make install -j 4
 fi
 
 if [ ! -f "${AXDIMM_DIR}/crypto_mb/2020u3/lib/intel64/libcrypto_mb.so" ]; then
@@ -50,7 +55,7 @@ fi
 #build qatengine regardless
 cd ${AXDIMM_DIR}
 if [ ! -d "qat_cache_flush" ];  then
-	git clone git@github.com:neelpatelbiz/qat_tls_con_test.git
+	git clone git@github.com:neelpatelbiz/qat_cache_flush.git
 fi
 cd qat_cache_flush
 if [ ! -f "$AXDIMM_ENGINES/qatengine.so" ] || [ "$qat_mod" = "y" ]; then

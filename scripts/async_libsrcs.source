@@ -51,6 +51,10 @@ export DEFAULT_SCRIPTS=$ROOT_DIR/scripts/default
 export SPEC_DIR=${ROOT_DIR}/cpu_2017
 export remotespec=n869p538@pollux.ittc.ku.edu:/home/n869p538/cpu2017-1_0_5.iso
 
+#iperf
+export iperf_dir=${ROOT_DIR}/iperf_test
+export offload_iperf=${ROOT_DIR}/iperf_test/iperf_w_offload/bin/iperf
+
 #ktls directory
 export KTLS_DIR=${ROOT_DIR}/ktls
 export KTLS_NGINX=${KTLS_DIR}/nginx_build
