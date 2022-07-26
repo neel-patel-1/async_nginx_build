@@ -1,6 +1,6 @@
 OFF_SSL=/home/n869p538/async_nginx_build/axdimm/openssl
 
-.PHONY: qtls axdimm all qtls_server axdimm_server ocperf default ktls configure axdimm_test axdimm_test_server
+.PHONY: qtls axdimm all qtls_server axdimm_server ocperf default ktls configure axdimm_test axdimm_test_server tls_iperf
 
 all: configure qtls axdimm ktls default spec ocperf axdimm_test
 
@@ -46,7 +46,7 @@ https_server:
 ktls_server:
 	./nginx.sh ktls
 
-tls_iperf: ./iperf_test/iperf_w_offload/bin/iperf
+tls_iperf: 
 	-[ ! -d "iperf_test" ] && mkdir iperf_test
 	cd iperf_test && \
 	git clone https://github.com/neelpatelbiz/iperf_w_offload.git && \
@@ -56,8 +56,14 @@ tls_iperf: ./iperf_test/iperf_w_offload/bin/iperf
 	make -j 4 && \
 	make install -j 4
 
-iperf_server: tls_iperf
+iperf_axdimm:
 	./scripts/iperf/iperf_offload.sh
+
+iperf_tcp:
+	./scripts/iperf/iperf_tcp.sh
+
+iperf_tls:
+	./scripts/iperf/iperf_tls.sh
 
 clean:
 	cd iperf_test/iperf_w_offload && \
