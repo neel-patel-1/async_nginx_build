@@ -1,4 +1,4 @@
-OFF_SSL=/home/n869p538/async_nginx_build/axdimm/openssl
+OFF_SSL=/home/n869p538/wrk_offloadenginesupport/async_nginx_build/axdimm/openssl
 
 .PHONY: qtls axdimm all qtls_server axdimm_server ocperf default ktls configure axdimm_test axdimm_test_server tls_iperf
 
@@ -48,9 +48,8 @@ ktls_server:
 
 tls_iperf: 
 	-[ ! -d "iperf_test" ] && mkdir iperf_test
-	cd iperf_test && \
-	git clone https://github.com/neelpatelbiz/iperf_w_offload.git && \
-	cd iperf_w_offload && \
+	-cd iperf_test && [ ! -d "iperf_w_offload" ] &&  git clone https://github.com/neelpatelbiz/iperf_w_offload.git
+	cd iperf_test/iperf_w_offload && \
 	env CFLAGS="-O2 -I${OFF_SSL}/include" LIBS="-l:libssl.so.1.1 -l:libcrypto.so.1.1" \
 	LD_FLAGS="-L${OFF_SSL}" ./configure --prefix=$$(pwd) && \
 	make -j 4 && \
