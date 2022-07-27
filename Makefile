@@ -1,4 +1,4 @@
-OFF_SSL=/home/n869p538/wrk_offloadenginesupport/async_nginx_build/axdimm/openssl
+OFF_SSL=/home/n869p538/async_nginx_build/axdimm/openssl
 
 .PHONY: qtls axdimm all qtls_server axdimm_server ocperf default ktls configure axdimm_test axdimm_test_server tls_iperf
 
