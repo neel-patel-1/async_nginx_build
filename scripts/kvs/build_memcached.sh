@@ -13,8 +13,10 @@ if [ ! -d "$(pwd)/libevent_build" ]; then
 	make install -j 4
 fi
 
+cd $ROOT_DIR/kvs
 [ ! -f "memcached-1.6.15.tar.gz" ] &&  wget http://www.memcached.org/files/memcached-1.6.15.tar.gz
 [ ! -d "memcached-1.6.15" ] && tar -xzf memcached-1.6.15.tar.gz
+patch -s -p0 < file.patch
 cd memcached-1.6.15
 if [ ! -f "$(pwd)/../memcached_build/bin/memcached" ]; then
 	# -Werror flag in makefile is preventing engine build due to warnings as errors , do we need to sed it out?
