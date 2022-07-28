@@ -3,7 +3,7 @@
 echo "Establishing QAT group permissions"
 
 USERNAME=n869p538
-export ROOT_DIR=/home/n869p538/wrk_offloadenginesupport/async_nginx_build
+export ROOT_DIR=/home/n869p538/async_nginx_build
 source $ROOT_DIR/scripts/async_libsrcs.source
 export ICP_ROOT=$QTLS_DIR/QAT
 sudo groupadd qat
