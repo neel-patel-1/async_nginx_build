@@ -27,3 +27,5 @@ if [ ! -f "$(pwd)/../memcached_build/bin/memcached" ]; then
 	make -j 4
 	make install -j 4
 fi
+cd ../
+[ ! -f "cert.pem" ] || [ ! -f "key.pem" ] && ${AXDIMM_OSSL_LIBS}/../apps/openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 365 -nodes
