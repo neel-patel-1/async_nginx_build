@@ -16,7 +16,6 @@ fi
 cd $ROOT_DIR/kvs
 [ ! -f "memcached-1.6.15.tar.gz" ] &&  wget http://www.memcached.org/files/memcached-1.6.15.tar.gz
 [ ! -d "memcached-1.6.15" ] && tar -xzf memcached-1.6.15.tar.gz
-patch -s -p0 < offload.patch
 cd memcached-1.6.15
 if [ ! -f "$(pwd)/../memcached_build/bin/memcached" ]; then
 	# -Werror flag in makefile is preventing engine build due to warnings as errors , do we need to sed it out?
@@ -32,4 +31,4 @@ fi
 cd ../
 [ ! -f "openssl.cnf" ] && cp -r /etc/ssl/openssl.cnf .
 export OPENSSL_CONF=$(pwd)/openssl.cnf
-[ ! -f "cert.pem" ] || [ ! -f "key.pem" ] && ${AXDIMM_OSSL_LIBS}/../apps/openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 365 -nodes
+[ ! -f "cert.pem" ] || [ ! -f "key.pem" ] && openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 365 -nodes
