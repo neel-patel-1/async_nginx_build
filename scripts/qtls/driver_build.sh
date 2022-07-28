@@ -2,7 +2,7 @@
 
 echo "Building QAT Driver"
 
-export ROOT_DIR=/home/n869p538/async_nginx_build
+export ROOT_DIR=/home/n869p538/wrk_offloadenginesupport/async_nginx_build
 source ${ROOT_DIR}/scripts/async_libsrcs.source
 
 [ ! -d "${QTLS_DIR}/QAT" ] && mkdir $QTLS_DIR/QAT

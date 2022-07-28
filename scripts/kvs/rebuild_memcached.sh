@@ -16,17 +16,16 @@ fi
 [ ! -f "memcached-1.6.15.tar.gz" ] &&  wget http://www.memcached.org/files/memcached-1.6.15.tar.gz
 [ ! -d "memcached-1.6.15" ] && tar -xzf memcached-1.6.15.tar.gz
 cd memcached-1.6.15
-if [ ! -f "$(pwd)/../memcached_build/bin/memcached" ]; then
-	# -Werror flag in makefile is preventing engine build due to warnings as errors , do we need to sed it out?
-	./configure --prefix=$(pwd)/../memcached_build \
-	--enable-tls \
-	--with-libevent=$(pwd)/../libevent_build \
-	--with-libssl=$AXDIMM_OSSL_LIBS/..
-	sed -i -E 's/CFLAGS = (.*)-Werror(.*)/CFLAGS = \1\2/g' Makefile
 
-	make -j 4
-	make install -j 4
-fi
+./configure --prefix=$(pwd)/../memcached_build \
+--enable-tls \
+--with-libevent=$(pwd)/../libevent_build \
+--with-libssl=$AXDIMM_OSSL_LIBS/..
+sed -i -E 's/CFLAGS = (.*)-Werror(.*)/CFLAGS = \1\2/g' Makefile
+
+make -j 4
+make install -j 4
+
 cd ../
 [ ! -f "openssl.cnf" ] && cp -r /etc/ssl/openssl.cnf .
 export OPENSSL_CONF=$(pwd)/openssl.cnf
