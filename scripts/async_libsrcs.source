@@ -2,7 +2,7 @@
 #globals
 declare -a all_nginxs=( "AXDIMM_TEST_NGINX" "AXDIMM_NGINX" "QTLS_NGINX" "DEFAULT_NGINX" "KTLS_NGINX" )
 #netdev
-export ROOT_DIR=/home/n869p538/wrk_offloadenginesupport/async_nginx_build
+export ROOT_DIR=/home/n869p538/async_nginx_build
 export NETDEV=ens4f1
 export logical=y
 export default_cores=10
