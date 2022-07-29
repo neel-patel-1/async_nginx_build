@@ -86,12 +86,5 @@ if [ ! -d "${AXDIMM_DIR}/nginx_build" ]; then
 	sudo make install -j 4
 fi
 
-
-#modify pmem device
-for i in /dev/pmem*; do 
-	sudo chmod -R 0767 $i
-done
-	
-
 sudo cp -r ${ROOT_DIR}/axdimm_nginx_confs/* ${AXDIMM_DIR}/nginx_build/conf
 ${AXDIMM_SCRIPTS}/gen_http_files.sh
