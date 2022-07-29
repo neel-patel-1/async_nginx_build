@@ -1,5 +1,5 @@
 #!/bin/bash
-export ROOT_DIR=/home/n869p538/async_nginx_build
+export ROOT_DIR=/home/n869p538/wrk_offloadenginesupport/async_nginx_build
 source $ROOT_DIR/scripts/async_libsrcs.source
 
 [ ! -d "${AXDIMM_DIR}" ] && mkdir -p ${AXDIMM_DIR}
@@ -48,8 +48,8 @@ cd ${AXDIMM_DIR}
 if [ ! -f "${AXDIMM_DIR}/lib/libIPSec_MB.so" ]; then
 	cd intel-ipsec-mb
 	git checkout v0.55
-	make SAFE_DATA=y SAFE_PARAM=y SAFE_LOOKUP=y # unknown types
-	sudo make install NOLDCONFIG=y PREFIX=$AXDIMM_DIR
+	make SAFE_DATA=y SAFE_PARAM=y SAFE_LOOKUP=y -j 4 # unknown types
+	sudo make install NOLDCONFIG=y PREFIX=$AXDIMM_DIR -j 4
 fi
 
 #build qatengine regardless
