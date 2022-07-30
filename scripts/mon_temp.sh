@@ -1,5 +1,5 @@
 #!/bin/bash
-export ROOT_DIR=/home/n869p538/async_nginx_build
+export ROOT_DIR=/home/n869p538/wrk_offloadenginesupport/async_nginx_build
 source $ROOT_DIR/scripts/async_libsrcs.source
 
 [ -z "$qat_thresh" ] && qat_thresh=50
