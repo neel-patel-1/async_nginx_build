@@ -7,4 +7,4 @@ export LD_LIBRARY_PATH=$AXDIMM_OSSL_LIBS:$AXDIMM_ENGINES
 
 [ ! -f "${mem_bin}" ] && exit
 
-${mem_bin} -Z -U 5002 -o ssl_chain_cert=${kvs_dir}/cert.pem,ssl_key=${kvs_dir}/key.pem
+${mem_bin} -t 8 -Z -U 5002 -o ssl_chain_cert=${kvs_dir}/cert.pem,ssl_key=${kvs_dir}/key.pem
