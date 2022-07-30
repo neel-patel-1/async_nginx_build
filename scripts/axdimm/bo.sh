@@ -37,7 +37,7 @@ if [ ! -f "${AXDIMM_DIR}/crypto_mb/2020u3/lib/intel64/libcrypto_mb.so" ]; then
 	git clone https://github.com/intel/ipp-crypto.git
 	cd ipp-crypto
 	git checkout ipp-crypto_2021_5
-	cmake . -Bbuild -DCMAKE_INSTALL_PREFIX=$AXDIMM_DIR/crypto_mb/2020u3 -DARCH=intel64 -DOPENSSL_ROOT_DIR=${AXDIMM_DIR}/openssl
+	cmake . -j4 -Bbuild -DCMAKE_INSTALL_PREFIX=$AXDIMM_DIR/crypto_mb/2020u3 -DARCH=intel64 -DOPENSSL_ROOT_DIR=${AXDIMM_DIR}/openssl
 	cd build
 	make -j 4
 	sudo make install -j 4
