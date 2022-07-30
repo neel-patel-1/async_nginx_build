@@ -1,0 +1,92 @@
+diff -ruN memcached-1.6.15/memcached.c memcached-1.6.15_offload/memcached.c
+--- memcached-1.6.15/memcached.c	2022-03-29 23:24:52.000000000 -0500
++++ memcached-1.6.15_offload/memcached.c	2022-07-28 01:20:39.532682749 -0500
+@@ -223,6 +223,7 @@
+     settings.udpport = 0;
+ #ifdef TLS
+     settings.ssl_enabled = false;
++	settings.ssl_use_offload = false;
+     settings.ssl_ctx = NULL;
+     settings.ssl_chain_cert = NULL;
+     settings.ssl_key = NULL;
+@@ -4880,6 +4881,7 @@
+           "e:"  /* mmap path for external item memory */
+           "o:"  /* Extended generic options */
+           "N:"  /* NAPI ID based thread selection */
++		  "q"   /* Use qatengine */
+           ;
+ 
+     /* process arguments */
+@@ -4943,6 +4945,10 @@
+             exit(EX_USAGE);
+ #endif
+             break;
++		case 'q':
++			/* enable qatengine offload*/
++			settings.ssl_use_offload = true;
++			break;
+         case 'a':
+ #ifndef DISABLE_UNIX_SOCKET
+             /* access for unix domain socket, as octal mask (like chmod)*/
+diff -ruN memcached-1.6.15/memcached.h memcached-1.6.15_offload/memcached.h
+--- memcached-1.6.15/memcached.h	2022-03-29 23:24:52.000000000 -0500
++++ memcached-1.6.15_offload/memcached.h	2022-07-28 01:20:39.892686976 -0500
+@@ -504,6 +504,7 @@
+ #endif
+ #ifdef TLS
+     bool ssl_enabled; /* indicates whether SSL is enabled */
++	bool ssl_use_offload; /* use qatengine */
+     SSL_CTX *ssl_ctx; /* holds the SSL server context which has the server certificate */
+     char *ssl_chain_cert; /* path to the server SSL chain certificate */
+     char *ssl_key; /* path to the server key */
+diff -ruN memcached-1.6.15/tls.c memcached-1.6.15_offload/tls.c
+--- memcached-1.6.15/tls.c	2022-02-21 12:58:33.000000000 -0600
++++ memcached-1.6.15_offload/tls.c	2022-07-28 01:20:38.592671711 -0500
+@@ -7,6 +7,7 @@
+ #include <sysexits.h>
+ #include <sys/param.h>
+ #include <openssl/err.h>
++#include <openssl/engine.h>
+ 
+ #ifndef MAXPATHLEN
+ #define MAXPATHLEN 4096
+@@ -180,8 +181,28 @@
+ 
+     // SSL context for the process. All connections will share one
+     // process level context.
+-    settings.ssl_ctx = SSL_CTX_new(TLS_server_method());
+-
++    //settings.ssl_ctx = SSL_CTX_new(TLS_server_method());
++	settings.ssl_ctx = SSL_CTX_new(TLSv1_2_method());
++    if( settings.ssl_use_offload )
++    {
++		ENGINE_load_dynamic();
++    	ENGINE *qatengine = ENGINE_by_id("qatengine");
++
++		if( qatengine == NULL )
++		{
++			printf("Could not Load QAT Engine!\n");
++			exit(1);
++		}
++		printf("QAT Engine successfully loaded\n");
++
++		int init_res = ENGINE_init(qatengine);
++		printf("Engine name: %s init result : %d \n",ENGINE_get_name(qatengine), init_res);
++
++		if ( ENGINE_set_default_ciphers(qatengine) )
++		{
++			printf("qatengine ciphers loaded\n");
++		}
++    }
+     SSL_CTX_set_min_proto_version(settings.ssl_ctx, settings.ssl_min_version);
+ 
+     // The server certificate, private key and validations.
+@@ -211,6 +232,8 @@
+     } else {
+         SSL_CTX_set_session_cache_mode(settings.ssl_ctx, SSL_SESS_CACHE_OFF);
+     }
++	// use AES_GCM
++	SSL_CTX_set_cipher_list(settings.ssl_ctx, "TLS1_3_RFC_AES_256_GCM_SHA256");
+ 
+     return 0;
+ }
