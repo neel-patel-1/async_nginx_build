@@ -1,8 +1,8 @@
 #!/bin/bash
-export ROOT_DIR=/home/n869p538/wrk_offloadenginesupport/async_nginx_build
+export ROOT_DIR=/home/n869p538/async_nginx_build
 source $ROOT_DIR/scripts/async_libsrcs.source
 
-[ ! -d $ROOT_DIR/kv_bench ] && mkdir $ROOT_DIR/kv_bench
+[ ! -d "$ROOT_DIR/kv_bench" ] && mkdir $ROOT_DIR/kv_bench
 cd $ROOT_DIR/kv_bench
 
 [ ! -d "mc-crusher" ] && git clone https://github.com/memcached/mc-crusher.git \

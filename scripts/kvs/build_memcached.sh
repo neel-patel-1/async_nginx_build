@@ -1,5 +1,5 @@
 #!/bin/bash
-export ROOT_DIR=/home/n869p538/wrk_offloadenginesupport/async_nginx_build
+export ROOT_DIR=/home/n869p538/async_nginx_build
 source $ROOT_DIR/scripts/async_libsrcs.source
 
 [ ! -d $ROOT_DIR/kvs ] && mkdir $ROOT_DIR/kvs
@@ -16,7 +16,8 @@ fi
 cd $ROOT_DIR/kvs
 [ ! -f "memcached-1.6.15.tar.gz" ] &&  wget http://www.memcached.org/files/memcached-1.6.15.tar.gz
 [ ! -d "memcached-1.6.15" ] && tar -xzf memcached-1.6.15.tar.gz
-cd memcached-1.6.15
+[ ! -d "memcached-1.6.15_patched" ] && patch -s -p0 < offload.patch && mv memcached-1.6.15 memcached-1.6.15_patched
+cd memcached-1.6.15_patched
 if [ ! -f "$(pwd)/../memcached_build/bin/memcached" ]; then
 	# -Werror flag in makefile is preventing engine build due to warnings as errors , do we need to sed it out?
 	./configure --prefix=$(pwd)/../memcached_build \

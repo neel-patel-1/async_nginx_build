@@ -1,5 +1,5 @@
 #!/bin/bash
-export ROOT_DIR=/home/n869p538/wrk_offloadenginesupport/async_nginx_build
+export ROOT_DIR=/home/n869p538/async_nginx_build
 source $ROOT_DIR/scripts/async_libsrcs.source
 
 [ ! -d "${AXDIMM_DIR}" ] && mkdir -p ${AXDIMM_DIR}
@@ -37,7 +37,7 @@ if [ ! -f "${AXDIMM_DIR}/crypto_mb/2020u3/lib/intel64/libcrypto_mb.so" ]; then
 	git clone https://github.com/intel/ipp-crypto.git
 	cd ipp-crypto
 	git checkout ipp-crypto_2021_5
-	cmake . -j4 -Bbuild -DCMAKE_INSTALL_PREFIX=$AXDIMM_DIR/crypto_mb/2020u3 -DARCH=intel64 -DOPENSSL_ROOT_DIR=${AXDIMM_DIR}/openssl
+	cmake . -j 4 -Bbuild -DCMAKE_INSTALL_PREFIX=$AXDIMM_DIR/crypto_mb/2020u3 -DARCH=intel64 -DOPENSSL_ROOT_DIR=${AXDIMM_DIR}/openssl
 	cd build
 	make -j 4
 	sudo make install -j 4

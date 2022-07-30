@@ -1,6 +1,6 @@
 
 #set root directory
-export ROOT_DIR=/home/n869p538/wrk_offloadenginesupport/async_nginx_build
+export ROOT_DIR=/home/n869p538/async_nginx_build
 
 #get global variables
 source ${ROOT_DIR}/scripts/async_libsrcs.source
