@@ -2,7 +2,6 @@
 #globals
 declare -a all_nginxs=( "AXDIMM_TEST_NGINX" "AXDIMM_NGINX" "QTLS_NGINX" "DEFAULT_NGINX" "KTLS_NGINX" )
 #netdev
-export ROOT_DIR=/home/n869p538/async_nginx_build
 export NETDEV=ens4f1
 export logical=y
 export default_cores=10
@@ -65,6 +64,7 @@ export memtier_bin=$ROOT_DIR/memtier_build/bin/memtier_benchmark
 
 export off_mem_bin=${ROOT_DIR}/offload_kvs/memcached_build/bin/memcached
 export offload_kvs_dir=${ROOT_DIR}/offload_kvs
+export offload_memtier_bin=$ROOT_DIR/kv_bench/offload_memtier_build/bin/memtier_benchmark
 
 #ktls directory
 export KTLS_DIR=${ROOT_DIR}/ktls
