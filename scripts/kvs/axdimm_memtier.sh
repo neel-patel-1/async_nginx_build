@@ -10,6 +10,6 @@ cd $offload_kvs_dir
 
 ${offload_memtier_bin} --tls --tls-skip-verify --tls_offload -s 192.168.1.2 -p 5002 -t 8 -P memcache_text --key-pattern=S:S --key-minimum=1 --key-maximum=50 --ratio=1:0 --hide-histogram
 
-${offload_memtier_bin} --tls --tls-skip-verify --tls_offload -s 192.168.1.2 -p 5002 -t 8 -P memcache_text --key-pattern=S:S --key-minimum=1 --key-maximum=50 --ratio=0:1 --hide-histogram --out-file axdimm_test.txt
+${offload_memtier_bin} --tls --tls-skip-verify --tls_offload -s 192.168.1.2 -p 5002 -t 8 -P memcache_text --key-pattern=S:S --key-minimum=1 --key-maximum=50 --ratio=1:1 --hide-histogram --out-file axdimm_test.txt
 
 cat axdimm_test.txt | sed -E 's/\s+/,/g' | grep -vE '(=|--------)'
