@@ -62,7 +62,8 @@ export kvs_dir=${ROOT_DIR}/kvs
 export kv_bench_dir=$ROOT_DIR/kv_bench
 export mc_bench_dir=$ROOT_DIR/kv_bench/mc-crusher
 export mc_bench_bin=$ROOT_DIR/kv_bench/mc-crusher/mc-crusher-tls
-export memtier_bin=$ROOT_DIR/memtier_build/bin/memtier_benchmark
+export memtier_bin=$ROOT_DIR/kv_bench/memtier_build/bin/memtier_benchmark
+export memtier_build_dir=$ROOT_DIR/kv_bench/memtier_build
 
 export off_mem_bin=${ROOT_DIR}/offload_kvs/memcached_build/bin/memcached
 export offload_kvs_dir=${ROOT_DIR}/offload_kvs
