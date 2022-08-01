@@ -9,3 +9,13 @@
 /axdimm_test
 /ktls
 /qtls
+/kvs
+/memtier_build
+/memtier_benchmark
+/offload_kvs/*.pem
+/offload_kvs/*.txt
+/files_files
+/kv_bench
+/iperf_test
+*.mem
+*.txt
