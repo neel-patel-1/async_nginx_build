@@ -55,6 +55,8 @@ export iperf_dir=${ROOT_DIR}/iperf_test
 export offload_iperf=${ROOT_DIR}/iperf_test/iperf_w_offload/bin/iperf
 
 #memcached
+export remote_mem_ip=127.0.0.1
+
 export mem_bin=${ROOT_DIR}/kvs/memcached_build/bin/memcached
 export kvs_dir=${ROOT_DIR}/kvs
 export kv_bench_dir=$ROOT_DIR/kv_bench
