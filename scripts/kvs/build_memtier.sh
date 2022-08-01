@@ -13,5 +13,5 @@ if [ ! -f "$memtier_bin" ]; then
 	autoreconf -ivf
 	./configure --prefix=$memtier_build_dir
 	make -j 4
-	make install -j 4
+	sudo make install -j 4
 fi
