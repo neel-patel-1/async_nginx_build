@@ -53,6 +53,7 @@ export remotespec=n869p538@pollux.ittc.ku.edu:/home/n869p538/cpu2017-1_0_5.iso
 #iperf
 export iperf_dir=${ROOT_DIR}/iperf_test
 export offload_iperf=${ROOT_DIR}/iperf_test/iperf_w_offload/bin/iperf
+export ktls_iperf=${ROOT_DIR}/iperf_test/iperf_ssl/bin/iperf
 
 #memcached
 export remote_mem_ip=192.168.1.2
