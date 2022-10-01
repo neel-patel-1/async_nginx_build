@@ -21,27 +21,28 @@
 
 #include <papi.h>
 
-#define BUFSZ 2048
+#define BUF_MAX 16 * 1024 * 1024 
 
 int main(){
 
 	/* allocate buffer -- it starts in the cache */
-	char * buf = (char *) malloc( BUFSZ );
 
 
 	printf("in_cache_buffer_size, ratio_of_buffer_in_cache, num_cycles_spent_flushing, ns_spent_flushing\n" );
-	for (int i=0; i<BUFSZ; i+=64){
+	for (int i=1; i<=BUF_MAX; i=i*2){
 		/* microsecs and cycles */
 
+		char * buf = (char *) malloc( i );
 		long_long nsec_avg=0;
 		long_long cycle_avg=0;
 		for ( int k=0; k < 10; k++ ){
 			long_long s_cycle = PAPI_get_real_cyc();
 			long_long s_nano = PAPI_get_real_nsec();
-			for (int j =0; j < i; j+=64){
+			int j;
+			for (j =0; j < i; j+=64){
 				_mm_clflush( buf + j );
 			}
-			_mm_clflush( buf + i * 64 );
+			//_mm_clflush( buf + (j * 64) );
 
 			long_long e_nano = PAPI_get_real_nsec();
 			long_long e_cycle = PAPI_get_real_cyc();;
@@ -50,7 +51,7 @@ int main(){
 			nsec_avg+=(e_nano - s_nano);
 		}
 		/* start timer */
-		printf("%d, %.5f, %lld, %lld\n", i, (float)i/BUFSZ, cycle_avg/10, nsec_avg/10 );
+		printf("%d, %lld, %lld\n", i, cycle_avg/10, nsec_avg/10 );
 	}
 
 
