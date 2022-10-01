@@ -1,3 +1,9 @@
 [submodule "qat_cache_flush"]
 	path = qat_cache_flush
 	url = git@gitlab.ittc.ku.edu:n869p538/qat_cache_flush.git
+[submodule "scripts/kvs/memcached"]
+	path = scripts/kvs/memcached
+	url = git@github.com:neelpatelbiz/memcached.git
+[submodule "nginx_compress_emul/nginx-gzip_offload"]
+	path = nginx_compress_emul/nginx-gzip_offload
+	url = git@github.com:neelpatelbiz/nginx-gzip_offload.git
