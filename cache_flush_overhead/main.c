@@ -25,14 +25,14 @@
 
 int main(){
 
-	/* allocate buffer -- it starts in the cache */
 
 
-	printf("in_cache_buffer_size, ratio_of_buffer_in_cache, num_cycles_spent_flushing, ns_spent_flushing\n" );
+	printf("in_cache_buffer_size, num_cycles_spent_flushing, ns_spent_flushing\n" );
 	for (int i=1; i<=BUF_MAX; i=i*2){
-		/* microsecs and cycles */
 
+		/* allocate buffer -- it starts in the cache */
 		char * buf = (char *) malloc( i );
+		/* microsecs and cycles */
 		long_long nsec_avg=0;
 		long_long cycle_avg=0;
 		for ( int k=0; k < 10; k++ ){
@@ -42,7 +42,7 @@ int main(){
 			for (j =0; j < i; j+=64){
 				_mm_clflush( buf + j );
 			}
-			//_mm_clflush( buf + (j * 64) );
+			//_mm_clflush( buf + (j + 64) );
 
 			long_long e_nano = PAPI_get_real_nsec();
 			long_long e_cycle = PAPI_get_real_cyc();;

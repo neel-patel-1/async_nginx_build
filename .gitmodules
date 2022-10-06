@@ -7,3 +7,9 @@
 [submodule "nginx_compress_emul/nginx-gzip_offload"]
 	path = nginx_compress_emul/nginx-gzip_offload
 	url = git@github.com:neelpatelbiz/nginx-gzip_offload.git
+[submodule "iperf_test/iperf_ktls"]
+	path = iperf_test/iperf_ktls
+	url = https://github.com/BorisPis/iperf.git
+[submodule "iperf_test/iperf"]
+	path = iperf_test/iperf
+	url = https://github.com/BorisPis/iperf.git
