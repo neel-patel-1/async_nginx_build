@@ -24,10 +24,10 @@ if [ ! -f "${AXDIMM_DIR}/openssl/lib/libcrypto.so.1.1" ]; then
 else
 	cd ${AXDIMM_DIR}
 	cd openssl
-	sudo make clean -j 4
-	./Configure --prefix=$AXDIMM_DIR/openssl --openssldir=$AXDIMM_DIR/openssl/config_certs_keys linux-x86_64 
-	echo "compiling openssl ..."
-	2>1 >/dev/null make -j 4
+	#sudo make clean -j 4
+	#./Configure --prefix=$AXDIMM_DIR/openssl --openssldir=$AXDIMM_DIR/openssl/config_certs_keys linux-x86_64 
+	#echo "compiling openssl ..."
+	#2>1 >/dev/null make -j 4
 	echo "installing openssl ..."
 	2>1 >/dev/null sudo make install -j 4
 fi
