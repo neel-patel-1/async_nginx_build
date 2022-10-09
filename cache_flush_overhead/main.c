@@ -21,7 +21,7 @@
 
 #include <papi.h>
 
-#define BUF_MAX 4 * 1024
+#define BUF_MAX 2 * 1024
 #define INC 512
 
 int flush_frac(){
@@ -46,8 +46,8 @@ int flush_frac(){
 			}
 
 			/* measure time to flush now that some are flushed */
-			long_long s_cycle = PAPI_get_real_cyc();
-			long_long s_nano = PAPI_get_real_nsec();
+			s_cycle = PAPI_get_real_cyc();
+			s_nano = PAPI_get_real_nsec();
 			for (int j=0; j<BUF_MAX; j+=64){
 				_mm_clflush(buf + j);
 			}
@@ -58,6 +58,7 @@ int flush_frac(){
 		}
 		printf("%d, %d, %lld, %lld\n", i, BUF_MAX-i, nsec_avg/iter, cycle_avg/iter);
 	}
+	return 0;
 }
 
 int main(){
