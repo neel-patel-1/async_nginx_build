@@ -6,6 +6,7 @@ LIBS =  -lpapi
 
 cfo:
 	gcc -o cfo main.c $(CXXFLAGS) $(LIBS)
-
-
-
+papi:
+	git submodule update --init --recursive
+papi_lib:
+	cd papi/src && ./configure && make -j && sudo make -j install

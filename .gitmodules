@@ -13,3 +13,6 @@
 [submodule "iperf_test/iperf"]
 	path = iperf_test/iperf
 	url = https://github.com/BorisPis/iperf.git
+[submodule "cache_flush_overhead/papi"]
+	path = cache_flush_overhead/papi
+	url = https://bitbucket.org/icl/papi.git
