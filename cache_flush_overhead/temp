@@ -1,0 +1,10 @@
+
+BUF_SIZE 32 * 1024
+
+/* how much to flush before testing */
+for (int i=0; i<=BUF_SIZE; i+=1024){
+	/*preflush the beginning i bytes of the buffer */
+	for ( int j=0; j<i; j+=64 ){
+		_mm_clflush( buf + j );
+	}
+}
