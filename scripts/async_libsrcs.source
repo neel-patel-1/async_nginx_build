@@ -52,13 +52,14 @@ export remotespec=n869p538@pollux.ittc.ku.edu:/home/n869p538/cpu2017-1_0_5.iso
 
 #iperf
 export iperf_dir=${ROOT_DIR}/iperf_test
-export offload_iperf=${ROOT_DIR}/iperf_test/iperf_w_offload/bin/iperf
+export offload_iperf=${ROOT_DIR}/iperf_test/iperf_w_offload/src/iperf
 export ktls_iperf=${ROOT_DIR}/iperf_test/iperf_ssl/bin/iperf
 
 #memcached
-export remote_mem_ip=192.168.1.2
+export remote_mem_ip=192.168.1.1
 
 export mem_bin=${ROOT_DIR}/kvs/memcached_build/bin/memcached
+export ktls_mem_bin=${ROOT_DIR}/kvs/ktls_mem_build/bin/memcached
 export kvs_dir=${ROOT_DIR}/kvs
 export kv_bench_dir=$ROOT_DIR/kv_bench
 export mc_bench_dir=$ROOT_DIR/kv_bench/mc-crusher
@@ -73,6 +74,7 @@ export offload_memtier_bin=$ROOT_DIR/kv_bench/offload_memtier_build/bin/memtier_
 #ktls directory
 export KTLS_DIR=${ROOT_DIR}/ktls
 export KTLS_NGINX=${KTLS_DIR}/nginx_build
+export KTLS_OSSL=${ROOT_DIR}/ktls/openssl-3.0.0
 
 #ocperf
 export OCPERF=${ROOT_DIR}/pmu-tools/ocperf
