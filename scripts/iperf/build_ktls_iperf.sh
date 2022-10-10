@@ -10,14 +10,10 @@ cd $iperf_dir
 if [ ! -f "iperf_ssl/bin/iperf" ]; then
 	cd iperf_ssl
 	env \
-	LIBS="-lrt -lssl -lcrypto"
-	LDFLAGS="-L/usr/local/lib -lcrypto -lssl" \
-	CFLAGS="-I/usr/local/include" \
+	LIBS=" -lcrypto -lssl" \
+	LDFLAGS="-L/home/n869p538/wrk_offloadenginesupport/async_nginx_build/ktls/openssl-3.0.0 -lcrypto -lssl" \
+	CFLAGS="-I/home/n869p538/wrk_offloadenginesupport/async_nginx_build/ktls/openssl-3.0.0/include" \
 	./configure --prefix=$(pwd)/../ktls_iperf_build
-	#--enable-tls \
-	#--with-libssl=/home/n869p538/wrk_offloadenginesupport/async_nginx_build/ktls/openssl-3.0.0 \
-	#--with-libevent=$(pwd)/../libevent_build
-	exit
 	make -j 4
 	make install -j 4
 fi
