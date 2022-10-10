@@ -21,9 +21,9 @@ cd memcached-1.6.16
 if [ ! -f "$(pwd)/../ktls_mem_build/bin/memcached" ]; then
 	# -Werror flag in makefile is preventing engine build due to warnings as errors , do we need to sed it out?
 	./configure --prefix=$(pwd)/../ktls_mem_build \
-	LDFLAGS=-L/home/n869p538/wrk_offloadenginesupport/client_ossls/openssl-3.0.0 \
+	LDFLAGS=-L/home/n869p538/wrk_offloadenginesupport/async_nginx_build/ktls/openssl-3.0.0 \
 	--enable-tls \
-	--with-libssl=/home/n869p538/wrk_offloadenginesupport/client_ossls/openssl-3.0.0 \
+	--with-libssl=/home/n869p538/wrk_offloadenginesupport/async_nginx_build/ktls/openssl-3.0.0 \
 	--with-libevent=$(pwd)/../libevent_build
 	#sed -i -E 's/CFLAGS = (.*)-Werror(.*)/CFLAGS = \1\2/g' Makefile
 
