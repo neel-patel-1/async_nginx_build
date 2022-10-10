@@ -10,4 +10,4 @@ cd ${iperf_dir}
 
 export LD_LIBRARY_PATH=${KTLS_OSSL}:$LD_LIBRARY_PATH
 >&2 echo "[info] ktls iperf server..."
-$ktls_iperf --tls=v1.2 --ktls -s
+$ktls_iperf --ktls -s

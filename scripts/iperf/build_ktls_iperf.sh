@@ -7,7 +7,8 @@ cd $iperf_dir
 [ ! -f "${KTLS_DIR}/openssl-3.0.0/libssl.so.3" ] && cd ${KTLS_DIR}/openssl-3.0.0 \
 && ./Configure enable-ktls \
 && make -j
-if [ ! -f "iperf_ssl/bin/iperf" ]; then
+cd $iperf_dir
+if [ ! -f "ktls_iperf_build/bin/iperf" ]; then
 	cd iperf_ssl
 	env \
 	LIBS=" -lcrypto -lssl" \

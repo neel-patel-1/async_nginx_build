@@ -56,7 +56,7 @@ export offload_iperf=${ROOT_DIR}/iperf_test/iperf_w_offload/src/iperf
 export ktls_iperf=${ROOT_DIR}/iperf_test/ktls_iperf_build/bin/iperf
 
 #memcached
-export remote_mem_ip=192.168.1.1
+export remote_mem_ip=192.168.1.2
 
 export mem_bin=${ROOT_DIR}/kvs/memcached_build/bin/memcached
 export ktls_mem_bin=${ROOT_DIR}/kvs/ktls_mem_build/bin/memcached
