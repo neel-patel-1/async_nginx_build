@@ -20,16 +20,16 @@ if [ ! -f "${AXDIMM_DIR}/openssl/lib/libcrypto.so.1.1" ]; then
 	echo "compiling openssl ..."
 	2>1 >/dev/null make -j 4
 	echo "installing openssl ..."
-	2>1 >/dev/null sudo make install -j 4
+	2>1 >/dev/null sudo make -s install -j 4
 else
 	cd ${AXDIMM_DIR}
 	cd openssl
-	#sudo make clean -j 4
-	#./Configure --prefix=$AXDIMM_DIR/openssl --openssldir=$AXDIMM_DIR/openssl/config_certs_keys linux-x86_64 
-	#echo "compiling openssl ..."
-	#2>1 >/dev/null make -j 4
+	sudo make clean -j 4
+	./Configure --prefix=$AXDIMM_DIR/openssl --openssldir=$AXDIMM_DIR/openssl/config_certs_keys linux-x86_64 
+	echo "compiling openssl ..."
+	make -s -j 4
 	echo "installing openssl ..."
-	2>1 >/dev/null sudo make install -j 4
+	sudo make -s install -j 4
 fi
 
 if [ ! -f "${AXDIMM_DIR}/crypto_mb/2020u3/lib/intel64/libcrypto_mb.so" ]; then
@@ -81,7 +81,7 @@ if [ ! -d "${AXDIMM_DIR}/nginx_build" ]; then
 	[ ! -f "nginx-1.20.1.tar.gz" ] && wget http://nginx.org/download/nginx-1.20.1.tar.gz
 	[ ! -d "nginx-1.20.1" ] && tar -xvzf nginx-1.20.1.tar.gz
 	cd nginx-1.20.1/
-	sudo ./configure --with-ld-opt="-L ${AXDIMM_DIR}/openssl" --with-http_ssl_module --with-http_random_index_module --with-openssl=${AXDIMM_DIR}/openssl --prefix=${AXDIMM_DIR}/nginx_build
+	sudo ./configure --with-ld-opt="-L ${AXDIMM_DIR}/openssl" --with-http_ssl_module  --with-openssl=${AXDIMM_DIR}/openssl --prefix=${AXDIMM_DIR}/nginx_build
 	make -j 4
 	sudo make install -j 4
 fi

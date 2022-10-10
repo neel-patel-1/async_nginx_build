@@ -21,12 +21,12 @@
 
 #include <papi.h>
 
-#define BUF_MAX 2 * 1024
-#define INC 512
+#define BUF_MAX 1 * 1024
+#define INC 128
 
 int flush_frac(){
 	printf("IN_DRAM, IN_CACHE, ns_TO_FLUSH, cycles_TO_FLUSH\n" );
-	int iter=10;
+	int iter=10000;
 	long_long s_cycle, e_cycle;
 	long_long s_nano, e_nano;
 	long_long nsec_avg, cycle_avg;
