@@ -9,4 +9,5 @@ source ${ROOT_DIR}/scripts/async_libsrcs.source
 cd ${iperf_dir}
 
 >&2 echo "[info] ktls iperf server..."
-$ktls_iperf --ktls -c ${remote_ip} -t 60 -i 5 -y C
+export LD_LIBRARY_PATH=${KTLS_OSSL}
+$ktls_iperf --tls=v1.2 -c 192.168.1.1 -t 10 -i 5

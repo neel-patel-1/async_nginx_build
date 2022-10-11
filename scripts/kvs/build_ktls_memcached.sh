@@ -15,15 +15,15 @@ fi
 
 cd $ROOT_DIR/kvs
 #[ ! -d "memcached" ] && git clone --depth 1 --branch 1.6.17 https://github.com/memcached/memcached
-[ ! -f "memcached-1.6.16.tar.gz" ] && wget http://www.memcached.org/files/memcached-1.6.16.tar.gz
-[ ! -d "memcached-1.6.16" ] && tar -xzf memcached-1.6.16.tar.gz
+[ ! -d "memcached-1.6.16" ] || [ ! -d "memcached_ctx_ktls" ]  && git clone git@github.com:neelpatelbiz/memcached_ctx_ktls.git
 cd memcached-1.6.16
 if [ ! -f "$(pwd)/../ktls_mem_build/bin/memcached" ]; then
 	# -Werror flag in makefile is preventing engine build due to warnings as errors , do we need to sed it out?
+	env \
+	LDFLAGS="-L/home/n869p538/wrk_offloadenginesupport/async_nginx_build/ktls/openssl-3.0.0" \
 	./configure --prefix=$(pwd)/../ktls_mem_build \
-	LDFLAGS=-L/home/n869p538/wrk_offloadenginesupport/async_nginx_build/ktls/openssl-3.0.0 \
-	--enable-tls \
 	--with-libssl=/home/n869p538/wrk_offloadenginesupport/async_nginx_build/ktls/openssl-3.0.0 \
+	--enable-tls \
 	--with-libevent=$(pwd)/../libevent_build
 	#sed -i -E 's/CFLAGS = (.*)-Werror(.*)/CFLAGS = \1\2/g' Makefile
 
