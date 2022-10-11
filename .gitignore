@@ -16,6 +16,6 @@
 /offload_kvs/*.txt
 /files_files
 /kv_bench
-/iperf_test
+/iperf_test/!(iperf_ktls|iperf_w_offload)
 *.mem
 *.txt
