@@ -24,6 +24,7 @@ if [ ! -f "${KTLS_DIR}/nginx_build/sbin/nginx" ]; then
 	--with-http_slice_module \
 	--with-openssl=${KTLS_DIR}/openssl-3.0.0 \
 	--with-openssl-opt=enable-ktls \
+	--with-debug \
 	--with-cc-opt='-g -O2 -fstack-protector-strong -Wformat -Werror=format-security -Wp,-D_FORTIFY_SOURCE=2 -fPIC' \
 	--with-ld-opt='-Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now -Wl,--as-needed -pie' \
 	$* # additional args

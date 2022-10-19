@@ -1,8 +1,11 @@
 #!/bin/bash
 >&2 echo "[info] qtls server ..."
-sudo ${QTLS_NGINX_BIN}/nginx -t #test qtls config
+sudo env \
+OPENSSL_ENGINES=$OPENSSL_LIBS/engines-1.1 \
+LD_LIBRARY_PATH=$OPENSSL_LIB:~/home/n869p538/ssl_balancers/QATzip/src \
+${QTLS_NGINX_BIN}/nginx -t #test qtls config
 
-sudo cp -f ${ROOT_DIR}/async_nginx_conf/nginx.conf_benchmark_all_ciphers_w_keepalive ${QTLS_NGINX}/conf/nginx.conf
+sudo cp -f ${ROOT_DIR}/async_nginx_conf/nginx.conf_no_gzip ${QTLS_NGINX}/conf/nginx.conf
 
 if [ -z "$( grep worker_processes ${QTLS_NGINX}/conf/nginx.conf )" ]; then
 	sudo sed -i "/number of cores/a worker_processes ${cores};" ${QTLS_NGINX}/conf/nginx.conf
@@ -19,4 +22,4 @@ fi
 sudo env \
 OPENSSL_ENGINES=$OPENSSL_LIBS/engines-1.1 \
 LD_LIBRARY_PATH=$OPENSSL_LIB \
-${QTLS_NGINX_BIN}/nginx
+${QTLS_NGINX_BIN}/nginx 

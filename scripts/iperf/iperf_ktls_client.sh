@@ -1,6 +1,6 @@
 #!/bin/bash
 #set root directory
-export ROOT_DIR=/home/n869p538/async_nginx_build
+export ROOT_DIR=/home/n869p538/wrk_offloadenginesupport/async_nginx_build
 
 #get global variables
 source ${ROOT_DIR}/scripts/async_libsrcs.source
@@ -9,4 +9,5 @@ source ${ROOT_DIR}/scripts/async_libsrcs.source
 cd ${iperf_dir}
 
 >&2 echo "[info] ktls iperf server..."
-$ktls_iperf --ktls -c ${remote_ip} -t 60 -i 5 -y C
+export LD_LIBRARY_PATH=${KTLS_OSSL}
+$ktls_iperf --tls=v1.2 -c 192.168.1.1 -t 10 -i 5

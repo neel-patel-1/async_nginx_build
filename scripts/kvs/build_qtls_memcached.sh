@@ -4,7 +4,7 @@ source $ROOT_DIR/scripts/async_libsrcs.source
 
 [ ! -d "$ROOT_DIR/kvs" ] && mkdir $ROOT_DIR/kvs
 cd $ROOT_DIR/kvs
-[ ! -f "libevent-2.1.12-stable.tar.gz" ] && wget https://github.com/libevent/libevent/releases/download/release-2.1.12-stable/libevent-2.1.12-stable.tar.gz
+[ ! -f "libevent-2.1.12-stable.tar.gz" ] && wget --no-check-certificate https://github.com/libevent/libevent/releases/download/release-2.1.12-stable/libevent-2.1.12-stable.tar.gz
 [ ! -d "libevent-2.1.12-stable" ]  && tar -xzf libevent-2.1.12-stable.tar.gz
 if [ ! -d "$(pwd)/libevent_build" ]; then
 	cd libevent-2.1.12-stable
@@ -14,17 +14,19 @@ if [ ! -d "$(pwd)/libevent_build" ]; then
 fi
 
 cd $ROOT_DIR/kvs
-[ ! -f "memcached-1.6.15.tar.gz" ] &&  wget http://www.memcached.org/files/memcached-1.6.15.tar.gz
-[ ! -d "memcached-1.6.15" ] && tar -xzf memcached-1.6.15.tar.gz
-cd memcached-1.6.15
-if [ ! -f "$(pwd)/../memcached_build/bin/memcached" ]; then
+#[ ! -d "memcached" ] && git clone --depth 1 --branch 1.6.17 https://github.com/memcached/memcached
+[ ! -d "memcached_qtls" ]  && git clone git@github.com:neelpatelbiz/memcached_qtls.git
+cd memcached_qtls
+if [ ! -f "$(pwd)/../memcached_qtls_build/bin/memcached" ]; then
 	# -Werror flag in makefile is preventing engine build due to warnings as errors , do we need to sed it out?
-	./configure --prefix=$(pwd)/../memcached_build \
+	[ ! -d  "${QTLS_DIR}/openssl" ] && echo "no ssl" && exit
+	env \
+	LDFLAGS="-L/home/n869p538/wrk_offloadenginesupport/async_nginx_build/qtls/openssl" \
+	./configure --prefix=$(pwd)/../memcached_qtls_build \
+	--with-libssl=/home/n869p538/wrk_offloadenginesupport/async_nginx_build/qtls/openssl \
 	--enable-tls \
-	--with-libevent=$(pwd)/../libevent_build \
-	--with-libssl=$AXDIMM_OSSL_LIBS/..
-	sed -i -E 's/CFLAGS = (.*)-Werror(.*)/CFLAGS = \1\2/g' Makefile
-
+	--with-libevent=$(pwd)/../libevent_build
+	
 	make -j 4
 	make install -j 4
 fi

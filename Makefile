@@ -1,6 +1,6 @@
 OFF_SSL=/home/n869p538/async_nginx_build/axdimm/openssl
 
-.PHONY: qtls axdimm all qtls_server axdimm_server ocperf default ktls configure axdimm_test axdimm_test_server tls_iperf
+.PHONY: qtls axdimm all qtls_server axdimm_server ocperf default ktls configure axdimm_test axdimm_test_server tls_iperf compress_emul
 
 all: configure qtls axdimm ktls default spec ocperf axdimm_test
 
@@ -64,6 +64,11 @@ iperf_tcp:
 iperf_tls:
 	./scripts/iperf/iperf_tls.sh
 
+compress_emul: update
+	cd nginx_compress_emul && ./test_gzip_emul.sh
+
+update:
+	git submodule update --init --recursive
 clean:
 	cd iperf_test/iperf_w_offload && \
 	make clean && \
