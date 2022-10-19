@@ -16,6 +16,8 @@ export QTLS_DIR=$ROOT_DIR/qtls
 export ICP_ROOT=$QTLS_DIR/QAT
 export QTLS_NGINX=$QTLS_DIR/async_mode_nginx_build
 export QTLS_NGINX_BIN=$QTLS_NGINX/sbin
+export QTLS_ENGINES=$QTLS_DIR/openssl/lib/engines-1.1
+export QTLS_LIBS=$QTLS_DIR/openssl/lib
 export OPENSSL_LIB=$QTLS_DIR/openssl
 export OPENSSL_LIBS=$QTLS_DIR/openssl/lib
 export OPENSSL_INSTALL=$QTLS_DIR/openssl
@@ -62,6 +64,7 @@ export ktls_iperf=${ktls_root}/iperf/src/iperf
 export remote_mem_ip=192.168.1.2
 
 export mem_bin=${ROOT_DIR}/kvs/memcached_build/bin/memcached
+export qtls_mem_bin=${ROOT_DIR}/kvs/memcached_qtls/bin/memcached
 export ktls_mem_bin=${ROOT_DIR}/kvs/ktls_mem_build/bin/memcached
 export kvs_dir=${ROOT_DIR}/kvs
 export kv_bench_dir=$ROOT_DIR/kv_bench
