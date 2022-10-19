@@ -64,7 +64,7 @@ export ktls_iperf=${ktls_root}/iperf/src/iperf
 export remote_mem_ip=192.168.1.2
 
 export mem_bin=${ROOT_DIR}/kvs/memcached_build/bin/memcached
-export qtls_mem_bin=${ROOT_DIR}/kvs/memcached_qtls/bin/memcached
+export qtls_mem_bin=${ROOT_DIR}/kvs/memcached_qtls_build/bin/memcached
 export ktls_mem_bin=${ROOT_DIR}/kvs/ktls_mem_build/bin/memcached
 export kvs_dir=${ROOT_DIR}/kvs
 export kv_bench_dir=$ROOT_DIR/kv_bench
