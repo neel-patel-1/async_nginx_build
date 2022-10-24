@@ -26,9 +26,9 @@ int main(){
 	while ( iter < (long long int * ) (buf + size ))
 	{
 		t = *( long long int *) iter;
-
+		iter += sizeof(long long int);
 	}
-
 	e_nsec= PAPI_get_real_nsec();
+	printf("%lld nsec\n", e_nsec - s_nsec);
 
 }
