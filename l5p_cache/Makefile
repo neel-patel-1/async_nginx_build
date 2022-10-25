@@ -6,7 +6,7 @@ LIBS = -lpapi
 
 
 a_lat: main.o Makefile 
-	$(CXX) -o $@ main.c  $(LIBS) $(LDFLAGS)
+	$(CXX) -O0 -o $@ main.c  $(LIBS) $(LDFLAGS)
 
 clean:
 	@rm -rf qat_page_comp *.o
