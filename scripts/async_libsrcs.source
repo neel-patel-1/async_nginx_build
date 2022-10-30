@@ -25,6 +25,10 @@ export OPENSSL_INSTALL=$QTLS_DIR/openssl
 export qat_name="pch_lewisburg-virtual-0" #qat device name in sensors command
 export mel_devs=( "/dev/mst/mt41682_pciconf0" "/dev/mst/mt41682_pciconf0.1" ) #mellanox dev files
 
+#L5P Exp
+export L5P_DIR=$ROOT_DIR/l5p_exp
+export L5P_ENGINES=$ROOT_DIR/l5p_exp/openssl/lib/engines-1.1
+
 #AXDIMM 
 export OFFLOAD_DIR=$ROOT_DIR/axdimm
 export OFFLOAD_NGINX_CONFS=$OFFLOAD_DIR/default_nginx_conf
