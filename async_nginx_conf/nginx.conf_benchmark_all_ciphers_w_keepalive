@@ -24,7 +24,8 @@ events
 {
   use epoll;    
 
-  worker_connections 8192;  
+  #worker_connections 8192;  
+  worker_connections 2048;  
 
   multi_accept on;  
 

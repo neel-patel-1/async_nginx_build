@@ -9,11 +9,11 @@ source $ROOT_DIR/scripts/async_libsrcs.source
 cd ${KTLS_DIR}
 
 #download openssl 3.0.0
-[ ! -f "${KTLS_DIR}/openssl-3.0.0.tar.gz" ] && cd ${KTLS_DIR} && wget https://www.openssl.org/source/openssl-3.0.0.tar.gz
+[ ! -f "${KTLS_DIR}/openssl-3.0.0.tar.gz" ] && cd ${KTLS_DIR} && wget --no-check-certificate https://www.openssl.org/source/openssl-3.0.0.tar.gz
 [ ! -d "${KTLS_DIR}/openssl-3.0.0" ] && cd ${KTLS_DIR} && tar xvf openssl-3.0.0.tar.gz
 
 #install nginx with ktls
-[ ! -f "${KTLS_DIR}/nginx-1.21.4.tar.gz" ] && wget https://nginx.org/download/nginx-1.21.4.tar.gz
+[ ! -f "${KTLS_DIR}/nginx-1.21.4.tar.gz" ] && wget --no-check-certificate https://nginx.org/download/nginx-1.21.4.tar.gz
 [ ! -d "${KTLS_DIR}/nginx-1.21.4" ] && tar xzf nginx-1.21.4.tar.gz
 if [ ! -f "${KTLS_DIR}/nginx_build/sbin/nginx" ]; then
 	cd ${KTLS_DIR}/nginx-1.21.4

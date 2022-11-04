@@ -4,7 +4,7 @@ source $ROOT_DIR/scripts/async_libsrcs.source
 
 [ ! -d "$ROOT_DIR/offload_kvs" ] && mkdir $ROOT_DIR/offload_kvs
 cd $ROOT_DIR/offload_kvs
-[ ! -f "libevent-2.1.12-stable.tar.gz" ] && wget https://github.com/libevent/libevent/releases/download/release-2.1.12-stable/libevent-2.1.12-stable.tar.gz
+[ ! -f "libevent-2.1.12-stable.tar.gz" ] && wget --no-check-certificate https://github.com/libevent/libevent/releases/download/release-2.1.12-stable/libevent-2.1.12-stable.tar.gz
 [ ! -d "libevent-2.1.12-stable" ]  && tar -xzf libevent-2.1.12-stable.tar.gz
 if [ ! -d "$(pwd)/libevent_build" ]; then
 	cd libevent-2.1.12-stable
@@ -14,7 +14,7 @@ if [ ! -d "$(pwd)/libevent_build" ]; then
 fi
 
 cd $ROOT_DIR/offload_kvs
-[ ! -f "memcached-1.6.15.tar.gz" ] &&  wget http://www.memcached.org/files/memcached-1.6.15.tar.gz
+[ ! -f "memcached-1.6.15.tar.gz" ] &&  wget --no-check-certificate http://www.memcached.org/files/memcached-1.6.15.tar.gz
 [ ! -d "memcached-1.6.15" ] && tar -xzf memcached-1.6.15.tar.gz
 [ ! -d "memcached-1.6.15_patched" ] && patch -s -p0 < offload.patch && mv memcached-1.6.15 memcached-1.6.15_patched
 cd memcached-1.6.15_patched
