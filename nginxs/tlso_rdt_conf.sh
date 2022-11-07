@@ -26,4 +26,4 @@ fi
 sudo env \
 OPENSSL_ENGINES=$AXDIMM_ENGINES \
 LD_LIBRARY_PATH=$AXDIMM_OSSL_LIBS:$AXDIMM_DIR/lib \
-rdtset -k -r 1-${cores} -t "l3=0x20000;cpu=0-${cores}" -c 1-${cores} ${AXDIMM_NGINX}/sbin/nginx
+rdtset -k -r 1-${cores} -t "l3=0x70;cpu=1-${cores}" -c 1-${cores} ${AXDIMM_NGINX}/sbin/nginx

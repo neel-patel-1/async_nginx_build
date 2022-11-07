@@ -18,4 +18,8 @@ else
 fi
 
 sudo ${DEFAULT_NGINX}/sbin/nginx -t
-sudo rdtset -k -r 1-${cores} -t "l3=0x400;cpu=0-${cores}" -c 1-${cores} ${DEFAULT_NGINX}/sbin/nginx
+sudo pqos -R
+sudo pqos -e "llc:1=0x0007;"
+sudo pqos -a "llc:1=1-10;"
+sudo ${DEFAULT_NGINX}/sbin/nginx
+#sudo rdtset -k -r 1-${cores} -t "l3=0x80;cpu=1-${cores}" -c 1-${cores} ${DEFAULT_NGINX}/sbin/nginx

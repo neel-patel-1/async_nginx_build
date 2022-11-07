@@ -16,4 +16,4 @@ else
 fi
 
 sudo ${KTLS_NGINX}/sbin/nginx -t
-sudo rdtset -r 1-${cores} -t "l3=0x20000;cpu=0-${cores}" -c 1-${cores} ${KTLS_NGINX}/nginx
+sudo rdtset -r 1-${cores} -t "l3=0x70;cpu=0-${cores}" -c 1-${cores} ${KTLS_NGINX}/nginx
