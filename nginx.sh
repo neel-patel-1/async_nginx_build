@@ -27,6 +27,8 @@ if [ "$1" = "stop" ]; then
 	ps aux | grep -e 'nginx:' | awk '{print $2}' | xargs sudo kill -s 2
 elif [ "$1" = "http" ]; then
 	${ROOT_DIR}/nginxs/http_conf.sh
+elif [ "$1" = "http_gzip" ]; then
+	${ROOT_DIR}/nginxs/http_gzip_conf.sh
 elif [ "$1" = "http_rdt" ]; then
 	${ROOT_DIR}/nginxs/http_rdt_conf.sh
 elif [ "$1" = "httpsendfile" ]; then
