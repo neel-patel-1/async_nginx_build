@@ -17,7 +17,8 @@ FSZ=$(( 1 * 1024 ))
 size=1K
 
 sudo mount -t tmpfs -o size=1g tmpfs ${DEFAULT_DIR}/nginx_build/html
-parallel dd if=/dev/random of=${DEFAULT_DIR}/nginx_build/html/UCFile_${size}_{}.txt bs=100 count=10 ::: {0..36608}
+#parallel dd if=/dev/random of=${DEFAULT_DIR}/nginx_build/html/UCFile_${size}_{}.txt bs=100 count=10 ::: {0..36608}
+parallel "head -c ${size} < /dev/urandom > ${DEFAULT_DIR}/nginx_build/html/UCFile_${size}_{}.txt" ::: {0..399}
 exit
 for i in `seq 0 $(( FS_SIZE / FSZ )) `; do
 	[ ! -f "${DEFAULT_DIR}/nginx_build/html/UCFile_${size}_$i.txt" ] && head -c $size < /dev/urandom | sudo tee ${DEFAULT_DIR}/nginx_build/html/UCFile_${size}_$i.txt > /dev/null
