@@ -19,3 +19,6 @@
 [submodule "ngx_gzip_comp_cpy"]
 	path = ngx_gzip_comp_cpy
 	url = git@github.com:neelpatelbiz/ngx_gzip_comp_cpy.git
+[submodule "nginx_compress_emul/nginx-http-slice"]
+	path = nginx_compress_emul/nginx-http-slice
+	url = https://github.com/alibaba/nginx-http-slice.git
