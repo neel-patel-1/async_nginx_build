@@ -16,4 +16,8 @@ else
 	sudo sed -i -E "s/(worker_cpu_affinity) (.*)(;)/$masks/g" ${DEFAULT_NGINX}/conf/nginx.conf
 fi
 	
+sudo ${DEFAULT_NGINX_BIN}/nginx -t
+sudo pqos -R
+sudo pqos -e "llc:1=0x0007;"
+sudo pqos -a "llc:1=1-10;"
 sudo ${DEFAULT_NGINX_BIN}/nginx

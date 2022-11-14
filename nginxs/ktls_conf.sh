@@ -16,4 +16,7 @@ else
 fi
 
 sudo ${KTLS_NGINX}/sbin/nginx -t
+sudo pqos -R
+sudo pqos -e "llc:1=0x0007;"
+sudo pqos -a "llc:1=1-10;"
 sudo ${KTLS_NGINX}/sbin/nginx
