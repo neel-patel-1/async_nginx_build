@@ -54,6 +54,11 @@ export DEFAULT_NGINX_BIN=$DEFAULT_NGINX/sbin
 export DEFAULT_OSSL=$DEFAULT_DIR/openssl-3.0.0
 export DEFAULT_SCRIPTS=$ROOT_DIR/scripts/default
 
+# accel gzip nginx LOC
+export ACCEL_GZIP_NGINX=$ROOT_DIR/nginx_compress_emul/nginx_gzip_build/sbin/nginx
+export ACCEL_GZIP_FILE_DIR=$ROOT_DIR/nginx_compress_emul/nginx_gzip_build/html
+export ACCEL_GZIP_NGINX_CONF=$ROOT_DIR/nginx_compress_emul/nginx_gzip_build/conf/nginx.conf
+
 #spec
 export SPEC_DIR=${ROOT_DIR}/cpu_2017
 export remotespec=n869p538@pollux.ittc.ku.edu:/home/n869p538/cpu2017-1_0_5.iso

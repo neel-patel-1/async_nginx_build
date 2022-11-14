@@ -34,18 +34,24 @@ while [ ! -z "$( mount | grep $QTLS_NGINX/html)" ];
 do
 	sudo umount -f $QTLS_NGINX/html
 done
+while [ ! -z "$( mount | grep $ACCEL_GZIP_FILE_DIR)" ];
+do
+	sudo umount -f $ACCEL_GZIP_FILE_DIR
+done
 
-sudo mount -t tmpfs -o size=1g tmpfs ${DEFAULT_DIR}/nginx_build/html
-sudo mount -t tmpfs -o size=1g tmpfs $AXDIMM_NGINX/html
-sudo mount -t tmpfs -o size=1g tmpfs $KTLS_NGINX/html
-sudo mount -t tmpfs -o size=1g tmpfs $QTLS_NGINX/html
-sudo mount -t tmpfs -o size=1g tmpfs $QTLS_NGINX/html
-sudo mount -t tmpfs -o size=1g tmpfs $ACCEL_GZIP_FILE_DIR
+if [ ! -z "${1}" ] && [ ! -z "${2}" ]; then 
+	sudo mount -t tmpfs -o size=1g tmpfs ${DEFAULT_DIR}/nginx_build/html
+	sudo mount -t tmpfs -o size=1g tmpfs $AXDIMM_NGINX/html
+	sudo mount -t tmpfs -o size=1g tmpfs $KTLS_NGINX/html
+	sudo mount -t tmpfs -o size=1g tmpfs $QTLS_NGINX/html
+	sudo mount -t tmpfs -o size=1g tmpfs $QTLS_NGINX/html
+	sudo mount -t tmpfs -o size=1g tmpfs $ACCEL_GZIP_FILE_DIR
 
-[ ! -z "${1}" ] && [ ! -z "${2}" ] && \
-	parallel "head -c ${1} < /dev/urandom > ${ROOT_DIR}/comp_files/UCFile_${1}_{}.txt" ::: {0..999} && \
-	cp -r ${ROOT_DIR}/comp_files/UCFile_${1}* ${DEFAULT_DIR}/nginx_build/html && \
-	cp -r ${ROOT_DIR}/comp_files/UCFile_${1}* ${AXDIMM_DIR}/nginx_build/html && \
-	cp -r ${ROOT_DIR}/comp_files/UCFile_${1}* ${KTLS_NGINX}/html && \
-	cp -r ${ROOT_DIR}/comp_files/UCFile_${1}* ${QTLS_NGINX}/html && \
+	parallel "head -c ${1} < /dev/urandom > ${ROOT_DIR}/comp_files/UCFile_${1}_{}.txt" ::: {0..999}
+
+	cp -r ${ROOT_DIR}/comp_files/UCFile_${1}* ${DEFAULT_DIR}/nginx_build/html
+	cp -r ${ROOT_DIR}/comp_files/UCFile_${1}* ${AXDIMM_DIR}/nginx_build/html
+	cp -r ${ROOT_DIR}/comp_files/UCFile_${1}* ${KTLS_NGINX}/html
+	cp -r ${ROOT_DIR}/comp_files/UCFile_${1}* ${QTLS_NGINX}/html
 	cp -r ${ROOT_DIR}/comp_files/UCFile_${1}* $ACCEL_GZIP_FILE_DIR
+fi
