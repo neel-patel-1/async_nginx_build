@@ -16,12 +16,36 @@ FS_SIZE=$(( 1 * 1024 * 1024 * 1024 ))
 FSZ=$(( 1 * 1024 ))
 size=1K
 
-sudo mount -t tmpfs -o size=1g tmpfs ${DEFAULT_DIR}/nginx_build/html
-#parallel dd if=/dev/random of=${DEFAULT_DIR}/nginx_build/html/UCFile_${size}_{}.txt bs=100 count=10 ::: {0..36608}
-parallel "head -c ${size} < /dev/urandom > ${DEFAULT_DIR}/nginx_build/html/UCFile_${size}_{}.txt" ::: {0..399}
-exit
-for i in `seq 0 $(( FS_SIZE / FSZ )) `; do
-	[ ! -f "${DEFAULT_DIR}/nginx_build/html/UCFile_${size}_$i.txt" ] && head -c $size < /dev/urandom | sudo tee ${DEFAULT_DIR}/nginx_build/html/UCFile_${size}_$i.txt > /dev/null
-	#[ ! -f "${KTLS_NGINX}/html/UCFile_$i.txt" ] && head -c $size < /dev/urandom | sudo tee ${KTLS_NGINX}/html/UCFile_$i.txt > /dev/null
-	#[ ! -f "${AXDIMM_NGINX}/html/UCFile_$i.txt" ] && head -c $size < /dev/urandom | sudo tee ${AXDIMM_NGINX}/html/UCFile_$i.txt > /dev/null
+#parallel "head -c ${size} < /dev/zero > ${DEFAULT_DIR}/nginx_build/html/UCFile_${size}_{}.txt" ::: {0..399}
+
+while [ ! -z "$( mount | grep ${DEFAULT_DIR}/nginx_build/html)" ];
+do
+	sudo umount -f ${DEFAULT_DIR}/nginx_build/html
 done
+while [ ! -z "$( mount | grep $AXDIMM_NGINX/html)" ];
+do
+	sudo umount -f $AXDIMM_NGINX/html
+done
+while [ ! -z "$( mount | grep $KTLS_NGINX/html)" ];
+do
+	sudo umount -f $KTLS_NGINX/html
+done
+while [ ! -z "$( mount | grep $QTLS_NGINX/html)" ];
+do
+	sudo umount -f $QTLS_NGINX/html
+done
+
+sudo mount -t tmpfs -o size=1g tmpfs ${DEFAULT_DIR}/nginx_build/html
+sudo mount -t tmpfs -o size=1g tmpfs $AXDIMM_NGINX/html
+sudo mount -t tmpfs -o size=1g tmpfs $KTLS_NGINX/html
+sudo mount -t tmpfs -o size=1g tmpfs $QTLS_NGINX/html
+sudo mount -t tmpfs -o size=1g tmpfs $QTLS_NGINX/html
+sudo mount -t tmpfs -o size=1g tmpfs $ACCEL_GZIP_FILE_DIR
+
+[ ! -z "${1}" ] && [ ! -z "${2}" ] && \
+	parallel "head -c ${1} < /dev/urandom > ${ROOT_DIR}/comp_files/UCFile_${1}_{}.txt" ::: {0..999} && \
+	cp -r ${ROOT_DIR}/comp_files/UCFile_${1}* ${DEFAULT_DIR}/nginx_build/html && \
+	cp -r ${ROOT_DIR}/comp_files/UCFile_${1}* ${AXDIMM_DIR}/nginx_build/html && \
+	cp -r ${ROOT_DIR}/comp_files/UCFile_${1}* ${KTLS_NGINX}/html && \
+	cp -r ${ROOT_DIR}/comp_files/UCFile_${1}* ${QTLS_NGINX}/html && \
+	cp -r ${ROOT_DIR}/comp_files/UCFile_${1}* $ACCEL_GZIP_FILE_DIR
