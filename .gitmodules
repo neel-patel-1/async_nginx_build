@@ -22,3 +22,6 @@
 [submodule "nginx_compress_emul/nginx-http-slice"]
 	path = nginx_compress_emul/nginx-http-slice
 	url = https://github.com/alibaba/nginx-http-slice.git
+[submodule "nginx_compress_emul/nginx-nmp-overhead-module"]
+	path = nginx_compress_emul/nginx-nmp-overhead-module
+	url = git@github.com:neelpatelbiz/nginx-nmp-overhead-module.git
