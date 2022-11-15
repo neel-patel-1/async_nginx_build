@@ -25,23 +25,30 @@ do
 	sudo umount -f $ACCEL_GZIP_FILE_DIR
 done
 
-FULL_SIZE=1K
+if [ ! -z "${1}" ]; then
+	FULL_SIZE=${1}
+else
+	FULL_SIZE=1K
+fi
+
 TRIM_CONF=${ROOT_DIR}/nginx_compress_emul/nginx_default.conf
 COMP_SIZE=460
 
 
-# check sw compression ratio
-parallel "sudo cp ${ROOT_DIR}/comp_files/bbc_file_${FULL_SIZE}.html ${DEFAULT_DIR}/nginx_build/html/UCFILE_${FULL_SIZE}_{}.txt" ::: {0..999}
-${ROOT_DIR}/nginx.sh http 10
-COMP_SIZE=$( wget --header="accept-encoding:gzip, deflate" http://localhost/UCFILE_${FULL_SIZE}_1.txt  2>&1 | grep saved | awk '{print $6}' | sed -e 's/^.//' -e 's/.$//' | xargs du -b | awk '{print $1}' )
+# check sw compression ratio and populate default dir
+[ ! -f "${ROOT_DIR}/comp_files/bbc_file_${FULL_SIZE}.html" ] && head -c ${FULL_SIZE} < ${ROOT_DIR}/comp_files/bbc_file.html > ${ROOT_DIR}/comp_files/bbc_file_${FULL_SIZE}.html
+sudo mount -t tmpfs -o size=1g tmpfs ${DEFAULT_DIR}/nginx_build/html
+parallel "sudo cp ${ROOT_DIR}/comp_files/bbc_file_${FULL_SIZE}.html ${DEFAULT_DIR}/nginx_build/html/UCFile_${FULL_SIZE}_{}.txt" ::: {0..999}
+${ROOT_DIR}/nginx.sh http_gzip 10
+COMP_SIZE=$( wget --header="accept-encoding:gzip, deflate" http://localhost/UCFile_${FULL_SIZE}_1.txt  2>&1 | grep saved | awk '{print $6}' | sed -e 's/^.//' -e 's/.$//' | xargs du -b | awk '{print $1}' )
 
 # emulate compression of entire file length on SmartDIMM
 sed -i -E "s/file_length [0-9]+;/file_length ${FULL_SIZE};/g" ${TRIM_CONF}
 ${ROOT_DIR}/nginx.sh accel_gzip 10
 
-sudo mount -t tmpfs -o size=1g tmpfs ${DEFAULT_DIR}/nginx_build/html
+# populate accel and qat
 sudo mount -t tmpfs -o size=1g tmpfs $QTLS_NGINX/html
 sudo mount -t tmpfs -o size=1g tmpfs $ACCEL_GZIP_FILE_DIR
 
-parallel "head -c ${COMP_SIZE} < /dev/zero > $ACCEL_GZIP_FILE_DIR/UCFILE_${FULL_SIZE}_{}.txt" ::: {0..999}
-parallel "cp ${ROOT_DIR}/comp_files/bbc_file_${FULL_SIZE}.html ${QTLS_NGINX}/html/UCFILE_${FULL_SIZE}_{}.txt" ::: {0..999}
+parallel "head -c ${COMP_SIZE} < ${ROOT_DIR}/comp_files/bbc_file.html > $ACCEL_GZIP_FILE_DIR/UCFile_${FULL_SIZE}_{}.txt" ::: {0..999}
+parallel "cp ${ROOT_DIR}/comp_files/bbc_file_${FULL_SIZE}.html ${QTLS_NGINX}/html/UCFile_${FULL_SIZE}_{}.txt" ::: {0..999}
