@@ -3,8 +3,19 @@ CORES=( "1" "2" "3" "4" "5" "6" "7" "8" "9" "10" )
 #CORES=( "1" "2"  )
 PIDS=( $(pgrep mcf_r) )
 
+#1 - process to monitor memory bandwidth of
+spec_cpu_mon(){
+	while [ "1" ]; do
+		time=$(printf '%(%H:%M:%S)T')
+		cpu_util=$( top -b -n 2 -d 0.2 -p ${1} | tail -1 | awk '{print $9}' )
+		echo "${time},${cpu_util}" >> mcf_r_${1}.cpu
+		sleep 0.2
+	done
+
+}
+
+#1 - process to monitor memory bandwidth of
 spec_mon(){
-	#while kill -0 ${1} 2>/dev/null; do
 	OF=mcf_r_${1}.mem
 	rm -f mcf_r_${1}.mem
 	sudo pqos -i 1 -I -p "mbl:${1};llc:${1}" -o mcf_r_${1}.mem
@@ -24,7 +35,9 @@ done
 echo "got pids: ${PIDS[*]}"
 	
 for p in "${PIDS[@]}"; do
-	spec_mon $p &
+	#spec_mon $p &
+	#MONS+=( "$!" )
+	spec_cpu_mon $p &
 	MONS+=( "$!" )
 done
 
