@@ -1,16 +1,13 @@
 #!/bin/bash
-#CORES=( "1" "2" "3" "4" "5" "6" "7" "8" "9" "10" )
-CORES=( "1" "2"  )
+CORES=( "1" "2" "3" "4" "5" "6" "7" "8" "9" "10" )
+#CORES=( "1" "2"  )
 PIDS=( $(pgrep mcf_r) )
 
 spec_mon(){
 	#while kill -0 ${1} 2>/dev/null; do
 	OF=mcf_r_${1}.mem
 	rm -f mcf_r_${1}.mem
-	while [ "1" ]; do
-		sudo pqos -t 1 -i 1 -I -p "mbl:${1};llc:${1}" >> mcf_r_${1}.mem
-		sleep 1
-	done
+	sudo pqos -i 1 -I -p "mbl:${1};llc:${1}" -o mcf_r_${1}.mem
 }
 
 sudo pqos -R 
@@ -21,29 +18,32 @@ do
 done
 
 while [ "${#PIDS[@]}" -lt ${#CORES[@]} ]; do
-	PIDS=( $(pgrep runcpu ) )
+	PIDS=( $(pgrep specperl ) )
 done
 
 echo "got pids: ${PIDS[*]}"
 	
 for p in "${PIDS[@]}"; do
 	spec_mon $p &
+	MONS+=( "$!" )
 done
 
-
+# watch for runcpu completion
 comp=0
 while [ "${comp}" = 0 ];do
 	comp=1
 	for p in "${PIDS[@]}"; do
 		echo "checking: $p complete?"
-		if [ $(kill -0 $p 2>/dev/null) ]; then
-			comp=0;
-		fi
+		kill -0 $p 2>/dev/null
+		comp=$?;
 		sleep 1
 	done
 done
 
-pgrep pqos
-ps aux | grep pqos
-sudo kill -s 2 $( pgrep pqos )
+# kill monitors
+for i in "${MONS[@]}"; do
+	echo "kill monitor : ${i}"
+	sudo kill -KILL ${i}
+done
+
 exit
