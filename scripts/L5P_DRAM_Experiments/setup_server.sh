@@ -14,9 +14,9 @@ cd ${DEFAULT_DIR}
 
 FS_SIZE=$(( 1 * 1024 * 1024 * 1024 ))
 FSZ=$(( 1 * 1024 ))
-size=1K
+size=${1}
+[ -z "${size}" ] && size=1K
 
-#parallel "head -c ${size} < /dev/zero > ${DEFAULT_DIR}/nginx_build/html/UCFile_${size}_{}.txt" ::: {0..399}
 
 while [ ! -z "$( mount | grep ${DEFAULT_DIR}/nginx_build/html)" ];
 do
@@ -39,7 +39,7 @@ do
 	sudo umount -f $ACCEL_GZIP_FILE_DIR
 done
 
-if [ ! -z "${1}" ] && [ ! -z "${2}" ]; then 
+if [ ! -z "${1}" ];  then 
 	sudo mount -t tmpfs -o size=1g tmpfs ${DEFAULT_DIR}/nginx_build/html
 	sudo mount -t tmpfs -o size=1g tmpfs $AXDIMM_NGINX/html
 	sudo mount -t tmpfs -o size=1g tmpfs $KTLS_NGINX/html
