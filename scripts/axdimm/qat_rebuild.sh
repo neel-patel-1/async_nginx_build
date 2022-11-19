@@ -5,10 +5,6 @@ source $ROOT_DIR/scripts/async_libsrcs.source
 #sudo PERL5LIB=$AXDIMM_DIR/openssl make install -j 4
 [ ! -d "${AXDIMM_DIR}" ] && mkdir -p ${AXDIMM_DIR}
 
-cd ${AXDIMM_DIR}/qat_cache_flush
-PERL5LIB=$AXDIMM_DIR/openssl make -j 4
-sudo PERL5LIB=$AXDIMM_DIR/openssl make install -j 4
-exit
 #./autogen.sh
 LDFLAGS="-L$AXDIMM_DIR/intel-ipsec-mb/lib  \
 -L$AXDIMM_DIR/lib" \
