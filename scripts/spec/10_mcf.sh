@@ -7,17 +7,15 @@ SHARED=( "21" "22" "23" "24" "25" "26" "27" "28" "29" "40" )
 
 CORES=SEP
 if [ "${1}" = "shared" ]; then
-	CORES=${SHARED[*]}
+	CORES=( ${SHARED[*]} )
 else
-	CORES=${SEP[*]}
+	CORES=( ${SEP[*]} )
 fi
 
-args=( "$@" )
-
-dir=$( echo ${args[@]:1} | sed 's/ /_/g' )
-echo $dir
+dir=${2}
+echo "USING ${dir}"
 [ ! -d "${ROOT_DIR}/$dir" ] && mkdir ${ROOT_DIR}/$dir
-[ ! -z "$(ls -A ${ROOT_DIR}/$dir)" ] && echo "files present in output dir -- save before running" && exit
+[ ! -z "$(ls -A ${ROOT_DIR}/${dir} 2>/dev/null)" ] && echo "files present in output dir -- save before running" && exit
 cd ${ROOT_DIR}/$dir
 
 PIDS=( $(pgrep mcf_r) )
@@ -26,7 +24,7 @@ PIDS=( $(pgrep mcf_r) )
 spec_cpu_mon(){
 	while [ "1" ]; do
 		time=$(printf '%(%H:%M:%S)T')
-		cpu_util=$( top -b -n 2 -d 0.1 -p ${1} 2>/dev/null | tail -1 | awk '{print $6}'  )
+		cpu_util=$( top -b -n 1 -p ${1} 2>/dev/null |  awk '{print $6}'  )
 		echo "${time} ${cpu_util}" | grep -v '%CPU' >> mcf_r_${1}.cpu
 		sleep 0.2
 	done
@@ -42,9 +40,9 @@ spec_mon(){
 
 sudo pqos -R 
 sudo pqos -e "llc:1=0x003F;" #6 ways
-for i in ${CORES[@]};
+for i in "${CORES[@]}";
 do
-	taskset -c ${i} ${ROOT_DIR}/cpu_2017/bin/runcpu --iterations=1 --copies=1 -o csv 505.mcf_r >/dev/null &
+	taskset -c ${i} ${ROOT_DIR}/cpu_2017/bin/runcpu  --iterations=1 --copies=1 --output_root=${ROOT_DIR}/${dir} --output_format=csv 505.mcf_r >/dev/null &
 done
 
 while [ "${#PIDS[@]}" -lt ${#CORES[@]} ]; do
@@ -78,4 +76,5 @@ for i in "${MONS[@]}"; do
 	sudo kill -KILL ${i}
 done
 
-exit
+echo "exiting..."
+
