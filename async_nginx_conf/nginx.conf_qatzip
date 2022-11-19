@@ -1,0 +1,84 @@
+user qat qat;
+
+load_module modules/ngx_ssl_engine_qat_module.so;
+load_module modules/ngx_http_qatzip_filter_module.so;
+worker_processes 40;     
+worker_cpu_affinity 1000000000000000000000000000000000000000 0100000000000000000000000000000000000000 0010000000000000000000000000000000000000 0001000000000000000000000000000000000000 0000100000000000000000000000000000000000 0000010000000000000000000000000000000000 0000001000000000000000000000000000000000 0000000100000000000000000000000000000000 0000000010000000000000000000000000000000 0000000001000000000000000000000000000000 0000000000100000000000000000000000000000 0000000000010000000000000000000000000000 0000000000001000000000000000000000000000 0000000000000100000000000000000000000000 0000000000000010000000000000000000000000 0000000000000001000000000000000000000000 0000000000000000100000000000000000000000 0000000000000000010000000000000000000000 0000000000000000001000000000000000000000 0000000000000000000100000000000000000000 0000000000000000000010000000000000000000 0000000000000000000001000000000000000000 0000000000000000000000100000000000000000 0000000000000000000000010000000000000000 0000000000000000000000001000000000000000 0000000000000000000000000100000000000000 0000000000000000000000000010000000000000 0000000000000000000000000001000000000000 0000000000000000000000000000100000000000 0000000000000000000000000000010000000000 0000000000000000000000000000001000000000 0000000000000000000000000000000100000000 0000000000000000000000000000000010000000 0000000000000000000000000000000001000000 0000000000000000000000000000000000100000 0000000000000000000000000000000000010000 0000000000000000000000000000000000001000 0000000000000000000000000000000000000100 0000000000000000000000000000000000000010 0000000000000000000000000000000000000001 ;
+
+worker_rlimit_nofile 1000000;   
+
+ssl_engine{     
+   use_engine qatengine;
+   #default_algorithms RSA,EC,DH,PKEY_CRYPTO;
+   default_algorithms ALL;
+   #default_algorithms DH;
+   qat_engine{
+      qat_notify_mode poll;
+      qat_offload_mode async;
+      qat_poll_mode heuristic;
+	  qat_sw_fallback off;
+      #qat_internal_poll_interval 1000;
+}}
+
+events  
+{
+  use epoll;    
+
+  #worker_connections 8192;  
+  worker_connections 2048;  
+
+  multi_accept on;  
+
+  accept_mutex on;  
+}
+
+http    
+{
+		#qatzip
+		qatzip_sw no;
+		qatzip_min_length 100;
+		qatzip_types text/css text/javascript text/xml text/plain text/x-component application/javascript application/json application/xml application/rss+xml font/truetype font/opentype application/vnd.ms-fontobject image/svg+xml application/octet-stream image/jpeg;
+		qatzip_chunk_size 64K;
+		qatzip_stream_size 256K;
+		qatzip_comp_level 1;
+		qatzip_sw_threshold 256;
+          #ssl_buffer_size 65536;    
+
+          include       mime.types; 
+          default_type  application/octet-stream;   
+          sendfile on;  
+          access_log off;   
+        server 
+        {
+                listen 443 reuseport backlog=131072 so_keepalive=off ; 
+                sendfile on;  
+
+                tcp_nopush on;  
+
+                tcp_nodelay on;  
+                ssl_verify_client off;  
+                ssl_session_tickets off;    
+                access_log  off;  
+                lingering_close off; 
+                lingering_time 1;  
+                server_name  server_1;  
+
+                ssl                  on;    
+                ssl_asynch           on;    
+                ssl_certificate      server.crt;  
+                ssl_certificate_key  server.key;  
+
+				#ssl_timer
+				ssl_session_timeout  300s;  
+
+                ssl_protocols  TLSv1.2; 
+				#ssl_ciphers AES128-GCM-SHA256:AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256;
+				ssl_ciphers AES128-SHA;
+                ssl_prefer_server_ciphers   on;  
+
+                location /  
+                {
+					proxy_pass http://backend;
+                }
+        }
+}
