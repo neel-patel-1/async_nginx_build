@@ -10,9 +10,9 @@ if [ ! -f "${AXDIMM_DIR}/openssl/lib/libcrypto.so.1.1" ]; then
 	cd openssl
 	./Configure --prefix=$AXDIMM_DIR/openssl --openssldir=$AXDIMM_DIR/openssl/config_certs_keys linux-x86_64 
 	echo "compiling openssl ..."
-	2>1 >/dev/null make -j 4
+	2>1 >/dev/null make -s -j 4
 	echo "installing openssl ..."
-	sudo make --silent install -j 4
+	sudo make --silent install -j 35
 else
 	cd ${AXDIMM_DIR}
 	cd openssl
@@ -21,13 +21,10 @@ else
 	echo "compiling openssl ..."
 	#make --silent -j 4
 	echo "installing openssl ..."
-	#sudo make --silent install -j 4
+	#sudo make -s install -j 4
 fi
 
 cd ${AXDIMM_DIR}/qat_cache_flush
-PERL5LIB=$AXDIMM_DIR/openssl make -j 4
-sudo PERL5LIB=$AXDIMM_DIR/openssl make install -j 4
-exit
 make clean -j 4
 ./autogen.sh
 LDFLAGS="-L$AXDIMM_DIR/intel-ipsec-mb/lib  \

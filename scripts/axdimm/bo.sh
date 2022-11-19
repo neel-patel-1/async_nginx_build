@@ -24,12 +24,12 @@ if [ ! -f "${AXDIMM_DIR}/openssl/lib/libcrypto.so.1.1" ]; then
 else
 	cd ${AXDIMM_DIR}
 	cd openssl
-	sudo make clean -j 4
-	./Configure --prefix=$AXDIMM_DIR/openssl --openssldir=$AXDIMM_DIR/openssl/config_certs_keys linux-x86_64 
+	#sudo make clean -j 4
+	#./Configure --prefix=$AXDIMM_DIR/openssl --openssldir=$AXDIMM_DIR/openssl/config_certs_keys linux-x86_64 
 	echo "compiling openssl ..."
-	make -s -j 4
+	#make -s -j 4
 	echo "installing openssl ..."
-	sudo make -s install -j 4
+	sudo make -s install -j 30
 fi
 
 if [ ! -f "${AXDIMM_DIR}/crypto_mb/2020u3/lib/intel64/libcrypto_mb.so" ]; then
@@ -69,6 +69,7 @@ if [ ! -f "$AXDIMM_ENGINES/qatengine.so" ] || [ "$qat_mod" = "y" ]; then
 	-I$AXDIMM_DIR/crypto_mb/2020u3/include/crypto_mb \
 	-I$AXDIMM_DIR/crypto_mb/2020u3/include" ./configure \
 	--enable-qat_sw \
+	--with-cc-opt='-msse2;-msse;-march=native;-maes' \
 	--with-openssl_install_dir=${AXDIMM_DIR}/openssl \
 	--with-openssl_dir=${AXDIMM_DIR}/openssl \
 	--disable-qat_hw
