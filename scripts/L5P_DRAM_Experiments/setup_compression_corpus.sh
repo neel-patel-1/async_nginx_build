@@ -48,8 +48,9 @@ TRIM_CONF=${ROOT_DIR}/SmartDIMM_gzip_nginx_conf/nginx_default.conf
 # check sw compression ratio and populate default dir
 [ ! -f "${ROOT_DIR}/comp_files/bbc_file_${FULL_SIZE}.html" ] && head -c ${FULL_SIZE} < ${ROOT_DIR}/comp_files/bbc_file.html > ${ROOT_DIR}/comp_files/bbc_file_${FULL_SIZE}.html
 sudo mount -t tmpfs -o size=1g tmpfs ${DEFAULT_DIR}/nginx_build/html
+sudo mount -t tmpfs -o size=1g tmpfs $QTLS_NGINX/html
 parallel "sudo cp ${ROOT_DIR}/comp_files/bbc_file_${FULL_SIZE}.html ${DEFAULT_DIR}/nginx_build/html/UCFile_${FULL_SIZE}_{}.txt" ::: {0..999}
-parallel "cp ${ROOT_DIR}/comp_files/bbc_file_${FULL_SIZE}.html ${QTLS_NGINX}/html/UCFile_${FULL_SIZE}_{}.txt" ::: {0..999}
+parallel "sudo cp ${ROOT_DIR}/comp_files/bbc_file_${FULL_SIZE}.html ${QTLS_NGINX}/html/UCFile_${FULL_SIZE}_{}.txt" ::: {0..999}
 ${ROOT_DIR}/nginx.sh http_gzip 10
 COMP_SIZE=$( wget --header="accept-encoding:gzip, deflate" http://localhost/UCFile_${FULL_SIZE}_1.txt  2>&1 | grep saved | awk '{print $6}' | sed -e 's/^.//' -e 's/.$//' | xargs du -b | awk '{print $1}' )
 
@@ -58,7 +59,6 @@ sed -i -E "s/file_length [0-9]+;/file_length ${FULL_SIZE_BYTES};/g" ${TRIM_CONF}
 ${ROOT_DIR}/nginx.sh accel_gzip 10
 
 # populate accel and qat
-sudo mount -t tmpfs -o size=1g tmpfs $QTLS_NGINX/html
 sudo mount -t tmpfs -o size=1g tmpfs $ACCEL_GZIP_FILE_DIR
 
 parallel "head -c ${COMP_SIZE} < ${ROOT_DIR}/comp_files/bbc_file.html > $ACCEL_GZIP_FILE_DIR/UCFile_${FULL_SIZE}_{}.txt" ::: {0..999}
