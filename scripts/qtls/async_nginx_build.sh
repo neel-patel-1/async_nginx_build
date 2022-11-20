@@ -18,7 +18,7 @@ QZ_ROOT=${QTLS_DIR}/QATzip
 --with-ld-opt="-Wl,-rpath=$OPENSSL_LIB/lib -L$OPENSSL_LIB/lib -L$QZ_ROOT/src -lqatzip -lz"
 
 make -j 35
-sudo make install -j 35
+make install -j 35
 
 cd $QTLS_NGINX
 sudo cp -r $ROOT_DIR/async_files/* ./html
