@@ -40,6 +40,7 @@ do
 done
 
 if [ ! -z "${1}" ];  then 
+	mkdir -p ${ROOT_DIR}/comp_files
 	sudo mount -t tmpfs -o size=1g tmpfs ${DEFAULT_DIR}/nginx_build/html
 	sudo mount -t tmpfs -o size=1g tmpfs $AXDIMM_NGINX/html
 	sudo mount -t tmpfs -o size=1g tmpfs $KTLS_NGINX/html

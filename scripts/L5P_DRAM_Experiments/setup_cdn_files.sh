@@ -8,7 +8,7 @@ declare -A sizes=( ["512"]=100 ["1K"]=100 ["1536"]=100 ["2K"]=50 ["3K"]=150 ["5K
 ctr=0
 for s in "${!sizes[@]}"; do
 	for c in `seq ${sizes[$s]}`; do
-		[ ! -f "${ROOT_DIR}/CDN_FILES/UCFile_12345K_${ctr}.txt" ] && head -c $s < /dev/urandom > ${ROOT_DIR}/CDN_FILES/UCFile_12345K_${ctr}.txt
+		[ ! -f "${ROOT_DIR}/CDN_FILES/UCFile_${sizes[$s]}_${ctr}.txt" ] && head -c $s < /dev/urandom > ${ROOT_DIR}/CDN_FILES/UCFile_${sizes[$s]}_${ctr}.txt
 		ctr=$(( ctr + 1 ))
 	done
 done

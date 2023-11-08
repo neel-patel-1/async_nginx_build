@@ -2,7 +2,48 @@
 ```
 ./scripts/configure.sh
 make default # build baseline nginx
+
+# gzip build
+cd nginx_compress_emul
+./default_build.sh
+# gzip emulation build
+./emul_build.sh
+
+# setup server with compressed files
+./scripts/L5P_DRAM_Experiments/setup_cdn_files.sh
+
+./scripts/L5P_DRAM_Experiments/setup_server.sh <file_size> <number_of_files_(currently not used)>
+
 ```
+### axdimm TLS experiment
+* setup:
+```
+make axdimm
+
+multi_many_file 1m
+```
+
+***Generating RPS/Net Band Max Performance Nginx Figure***
+Checklist:
+- Nobody else on server
+- Turboboost disabled ```
+echo "1" | sudo tee /sys/devices/system/cpu/intel_pstate/no_turbo
+- Check processor frequency: `watch -n.1 "grep \"^[c]pu MHz\" /proc/cpuinfo"`
+- Ensure CAT is reset `sudo pqos -R`
+- Disable prefetcher: `sudo wrmsr -a 0x1a4 $(( 2**0 | 2**1 | 2**2 | 2**3))`
+```
+# make file size change to many_req.lua script
+# ./scripts/L5P/setup_server.sh <file_size> <number_of_files_(currently not used)>
+multi_many_file 1m # alias for multi_many_file_test() to run all configs
+parse_many_file_test # print results
+
+
+#functions for parsing output files:
+rps_nband_lat_99_from_file https_band.txt #parse_wrk alias
+ipc_mem_band_from_file https_multi_file.mem #parse_mem alias
+cpu_util_from_raw https_cpu_util #parse_cpu alias
+```
+
 
 
 Build Test Servers:

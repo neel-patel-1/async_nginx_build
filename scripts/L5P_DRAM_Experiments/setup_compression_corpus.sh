@@ -46,14 +46,17 @@ fi
 TRIM_CONF=${ROOT_DIR}/SmartDIMM_gzip_nginx_conf/nginx_default.conf
 
 # check sw compression ratio and populate default dir
+mkdir -p ${ROOT_DIR}/comp_files
+[ ! -f "${ROOT_DIR}/comp_files/bbc_file.html" ] && curl bbc.co.uk --output ${ROOT_DIR}/comp_files/bbc_file.html
+#[ ! -f "${ROOT_DIR}/comp_files/file.txt" ] && curl bbc.co.uk --output ${ROOT_DIR}/comp_files/bbc_file.html
 [ ! -f "${ROOT_DIR}/comp_files/bbc_file_${FULL_SIZE}.html" ] && head -c ${FULL_SIZE} < ${ROOT_DIR}/comp_files/bbc_file.html > ${ROOT_DIR}/comp_files/bbc_file_${FULL_SIZE}.html
 sudo mount -t tmpfs -o size=1g tmpfs ${DEFAULT_DIR}/nginx_build/html
 sudo mount -t tmpfs -o size=1g tmpfs $QTLS_NGINX/html
 parallel "cp ${ROOT_DIR}/comp_files/bbc_file_${FULL_SIZE}.html ${DEFAULT_DIR}/nginx_build/html/UCFile_${FULL_SIZE}_{}.txt" ::: {0..999}
 parallel "cp ${ROOT_DIR}/comp_files/bbc_file_${FULL_SIZE}.html ${QTLS_NGINX}/html/UCFile_${FULL_SIZE}_{}.txt" ::: {0..999}
-cp ${ROOT_DIR}/comp_files/file.txt ${QTLS_NGINX}/html
-cp ${ROOT_DIR}/comp_files/calgary.txt ${QTLS_NGINX}/html
-exit
+#cp ${ROOT_DIR}/comp_files/file.txt ${QTLS_NGINX}/html
+#cp ${ROOT_DIR}/comp_files/calgary.txt ${QTLS_NGINX}/html
+#exit
 ${ROOT_DIR}/nginx.sh http_gzip 10
 COMP_SIZE=$( wget --header="accept-encoding:gzip, deflate" http://localhost/UCFile_${FULL_SIZE}_1.txt  2>&1 | grep saved | awk '{print $6}' | sed -e 's/^.//' -e 's/.$//' | xargs du -b | awk '{print $1}' )
 
