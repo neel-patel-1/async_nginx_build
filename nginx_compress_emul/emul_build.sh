@@ -11,4 +11,4 @@ cp ../SmartDIMM_gzip_nginx_conf/nginx_default.conf nginx_gzip_build/conf/nginx.c
 cp -r localhost.* nginx_gzip_build/conf/
 ps aux | grep nginx | awk '{print $2}' | xargs sudo kill -s 2
 sudo ./nginx_gzip_build/sbin/nginx
-cp UCFile_16K_1.txt nginx_gzip_build/html
+cp ../comp_files/UCFile_16K_1.txt nginx_gzip_build/html
