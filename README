@@ -1,4 +1,8 @@
-
+#### Setup
+```
+./scripts/configure.sh
+make default # build baseline nginx
+```
 
 
 Build Test Servers:

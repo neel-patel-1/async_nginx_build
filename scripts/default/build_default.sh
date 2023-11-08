@@ -29,4 +29,5 @@ if [ ! -f "${DEFAULT_DIR}/nginx_build/sbin/nginx" ]; then
 fi
 [ -z "$( ls ${DEFAULT_NGINX}/html/file_* )" ] && ${ROOT_DIR}/scripts/default/gen_http_files.sh
 [ ! -f "${DEFAULT_NGINX}/conf/localhost.crt" ] && sudo cp -r ${ROOT_DIR}/default_nginx_conf/* ${DEFAULT_NGINX}/conf
-[ ! -f "${DEFAULT_DIR}/default_nginx/sbin/nginx" ] && echo "DEFAULT NGINX BUILD FAILED" && exit
+[ ! -f "${DEFAULT_DIR}/nginx_build/sbin/nginx" ] && echo "DEFAULT NGINX BUILD FAILED" && exit
+echo "default build SUCCESS"
