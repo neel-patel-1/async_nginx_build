@@ -39,6 +39,8 @@ elif [ "$1" = "accel_gzip_const" ]; then
 	${ROOT_DIR}/nginxs/accel_gzip_conf.sh
 elif [ "$1" = "qat_gzip" ]; then
 	${ROOT_DIR}/nginxs/qat_gzip_conf.sh
+elif [ "$1" = "qat_gzip_const" ]; then
+	${ROOT_DIR}/nginxs/qat_gzip_conf.sh
 elif [ "$1" = "http_rdt" ]; then
 	${ROOT_DIR}/nginxs/http_rdt_conf.sh
 elif [ "$1" = "httpsendfile" ]; then

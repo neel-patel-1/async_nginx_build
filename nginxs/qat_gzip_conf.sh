@@ -1,5 +1,5 @@
 #!/bin/bash
->&2 echo "[info] qtls server ..."
+>&2 echo "[info] qatzip server ..."
 
 sudo cp -f ${ROOT_DIR}/async_nginx_conf/nginx.conf_qatzip ${QTLS_NGINX}/conf/nginx.conf
 
