@@ -31,6 +31,8 @@ elif [ "$1" = "http_const" ]; then
 	${ROOT_DIR}/nginxs/http_conf.sh
 elif [ "$1" = "http_gzip" ]; then
 	${ROOT_DIR}/nginxs/http_gzip_conf.sh
+elif [ "$1" = "http_gzip_const" ]; then
+	${ROOT_DIR}/nginxs/http_gzip_conf.sh
 elif [ "$1" = "https_gzip" ]; then
 	${ROOT_DIR}/nginxs/http_gzip_conf.sh
 elif [ "$1" = "accel_gzip" ]; then
