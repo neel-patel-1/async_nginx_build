@@ -1,5 +1,5 @@
 #!/bin/bash
-export ROOT_DIR=/home/n869p538/wrk_offloadenginesupport/async_nginx_build
+export ROOT_DIR=/home/shared/wrk_offloadenginesupport/async_nginx_build
 source $ROOT_DIR/scripts/async_libsrcs.source
 
 [ ! -d "$DEFAULT_DIR" ] && mkdir $DEFAULT_DIR
@@ -8,10 +8,10 @@ cd $DEFAULT_DIR
 #openssl
 cd ${DEFAULT_DIR}
 
-[ ! -f "${DEFAULT_DIR}/openssl-3.0.0.tar.gz" ] && cd ${DEFAULT_DIR} && wget https://www.openssl.org/source/openssl-3.0.0.tar.gz
+[ ! -f "${DEFAULT_DIR}/openssl-3.0.0.tar.gz" ] && cd ${DEFAULT_DIR} && wget --no-check-certificate https://www.openssl.org/source/openssl-3.0.0.tar.gz
 [ ! -d "${DEFAULT_DIR}/openssl-3.0.0" ] && cd ${DEFAULT_DIR} && tar xvf openssl-3.0.0.tar.gz
 
-[ ! -f "${DEFAULT_DIR}/nginx-1.21.4.tar.gz" ] && wget https://nginx.org/download/nginx-1.21.4.tar.gz
+[ ! -f "${DEFAULT_DIR}/nginx-1.21.4.tar.gz" ] && wget --no-check-certificate https://nginx.org/download/nginx-1.21.4.tar.gz
 [ ! -d "${DEFAULT_DIR}/nginx-1.21.4" ] && tar xzf nginx-1.21.4.tar.gz
 if [ ! -f "${DEFAULT_DIR}/nginx_build/sbin/nginx" ]; then
 	cd ${DEFAULT_DIR}/nginx-1.21.4
