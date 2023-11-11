@@ -1,7 +1,6 @@
 #!/bin/bash
 NGINX_VERSION=1.23.1
 
-NGINX_VERSION=1.23.1
 if [ ! -d "nginx-${NGINX_VERSION}" ]; then
 	wget http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz
 	tar xzf nginx-${NGINX_VERSION}.tar.gz
@@ -17,7 +16,6 @@ if [ ! -d "nginx_default_build/sbin/nginx" ]; then
 	cd ../
 fi
 
-cd ../
 sudo cp ../gzip_nginx_conf/nginx.conf nginx_default_build/conf/nginx.conf
 ps aux | grep nginx | awk '{print $2}' | xargs sudo kill -s 2
 sudo ./nginx_default_build/sbin/nginx
